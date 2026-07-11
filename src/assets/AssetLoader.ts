@@ -29,6 +29,11 @@ export class AssetLoader {
     this.createEggs(scene);
     this.createFlour(scene);
     this.createSugar(scene);
+
+    // Custom Level 3 Office Collectibles
+    this.createDonut(scene);
+    this.createStapler(scene);
+    this.createDocument(scene);
   }
 
   private static createPlayer(scene: Phaser.Scene): void {
@@ -350,6 +355,53 @@ export class AssetLoader {
     graphics.fillCircle(24, 11, 3);
     graphics.strokeEllipse(24, 15, 12, 4);
     graphics.generateTexture(TEXTURE_KEYS.SUGAR, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createDonut(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.DONUT)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.lineStyle(10, 0xd97706, 1);
+    graphics.strokeCircle(24, 24, 14);
+    graphics.lineStyle(6, 0xdb2777, 1);
+    graphics.strokeCircle(24, 24, 13);
+    graphics.fillStyle(0x38bdf8, 1);
+    graphics.fillRect(20, 16, 3, 1.5);
+    graphics.fillStyle(0xfacc15, 1);
+    graphics.fillRect(28, 20, 1.5, 3);
+    graphics.fillStyle(0xffffff, 1);
+    graphics.fillRect(16, 26, 3, 1.5);
+    graphics.generateTexture(TEXTURE_KEYS.DONUT, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createStapler(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.STAPLER)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x475569, 1);
+    graphics.fillRect(10, 26, 8, 8);
+    graphics.fillStyle(0xdc2626, 1);
+    graphics.fillRect(12, 32, 26, 6);
+    graphics.fillStyle(0x94a3b8, 1);
+    graphics.fillRect(14, 28, 22, 4);
+    graphics.fillStyle(0xdc2626, 1);
+    graphics.fillRect(12, 22, 22, 6);
+    graphics.generateTexture(TEXTURE_KEYS.STAPLER, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createDocument(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.DOCUMENT)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0xf8fafc, 1);
+    graphics.fillRect(12, 10, 24, 30);
+    graphics.lineStyle(1.5, 0xcbd5e1, 1);
+    graphics.lineBetween(16, 18, 32, 18);
+    graphics.lineBetween(16, 24, 32, 24);
+    graphics.lineBetween(16, 30, 28, 30);
+    graphics.fillStyle(0x2563eb, 1);
+    graphics.fillRect(20, 8, 8, 5);
+    graphics.generateTexture(TEXTURE_KEYS.DOCUMENT, 48, 48);
     graphics.destroy();
   }
 }

@@ -11,22 +11,22 @@
       "id": "collect_crystals",
       "type": "collect",
       "target": 6,
-      "description": "Gather 6 office-bug crystals"
+      "description": "Gather all 6 office assets"
     },
     {
       "id": "play_minigame",
       "type": "minigame",
       "target": 1,
-      "description": "Solve typing challenge"
+      "description": "Deploy Production"
     }
   ],
   "collectibles": [
-    { "x": 280, "y": 220 },
-    { "x": 480, "y": 460 },
-    { "x": 620, "y": 180 },
-    { "x": 800, "y": 500 },
-    { "x": 960, "y": 320 },
-    { "x": 1120, "y": 520 }
+    { "x": 280, "y": 220, "texture": "coffee-mug", "name": "Coffee Mug" },
+    { "x": 480, "y": 460, "texture": "office-donut", "name": "Donut" },
+    { "x": 620, "y": 180, "texture": "red-stapler", "name": "Red Stapler" },
+    { "x": 800, "y": 500, "texture": "paper-document", "name": "Document" },
+    { "x": 960, "y": 320, "texture": "office-donut", "name": "Donut" },
+    { "x": 1120, "y": 520, "texture": "red-stapler", "name": "Red Stapler" }
   ],
   "npcs": [
     {
@@ -40,14 +40,43 @@
     }
   ],
   "minigame": {
-    "type": "typing_test",
+    "type": "math_quiz",
     "triggerNpc": "firefly",
-    "prompt": "Type this birthday phrase:",
-    "text": "npm run birthday-wishes"
+    "prompt": "Deploy Production!",
+    "questions": [
+      {
+        "question": "Step 1: How should we arrange our commits before deploying?",
+        "options": [
+          "Squash and Merge into main branch",
+          "Force push to main with --force",
+          "Commit as 'fix typo' 15 times"
+        ],
+        "answerIndex": 0
+      },
+      {
+        "question": "Step 2: A merge conflict appears in main.ts! How do we resolve it?",
+        "options": [
+          "Delete main.ts and hope for the best",
+          "Keep incoming changes after verification",
+          "Identity theft is not a joke, Jim!"
+        ],
+        "answerIndex": 1
+      },
+      {
+        "question": "Step 3: Server is idle. How do we restart the system service?",
+        "options": [
+          "That's what she said! (Power cycle)",
+          "sudo systemctl restart birthday-service",
+          "Unplug the server rack physically"
+        ],
+        "answerIndex": 1
+      }
+    ]
   },
   "portal": {
     "x": 1080,
     "y": 160,
-    "texture": "wish-portal"
+    "texture": "wish-portal",
+    "exitType": "portal"
   }
 }

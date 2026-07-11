@@ -13,7 +13,7 @@
       }
     },
     "firefly": {
-      "name": "Coding Firefly",
+      "name": "Corporate Firefly",
       "typingTone": 760,
       "portraits": {
         "neutral": "portrait-firefly-neutral",
@@ -30,17 +30,17 @@
         {
           "character": "firefly",
           "emotion": "happy",
-          "text": "Bzzzt! You've successfully logged into the Office. Don't worry, there are no Zoom meetings today."
+          "text": "Identity theft is not a joke, Jim! Oh, wait... you're Heena! Welcome to the Corporate Office."
         },
         {
           "character": "heena",
-          "emotion": "happy",
-          "text": "Phew, that is a relief! But why does it smell like coffee and fresh paper?"
+          "emotion": "curious",
+          "text": "Wait, who is Jim? And why is it smelling like fresh donuts and red staplers here?"
         },
         {
           "character": "firefly",
           "emotion": "excited",
-          "text": "Because birthday wishes can be productive too! Gather 6 office-bug crystals so we can deploy to the Wizard School!"
+          "text": "Because we have a production deployment today! Gather the 6 scattered office assets (donuts, staplers, paper documents, and mugs) so we can deploy!"
         }
       ]
     },
@@ -51,7 +51,7 @@
         {
           "character": "firefly",
           "emotion": "neutral",
-          "text": "Look near the digital desks. Some crystals are floating near the virtual coffee machine."
+          "text": "Look around the desks. And remember: Identity theft is not a joke. Millions of families suffer every year!"
         }
       ]
     },
@@ -62,7 +62,7 @@
         {
           "character": "firefly",
           "emotion": "excited",
-          "text": "Code compiled! The pipeline is green. Step into the portal to proceed to Wizard School!"
+          "text": "Deployment successful! That's what she said! The pipeline is green. Step into the portal to proceed to Wizard School!"
         }
       ]
     },
@@ -73,7 +73,7 @@
         {
           "character": "firefly",
           "emotion": "happy",
-          "text": "The magic deployment portal is active and waiting."
+          "text": "That's what she said! Go ahead and step into the portal when you are ready."
         }
       ]
     }

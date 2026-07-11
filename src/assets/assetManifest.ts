@@ -20,6 +20,9 @@ export const TEXTURE_KEYS = {
   EGGS: 'egg-basket',
   FLOUR: 'flour-bag',
   SUGAR: 'sugar-bowl',
+  DONUT: 'office-donut',
+  STAPLER: 'red-stapler',
+  DOCUMENT: 'paper-document',
 } as const;
 
 export const AUDIO_KEYS = {

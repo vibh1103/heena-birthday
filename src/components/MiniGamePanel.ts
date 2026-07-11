@@ -7,9 +7,14 @@ import { AudioManager } from '../audio/AudioManager';
 export interface MathGameConfig {
   type: 'math_quiz';
   prompt: string;
-  question: string;
-  options: string[];
-  answerIndex: number;
+  question?: string;
+  options?: string[];
+  answerIndex?: number;
+  questions?: Array<{
+    question: string;
+    options: string[];
+    answerIndex: number;
+  }>;
 }
 
 export interface TypingGameConfig {
@@ -55,6 +60,7 @@ export class MiniGamePanel extends Phaser.GameObjects.Container {
   }> = [];
   private selectedCards: number[] = [];
   private memoryBusy = false;
+  private currentQuestionIndex = 0;
 
   public constructor(
     scene: Phaser.Scene,
@@ -128,14 +134,34 @@ export class MiniGamePanel extends Phaser.GameObjects.Container {
     }
   }
 
-  // --- MATH QUIZ MODE ---
   private setupMathQuiz(config: MathGameConfig): void {
+    // Clear previous game elements for multi-question updates
+    this.gameElements.forEach(el => el.destroy());
+    this.gameElements = [];
+
+    let activeQuestion: string;
+    let activeOptions: string[];
+    let activeAnswerIndex: number;
+
+    if (config.questions && config.questions.length > 0) {
+      const q = config.questions[this.currentQuestionIndex];
+      if (!q) return;
+      activeQuestion = q.question;
+      activeOptions = q.options;
+      activeAnswerIndex = q.answerIndex;
+      this.titleText.setText(`${config.prompt} (${this.currentQuestionIndex + 1}/${config.questions.length})`);
+    } else {
+      activeQuestion = config.question ?? '';
+      activeOptions = config.options ?? [];
+      activeAnswerIndex = config.answerIndex ?? 0;
+    }
+
     const scene = this.scene;
 
     // Draw question text
-    const questText = scene.add.text(0, -80, config.question, {
+    const questText = scene.add.text(0, -80, activeQuestion, {
       fontFamily: FONT_FAMILY.body,
-      fontSize: '22px',
+      fontSize: '20px',
       color: UI_HEX.cream,
       align: 'center',
       wordWrap: { width: 620 }
@@ -143,8 +169,8 @@ export class MiniGamePanel extends Phaser.GameObjects.Container {
     this.add(questText);
     this.gameElements.push(questText);
 
-    // Render 3 option buttons
-    config.options.forEach((opt, idx) => {
+    // Render option buttons
+    activeOptions.forEach((opt, idx) => {
       const yPos = 30 + idx * 80;
       const btnContainer = scene.add.container(0, yPos);
       this.add(btnContainer);
@@ -160,7 +186,7 @@ export class MiniGamePanel extends Phaser.GameObjects.Container {
 
       const btnTxt = scene.add.text(0, 0, opt, {
         fontFamily: FONT_FAMILY.body,
-        fontSize: '18px',
+        fontSize: '17px',
         color: UI_HEX.cream,
         fontStyle: '700'
       }).setOrigin(0.5);
@@ -184,8 +210,26 @@ export class MiniGamePanel extends Phaser.GameObjects.Container {
       });
 
       btnBg.on(Phaser.Input.Events.POINTER_DOWN, () => {
-        if (idx === config.answerIndex) {
-          this.correctAnswer(btnContainer);
+        if (idx === activeAnswerIndex) {
+          // Play mini success tone
+          this.audioManager.playTone(523.25, 100, 0.08);
+
+          if (config.questions && this.currentQuestionIndex < config.questions.length - 1) {
+            // Correct and has more questions: flash green and advance
+            btnBg.clear();
+            btnBg.fillStyle(0x064e3b, 0.8);
+            btnBg.lineStyle(3, 0x10b981, 0.95);
+            btnBg.fillRoundedRect(-220, -25, 440, 50, 15);
+            btnBg.strokeRoundedRect(-220, -25, 440, 50, 15);
+
+            this.scene.time.delayedCall(400, () => {
+              this.currentQuestionIndex++;
+              this.setupMathQuiz(config);
+            });
+          } else {
+            // Correct and final!
+            this.correctAnswer(btnContainer);
+          }
         } else {
           this.wrongAnswer(btnContainer);
         }
