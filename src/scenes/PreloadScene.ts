@@ -12,6 +12,8 @@ export class PreloadScene extends Phaser.Scene {
     AssetLoader.preload(this);
     // Load stories manifest
     this.load.json('stories-manifest', 'stories/manifest.json');
+    // Load levels manifest
+    this.load.json('levels-manifest', 'levels/manifest.json');
   }
 
   public create(): void {

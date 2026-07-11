@@ -5,7 +5,7 @@ import { COLORS } from '../utils/colors';
 export class ParticleManager {
   public constructor(private readonly scene: Phaser.Scene) {}
 
-  public createAmbientMist(): Phaser.GameObjects.Particles.ParticleEmitter {
+  public createAmbientMist(tints?: number[]): Phaser.GameObjects.Particles.ParticleEmitter {
     return this.scene.add.particles(0, 0, TEXTURE_KEYS.SPARK, {
       x: { min: 0, max: 1280 },
       y: { min: 0, max: 720 },
@@ -15,7 +15,7 @@ export class ParticleManager {
       alpha: { start: 0.22, end: 0 },
       quantity: 2,
       frequency: 120,
-      tint: [COLORS.fuchsia, COLORS.amethyst, COLORS.teal],
+      tint: tints ?? [COLORS.fuchsia, COLORS.amethyst, COLORS.teal],
       blendMode: Phaser.BlendModes.ADD,
     });
   }

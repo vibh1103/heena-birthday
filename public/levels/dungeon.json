@@ -1,0 +1,53 @@
+{
+  "id": "dungeon",
+  "name": "Developer Dungeon",
+  "musicKey": "dungeonTheme",
+  "themeColor": 65407,
+  "storyFile": "stories/level_dungeon.json",
+  "playerStart": { "x": 180, "y": 560 },
+  "ambientParticleColor": ["0x00ff7f", "0x32cd32", "0xffffff"],
+  "objectives": [
+    {
+      "id": "collect_crystals",
+      "type": "collect",
+      "target": 6,
+      "description": "Gather 6 binary crystals"
+    },
+    {
+      "id": "play_minigame",
+      "type": "minigame",
+      "target": 1,
+      "description": "Debug compilation loop"
+    }
+  ],
+  "collectibles": [
+    { "x": 240, "y": 240 },
+    { "x": 420, "y": 480 },
+    { "x": 600, "y": 150 },
+    { "x": 840, "y": 510 },
+    { "x": 990, "y": 290 },
+    { "x": 1140, "y": 460 }
+  ],
+  "npcs": [
+    {
+      "id": "firefly",
+      "name": "Cyber Firefly",
+      "x": 660,
+      "y": 320,
+      "texture": "moon-firefly",
+      "interactiveRange": 92,
+      "dialogueNode": "fireflyHint"
+    }
+  ],
+  "minigame": {
+    "type": "typing_test",
+    "triggerNpc": "firefly",
+    "prompt": "Type this code loop to fix the build:",
+    "text": "while(birthday){ celebrate(); }"
+  },
+  "portal": {
+    "x": 1090,
+    "y": 180,
+    "texture": "wish-portal"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "home",
+  "name": "Cozy Home",
+  "musicKey": "homeTheme",
+  "themeColor": 16753786,
+  "storyFile": "stories/level_home.json",
+  "playerStart": { "x": 150, "y": 560 },
+  "ambientParticleColor": ["0xffa07a", "0xff7f50", "0xffffff"],
+  "objectives": [
+    {
+      "id": "collect_crystals",
+      "type": "collect",
+      "target": 6,
+      "description": "Gather 6 cozy crystals"
+    },
+    {
+      "id": "play_minigame",
+      "type": "minigame",
+      "target": 1,
+      "description": "Solve the Firefly Quiz"
+    }
+  ],
+  "collectibles": [
+    { "x": 250, "y": 200 },
+    { "x": 450, "y": 500 },
+    { "x": 640, "y": 220 },
+    { "x": 830, "y": 480 },
+    { "x": 1000, "y": 300 },
+    { "x": 1100, "y": 580 }
+  ],
+  "npcs": [
+    {
+      "id": "firefly",
+      "name": "Cozy Firefly",
+      "x": 640,
+      "y": 360,
+      "texture": "moon-firefly",
+      "interactiveRange": 92,
+      "dialogueNode": "fireflyHint"
+    }
+  ],
+  "minigame": {
+    "type": "math_quiz",
+    "triggerNpc": "firefly",
+    "question": "What is Heena's Birthday Date? (July X)",
+    "options": ["July 10", "July 12", "July 15"],
+    "answerIndex": 1,
+    "prompt": "Guess Heena's Birthday Date!"
+  },
+  "portal": {
+    "x": 1120,
+    "y": 180,
+    "texture": "wish-portal"
+  }
+}

@@ -5,7 +5,7 @@ import { FONT_FAMILY, UI_COLORS, UI_HEX } from '../utils/uiTheme';
 export class Hud {
   private readonly crystalText: Phaser.GameObjects.Text;
   private readonly timerText: Phaser.GameObjects.Text;
-  private readonly pips: Phaser.GameObjects.Star[] = [];
+  private pips: Phaser.GameObjects.Star[] = [];
 
   public constructor(scene: Phaser.Scene) {
     new GlassPanel(scene, 164, 58, 272, 88, {
@@ -39,11 +39,27 @@ export class Hud {
     }
   }
 
-  public setCrystals(count: number, total: number): void {
+  public setCrystals(count: number, total: number, scene?: Phaser.Scene): void {
     this.crystalText.setText(`Crystals ${count}/${total}`);
+    
+    // Rebuild pips if total count changes
+    if (scene && this.pips.length !== total) {
+      this.pips.forEach(pip => pip.destroy());
+      this.pips = [];
+      for (let index = 0; index < total; index += 1) {
+        const pip = scene.add
+          .star(184 + index * 18, 66, 5, 3, 7, UI_COLORS.purple, 0.7)
+          .setDepth(901)
+          .setBlendMode(Phaser.BlendModes.ADD);
+        this.pips.push(pip);
+      }
+    }
+
     this.pips.forEach((pip, index) => {
-      pip.setFillStyle(index < count ? UI_COLORS.gold : UI_COLORS.purple, index < count ? 1 : 0.5);
-      pip.setScale(index < count ? 1.15 : 1);
+      if (pip) {
+        pip.setFillStyle(index < count ? UI_COLORS.gold : UI_COLORS.purple, index < count ? 1 : 0.5);
+        pip.setScale(index < count ? 1.15 : 1);
+      }
     });
   }
 

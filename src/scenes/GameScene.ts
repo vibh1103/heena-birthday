@@ -1,11 +1,10 @@
 import Phaser from 'phaser';
 import { AudioManager } from '../audio/AudioManager';
-// removed birthdayStory static import
 import { TEXTURE_KEYS } from '../assets/assetManifest';
 import { Heena, MovementKeys } from '../characters/Heena';
 import { DialogueBox } from '../components/DialogueBox';
 import { GlassPanel } from '../components/GlassPanel';
-import { LEVELS, LevelDefinition } from '../levels/levelDefinitions';
+import { MiniGamePanel } from '../components/MiniGamePanel';
 import { AnimationManager } from '../systems/AnimationManager';
 import {
   DialogueCameraCommand,
@@ -26,11 +25,9 @@ export class GameScene extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private keys!: MovementKeys;
   private crystals!: Phaser.Physics.Arcade.Group;
-  private firefly!: Phaser.GameObjects.Image;
   private portal!: Phaser.GameObjects.Image;
   private collected = 0;
   private totalCrystals = 6;
-  private levelDef!: LevelDefinition;
   private startTime = 0;
   private dialogue!: DialogueEngine;
   private dialogueBox!: DialogueBox;
@@ -41,39 +38,36 @@ export class GameScene extends Phaser.Scene {
   private story!: DialogueStoryDefinition;
   private dialogueBgImage: Phaser.GameObjects.Image | null = null;
 
+  // Level Engine data-driven fields
+  private levelId = 'home';
+  private levelFile = 'levels/home.json';
+  private levelConfig!: any;
+  private npcSprites: Map<string, Phaser.Physics.Arcade.Image> = new Map();
+  private objectivesProgress: Record<string, boolean> = {};
+  private gamePausedForMinigame = false;
+
+  // Quest Checklist display
+  private objectiveTexts: Array<{ id: string; textObject: Phaser.GameObjects.Text; desc: string }> = [];
+
   public constructor() {
     super(SCENE_KEYS.GAME);
   }
 
-  public init(data?: { story: DialogueStoryDefinition; levelId?: string }): void {
-    if (data && data.story) {
-      this.story = data.story;
-    } else {
-      // Fallback default story from manifest loaded key if started directly
-      this.story = this.cache.json.get('story-stories/level_home.json');
-    }
-    const levelId = data?.levelId ?? 'home';
-    const firstLevel = LEVELS[0];
-    if (!firstLevel) {
-      throw new Error("LEVELS definitions are empty");
-    }
-    this.levelDef = LEVELS.find((l) => l.id === levelId) ?? firstLevel;
+  public init(data?: { levelId?: string }): void {
+    this.levelId = data?.levelId ?? 'home';
+    this.levelFile = `levels/${this.levelId}.json`;
+  }
+
+  public preload(): void {
+    // Dynamically load the level's JSON configuration
+    this.load.json(`level-config-${this.levelId}`, this.levelFile);
   }
 
   public create(): void {
-    this.totalCrystals = this.levelDef.crystals.length;
-    this.collected = 0;
-    this.cameras.main.fadeIn(500, 5, 3, 10);
-    this.physics.world.setBounds(0, 0, 1280, 720);
-    this.startTime = this.time.now;
-    this.audioManager = new AudioManager(this);
-    this.audioManager.unlock();
-    this.particles = new ParticleManager(this);
-
-    this.createSystems();
+    this.levelConfig = this.cache.json.get(`level-config-${this.levelId}`);
 
     // Show a premium visual loading screen while story-specific assets load
-    const loadingText = this.add.text(640, 360, 'Loading Story Magic...', {
+    const loadingText = this.add.text(640, 360, 'Loading Level Magic...', {
       fontFamily: FONT_FAMILY.display,
       fontSize: '28px',
       color: UI_HEX.gold,
@@ -93,30 +87,60 @@ export class GameScene extends Phaser.Scene {
       ease: 'Sine.inOut',
     });
 
-    this.dialogue.loadStoryAssets(() => {
+    // Preload dialog story file specified in the level configuration
+    const storyKey = `story-${this.levelConfig.storyFile}`;
+    this.load.json(storyKey, this.levelConfig.storyFile);
+    this.load.once(`filecomplete-json-${storyKey}`, () => {
+      this.story = this.cache.json.get(storyKey);
+      
       loadingText.destroy();
       loadingGlow.destroy();
 
-      this.createWorld();
-      this.createActors();
-      this.createInput();
-
-      SceneManager.launchOverlay(this, SCENE_KEYS.UI);
-      this.updateHud();
-
-      // Check for saved progress on this specific story
-      const save = this.saveManager.load();
-      if (save && save.dialogueProgress && save.dialogueProgress.storyId === this.story.id) {
-        this.collected = save.crystals;
-        this.dialogue.start(save.dialogueProgress.nodeId, save.dialogueProgress.lineIndex);
-      } else {
-        this.showIntroDialogue();
-      }
+      // Boot level engine once story files are preloaded
+      this.bootLevelEngine();
     });
+    this.load.start();
+  }
+
+  private bootLevelEngine(): void {
+    this.cameras.main.fadeIn(500, 5, 3, 10);
+    this.physics.world.setBounds(0, 0, 1280, 720);
+    this.startTime = this.time.now;
+    this.audioManager = new AudioManager(this);
+    this.audioManager.unlock();
+    this.particles = new ParticleManager(this);
+
+    this.portalReady = false;
+    this.collected = 0;
+    this.totalCrystals = this.levelConfig.collectibles.length;
+
+    // Reset objectives progress checklist state
+    this.objectivesProgress = {};
+    this.levelConfig.objectives.forEach((obj: any) => {
+      this.objectivesProgress[obj.id] = false;
+    });
+
+    this.createSystems();
+    this.createWorld();
+    this.createActors();
+    this.createInput();
+    this.createObjectivesList();
+
+    SceneManager.launchOverlay(this, SCENE_KEYS.UI);
+    this.updateHud();
+
+    // Check for saved progress on this specific story
+    const save = this.saveManager.load();
+    if (save && save.dialogueProgress && save.dialogueProgress.storyId === this.story.id) {
+      this.collected = save.crystals;
+      this.dialogue.start(save.dialogueProgress.nodeId, save.dialogueProgress.lineIndex);
+    } else {
+      this.showIntroDialogue();
+    }
   }
 
   public update(_time: number, _delta: number): void {
-    if (this.dialogue.isActive) {
+    if (this.dialogue.isActive || this.gamePausedForMinigame) {
       this.player.setVelocity(0, 0);
     } else {
       this.player.move(this.cursors, this.keys);
@@ -151,7 +175,7 @@ export class GameScene extends Phaser.Scene {
     veil.fillRect(0, 0, 1280, 720);
 
     const birthdayMoon = this.add.circle(1078, 118, 78, UI_COLORS.cream, 0.24).setBlendMode(Phaser.BlendModes.ADD);
-    const warmGlow = this.add.circle(1044, 152, 190, UI_COLORS.gold, 0.08).setBlendMode(Phaser.BlendModes.ADD);
+    const warmGlow = this.add.circle(1044, 152, 190, this.levelConfig.themeColor, 0.08).setBlendMode(Phaser.BlendModes.ADD);
     this.tweens.add({
       targets: [birthdayMoon, warmGlow],
       scale: 1.08,
@@ -174,39 +198,53 @@ export class GameScene extends Phaser.Scene {
         .setDepth(1);
     }
 
-    this.particles.createAmbientMist().setDepth(2);
+    const mistColors = this.levelConfig.ambientParticleColor.map((c: string) => parseInt(c));
+    this.particles.createAmbientMist(mistColors).setDepth(2);
   }
 
   private createActors(): void {
     const animations = new AnimationManager(this);
-    this.player = new Heena(this, this.levelDef.playerStart.x, this.levelDef.playerStart.y);
+    this.player = new Heena(this, this.levelConfig.playerStart.x, this.levelConfig.playerStart.y);
 
     this.crystals = this.physics.add.group({ immovable: true, allowGravity: false });
     const crystalObjects: Phaser.GameObjects.GameObject[] = [];
-    this.levelDef.crystals.forEach((spawn) => {
+    this.levelConfig.collectibles.forEach((spawn: any) => {
       const crystal = this.physics.add.image(spawn.x, spawn.y, TEXTURE_KEYS.CRYSTAL);
       crystal.setDepth(10).setCircle(22).setScale(0.88);
+      
+      // Color-theme the crystals to match level
+      crystal.setTint(this.levelConfig.themeColor);
+
       this.crystals.add(crystal);
       crystalObjects.push(crystal);
       animations.shimmerCrystal(crystal);
     });
     animations.createAmbientTweens(crystalObjects);
 
-    this.firefly = this.add.image(this.levelDef.firefly.x, this.levelDef.firefly.y, TEXTURE_KEYS.FIREFLY).setDepth(25);
-    this.tweens.add({
-      targets: this.firefly,
-      y: this.levelDef.firefly.y - 18,
-      duration: 1200,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.inOut',
+    // Spawn custom NPCs dynamically
+    this.npcSprites.clear();
+    this.levelConfig.npcs.forEach((npc: any) => {
+      const npcSprite = this.physics.add.image(npc.x, npc.y, npc.texture).setDepth(25);
+      this.tweens.add({
+        targets: npcSprite,
+        y: npc.y - 18,
+        duration: 1200,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.inOut',
+      });
+      this.npcSprites.set(npc.id, npcSprite);
     });
 
+    // Spawn Portal
+    const portalCfg = this.levelConfig.portal;
     this.portal = this.add
-      .image(this.levelDef.portal.x, this.levelDef.portal.y, TEXTURE_KEYS.PORTAL)
+      .image(portalCfg.x, portalCfg.y, TEXTURE_KEYS.PORTAL)
       .setDepth(8)
       .setAlpha(0.28)
       .setScale(0.86);
+      
+    this.portal.setTint(this.levelConfig.themeColor);
     animations.pulsePortal(this.portal);
 
     this.physics.add.overlap(this.player, this.crystals, (_player, crystal) => {
@@ -245,6 +283,96 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
+  private createObjectivesList(): void {
+    new GlassPanel(this, 1120, 95, 280, 120, {
+      radius: 20,
+      fillAlpha: 0.54,
+      strokeAlpha: 0.25,
+      glowAlpha: 0.1
+    }).setDepth(900);
+
+    this.add.text(995, 48, "Objectives", {
+      fontFamily: FONT_FAMILY.display,
+      fontSize: '17px',
+      color: UI_HEX.gold,
+      fontStyle: '800'
+    }).setDepth(901);
+
+    this.objectiveTexts = [];
+    this.levelConfig.objectives.forEach((obj: any, index: number) => {
+      const textObj = this.add.text(995, 80 + index * 26, `- ${obj.description}`, {
+        fontFamily: FONT_FAMILY.body,
+        fontSize: '14px',
+        color: UI_HEX.cream
+      }).setDepth(901);
+      
+      this.objectiveTexts.push({
+        id: obj.id,
+        textObject: textObj,
+        desc: obj.description
+      });
+    });
+
+    this.updateObjectivesDisplay();
+  }
+
+  private updateObjectivesDisplay(): void {
+    this.objectiveTexts.forEach(item => {
+      const isDone = this.objectivesProgress[item.id] === true;
+      if (isDone) {
+        item.textObject.setText(`✓ ${item.desc}`).setColor('#10b981');
+      } else {
+        if (item.id === 'collect_crystals') {
+          item.textObject.setText(`- ${item.desc} (${this.collected}/${this.totalCrystals})`).setColor(UI_HEX.cream);
+        } else {
+          item.textObject.setText(`- ${item.desc}`).setColor(UI_HEX.cream);
+        }
+      }
+    });
+  }
+
+  private completeObjective(id: string): void {
+    if (this.objectivesProgress[id] === true) return;
+
+    this.objectivesProgress[id] = true;
+    this.audioManager.playTone(880, 180, 0.08); // complete sound
+    this.updateObjectivesDisplay();
+
+    this.checkAllObjectivesCompleted();
+  }
+
+  private checkAllObjectivesCompleted(): void {
+    const allDone = this.levelConfig.objectives.every((obj: any) => this.objectivesProgress[obj.id] === true);
+    if (allDone && !this.portalReady) {
+      this.openPortal();
+    }
+  }
+
+  private startMiniGame(): void {
+    this.player.setVelocity(0, 0);
+    if (this.input.keyboard) {
+      this.input.keyboard.resetKeys();
+    }
+
+    this.gamePausedForMinigame = true;
+
+    new MiniGamePanel(
+      this,
+      640,
+      360,
+      this.levelConfig.minigame,
+      () => {
+        // Match win callback
+        this.gamePausedForMinigame = false;
+        this.completeObjective('play_minigame');
+      },
+      () => {
+        // Cancel/close callback
+        this.gamePausedForMinigame = false;
+      }
+    );
+  }
+
   private collectCrystal(crystal: Phaser.Physics.Arcade.Image): void {
     if (!crystal.active) {
       return;
@@ -254,10 +382,12 @@ export class GameScene extends Phaser.Scene {
     this.collected += 1;
     this.audioManager.playTone(660 + this.collected * 42, 130, 0.08);
     this.particles.burst(crystal.x, crystal.y);
+    
     this.updateHud();
+    this.updateObjectivesDisplay();
 
     if (this.collected >= this.totalCrystals) {
-      this.openPortal();
+      this.completeObjective('collect_crystals');
     }
   }
 
@@ -280,8 +410,24 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    if (Phaser.Math.Distance.BetweenPoints(this.player, this.firefly) < 92) {
-      this.dialogue.start(this.portalReady ? 'portalReminder' : 'fireflyHint');
+    // Check if near any NPC
+    let nearNpc: any = null;
+    this.levelConfig.npcs.forEach((npc: any) => {
+      const sprite = this.npcSprites.get(npc.id);
+      if (sprite && Phaser.Math.Distance.BetweenPoints(this.player, sprite) < npc.interactiveRange) {
+        nearNpc = npc;
+      }
+    });
+
+    if (nearNpc) {
+      const hasMinigame = this.levelConfig.minigame && this.levelConfig.minigame.triggerNpc === nearNpc.id;
+      const isMinigameDone = this.objectivesProgress['play_minigame'] === true;
+
+      if (hasMinigame && !isMinigameDone) {
+        this.startMiniGame();
+      } else {
+        this.dialogue.start(this.portalReady ? 'portalReminder' : nearNpc.dialogueNode);
+      }
       return;
     }
 
@@ -311,7 +457,6 @@ export class GameScene extends Phaser.Scene {
         ease: 'Power2',
       });
     } else {
-      // Procedural fallback glow
       const tint = background === 'portalBloom' ? UI_COLORS.pink : UI_COLORS.gold;
       const bloom = this.add.circle(640, 360, 520, tint, 0).setDepth(3).setBlendMode(Phaser.BlendModes.ADD);
       this.tweens.add({
@@ -362,39 +507,40 @@ export class GameScene extends Phaser.Scene {
     const elapsedMs = this.time.now - this.startTime;
     const save = this.saveManager.load();
 
-    // Determine if we unlocked a new level
-    const currentLevelIndex = LEVELS.findIndex(l => l.id === this.levelDef.id);
-    const nextLevel = LEVELS[currentLevelIndex + 1];
+    const levelsList = this.cache.json.get('levels-manifest') as Array<{ id: string }>;
+    const currentLevelIndex = levelsList.findIndex((l) => l.id === this.levelId);
+    const nextLevel = levelsList[currentLevelIndex + 1];
 
-    const isAlreadyCompleted = save.completedLevels.includes(this.levelDef.id);
-    const completedLevels = isAlreadyCompleted ? save.completedLevels : [...save.completedLevels, this.levelDef.id];
+    const isAlreadyCompleted = save.completedLevels.includes(this.levelId);
+    const completedLevels = isAlreadyCompleted ? save.completedLevels : [...save.completedLevels, this.levelId];
 
-    // Set newlyUnlockedLevelId if the next level exists and is not already unlocked/completed
     const newlyUnlocked = (nextLevel && !save.completedLevels.includes(nextLevel.id)) ? nextLevel.id : null;
 
-    // Track best times per level
     const levelBestTimes = save.levelBestTimes ?? {};
-    const previousBest = levelBestTimes[this.levelDef.id];
-    levelBestTimes[this.levelDef.id] = previousBest ? Math.min(previousBest, elapsedMs) : elapsedMs;
+    const previousBest = levelBestTimes[this.levelId];
+    levelBestTimes[this.levelId] = previousBest ? Math.min(previousBest, elapsedMs) : elapsedMs;
 
-    // Check if final level completed
-    const hasCompletedAdventure = save.hasCompletedAdventure || (this.levelDef.id === 'castle');
+    const hasCompletedAdventure = save.hasCompletedAdventure || (this.levelId === 'castle');
 
     this.saveManager.save({
-      crystals: this.totalCrystals,
+      crystals: this.collected,
       bestTimeMs: save.bestTimeMs === null ? elapsedMs : Math.min(save.bestTimeMs, elapsedMs),
       hasCompletedAdventure,
       completedLevels,
       newlyUnlockedLevelId: newlyUnlocked,
       levelBestTimes,
-      activeLevelId: nextLevel ? nextLevel.id : this.levelDef.id,
+      activeLevelId: nextLevel ? nextLevel.id : this.levelId,
       dialogueProgress: undefined,
     });
 
     this.audioManager.stopMusic(1000);
-
     this.audioManager.playTone(988, 420, 0.1);
     this.particles.burst(this.portal.x, this.portal.y);
+
+    if (this.keys) {
+      this.keys.SPACE.removeAllListeners();
+    }
+
     const completionPanel = new GlassPanel(this, 640, 358, 610, 220, {
       radius: 34,
       fillAlpha: 0.72,
@@ -419,7 +565,7 @@ export class GameScene extends Phaser.Scene {
       .setAlpha(0)
       .setScale(0.86);
     const subtitle = this.add
-      .text(640, 388, `You have completed the ${this.levelDef.name}!`, {
+      .text(640, 388, `You have completed the ${this.levelConfig.name}!`, {
         fontFamily: FONT_FAMILY.body,
         fontSize: '22px',
         color: UI_HEX.gold,

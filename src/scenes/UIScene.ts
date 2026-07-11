@@ -18,7 +18,7 @@ export class UIScene extends Phaser.Scene {
   public create(): void {
     this.hud = new Hud(this);
     this.events.on('hud:update', (event: HudUpdateEvent) => {
-      this.hud.setCrystals(event.crystals, event.total);
+      this.hud.setCrystals(event.crystals, event.total, this);
       this.hud.setElapsed(event.elapsedMs);
     });
   }

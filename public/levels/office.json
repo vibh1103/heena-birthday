@@ -1,0 +1,53 @@
+{
+  "id": "office",
+  "name": "Cozy Office",
+  "musicKey": "officeTheme",
+  "themeColor": 4251856,
+  "storyFile": "stories/level_office.json",
+  "playerStart": { "x": 200, "y": 580 },
+  "ambientParticleColor": ["0x40e0d0", "0x00ffff", "0xffffff"],
+  "objectives": [
+    {
+      "id": "collect_crystals",
+      "type": "collect",
+      "target": 6,
+      "description": "Gather 6 office-bug crystals"
+    },
+    {
+      "id": "play_minigame",
+      "type": "minigame",
+      "target": 1,
+      "description": "Solve typing challenge"
+    }
+  ],
+  "collectibles": [
+    { "x": 280, "y": 220 },
+    { "x": 480, "y": 460 },
+    { "x": 620, "y": 180 },
+    { "x": 800, "y": 500 },
+    { "x": 960, "y": 320 },
+    { "x": 1120, "y": 520 }
+  ],
+  "npcs": [
+    {
+      "id": "firefly",
+      "name": "Coding Firefly",
+      "x": 700,
+      "y": 300,
+      "texture": "moon-firefly",
+      "interactiveRange": 92,
+      "dialogueNode": "fireflyHint"
+    }
+  ],
+  "minigame": {
+    "type": "typing_test",
+    "triggerNpc": "firefly",
+    "prompt": "Type this birthday phrase:",
+    "text": "npm run birthday-wishes"
+  },
+  "portal": {
+    "x": 1080,
+    "y": 160,
+    "texture": "wish-portal"
+  }
+}

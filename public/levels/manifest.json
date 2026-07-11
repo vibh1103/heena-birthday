@@ -1,0 +1,72 @@
+[
+  {
+    "id": "home",
+    "name": "Cozy Home",
+    "description": "Wander around Heena's cozy room, collect birthday wishes, and start the magical journey.",
+    "mapX": 250,
+    "mapY": 900,
+    "themeColor": 16761082,
+    "textColor": "#ffa07a",
+    "levelFile": "levels/home.json"
+  },
+  {
+    "id": "friends",
+    "name": "Friends World",
+    "description": "A floating sky realm made of shared laughter, warm wishes, and friendship trees.",
+    "mapX": 580,
+    "mapY": 760,
+    "themeColor": 16738484,
+    "textColor": "#ff69b4",
+    "levelFile": "levels/friends.json"
+  },
+  {
+    "id": "office",
+    "name": "Cozy Office",
+    "description": "Solve coffee-break puzzles, collect coding bugs, and gather wishes in the hybrid office space.",
+    "mapX": 880,
+    "mapY": 860,
+    "themeColor": 4251856,
+    "textColor": "#40e0d0",
+    "levelFile": "levels/office.json"
+  },
+  {
+    "id": "wizard",
+    "name": "Wizard School",
+    "description": "Enter the glowing libraries of the arcane academy. Watch out for flying spellbooks!",
+    "mapX": 980,
+    "mapY": 500,
+    "themeColor": 9662683,
+    "textColor": "#9370db",
+    "levelFile": "levels/wizard.json"
+  },
+  {
+    "id": "dungeon",
+    "name": "Developer Dungeon",
+    "description": "A neon cyberpunk terminal. Compile wishes and debug birthday code loops.",
+    "mapX": 1360,
+    "mapY": 620,
+    "themeColor": 65407,
+    "textColor": "#00ff7f",
+    "levelFile": "levels/dungeon.json"
+  },
+  {
+    "id": "garden",
+    "name": "Memory Garden",
+    "description": "Stroll through bioluminescent flowers that bloom with cherishable memories of the past year.",
+    "mapX": 1580,
+    "mapY": 340,
+    "themeColor": 16766720,
+    "textColor": "#ffd700",
+    "levelFile": "levels/garden.json"
+  },
+  {
+    "id": "castle",
+    "name": "Birthday Castle",
+    "description": "The final destination! Enter the grand ballroom, blow out the candles, and let the wishes come true.",
+    "mapX": 1820,
+    "mapY": 200,
+    "themeColor": 16716947,
+    "textColor": "#ff1493",
+    "levelFile": "levels/castle.json"
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "id": "friends",
+  "name": "Friends World",
+  "musicKey": "friendsTheme",
+  "themeColor": 16738484,
+  "storyFile": "stories/level_friends.json",
+  "playerStart": { "x": 160, "y": 540 },
+  "ambientParticleColor": ["0xff69b4", "0xffb6c1", "0xffffff"],
+  "objectives": [
+    {
+      "id": "collect_crystals",
+      "type": "collect",
+      "target": 6,
+      "description": "Gather 6 friendship crystals"
+    },
+    {
+      "id": "play_minigame",
+      "type": "minigame",
+      "target": 1,
+      "description": "Unlock Friendship Memory Test"
+    }
+  ],
+  "collectibles": [
+    { "x": 300, "y": 180 },
+    { "x": 400, "y": 480 },
+    { "x": 650, "y": 160 },
+    { "x": 780, "y": 520 },
+    { "x": 920, "y": 260 },
+    { "x": 1050, "y": 450 }
+  ],
+  "npcs": [
+    {
+      "id": "firefly",
+      "name": "Friendship Firefly",
+      "x": 600,
+      "y": 380,
+      "texture": "moon-firefly",
+      "interactiveRange": 92,
+      "dialogueNode": "fireflyHint"
+    }
+  ],
+  "minigame": {
+    "type": "memory_match",
+    "triggerNpc": "firefly",
+    "prompt": "Find the matching inside jokes!",
+    "pairs": ["❤️", "⭐", "🎉"]
+  },
+  "portal": {
+    "x": 1100,
+    "y": 200,
+    "texture": "wish-portal"
+  }
+}

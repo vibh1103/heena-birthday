@@ -1,0 +1,55 @@
+{
+  "id": "castle",
+  "name": "Birthday Castle",
+  "musicKey": "castleTheme",
+  "themeColor": 16716947,
+  "storyFile": "stories/level_castle.json",
+  "playerStart": { "x": 150, "y": 520 },
+  "ambientParticleColor": ["0xff1493", "0xff00ff", "0xffffff"],
+  "objectives": [
+    {
+      "id": "collect_crystals",
+      "type": "collect",
+      "target": 6,
+      "description": "Gather 6 final wish crystals"
+    },
+    {
+      "id": "play_minigame",
+      "type": "minigame",
+      "target": 1,
+      "description": "Conquer Birthday Logic Puzzle"
+    }
+  ],
+  "collectibles": [
+    { "x": 250, "y": 180 },
+    { "x": 430, "y": 500 },
+    { "x": 620, "y": 160 },
+    { "x": 800, "y": 460 },
+    { "x": 980, "y": 260 },
+    { "x": 1100, "y": 550 }
+  ],
+  "npcs": [
+    {
+      "id": "firefly",
+      "name": "Wish Firefly",
+      "x": 640,
+      "y": 330,
+      "texture": "moon-firefly",
+      "interactiveRange": 92,
+      "dialogueNode": "fireflyHint"
+    }
+  ],
+  "minigame": {
+    "type": "math_quiz",
+    "triggerNpc": "firefly",
+    "question": "If X + 1990 = 2026, what is the Magic Value of X?",
+    "options": ["34", "36", "38"],
+    "answerIndex": 1,
+    "prompt": "The Ultimate Castle Riddle!"
+  },
+  "portal": {
+    "x": 1130,
+    "y": 150,
+    "texture": "wish-portal"
+  }
+}

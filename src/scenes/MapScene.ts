@@ -5,9 +5,18 @@ import { MagicButton } from '../components/MagicButton';
 import { SaveGameManager } from '../systems/SaveGameManager';
 import { SCENE_KEYS } from '../utils/constants';
 import { FONT_FAMILY, UI_HEX } from '../utils/uiTheme';
-import { LEVELS, LevelDefinition } from '../levels/levelDefinitions';
 import { TEXTURE_KEYS } from '../assets/assetManifest';
-import { DialogueStoryDefinition } from '../systems/DialogueSystem';
+
+export interface LevelConfig {
+  id: string;
+  name: string;
+  description: string;
+  mapX: number;
+  mapY: number;
+  themeColor: number;
+  textColor: string;
+  levelFile: string;
+}
 
 export class MapScene extends Phaser.Scene {
   private audioManager!: AudioManager;
@@ -36,6 +45,7 @@ export class MapScene extends Phaser.Scene {
   private infoStatus!: Phaser.GameObjects.Text;
 
   // State
+  private levels: LevelConfig[] = [];
   private completedLevels: string[] = [];
   private newlyUnlockedLevelId: string | null = null;
   private levelNodes: Map<string, Phaser.GameObjects.Container> = new Map();
@@ -50,6 +60,7 @@ export class MapScene extends Phaser.Scene {
     const save = this.saveManager.load();
     this.completedLevels = save.completedLevels;
     this.newlyUnlockedLevelId = save.newlyUnlockedLevelId ?? null;
+    this.levels = this.cache.json.get('levels-manifest') as LevelConfig[];
 
     // Fade in camera
     this.cameras.main.fadeIn(600, 5, 3, 10);
@@ -102,7 +113,7 @@ export class MapScene extends Phaser.Scene {
       this.time.delayedCall(800, () => this.runUnlockSequence());
     } else {
       // Focus camera on the active level (last completed + 1, or home)
-      const nextLevel = LEVELS.find(l => !this.completedLevels.includes(l.id)) ?? LEVELS[LEVELS.length - 1];
+      const nextLevel = this.levels.find(l => !this.completedLevels.includes(l.id)) ?? this.levels[this.levels.length - 1];
       if (nextLevel) {
         this.centerCameraOn(nextLevel.mapX, nextLevel.mapY, 0);
       }
@@ -310,7 +321,7 @@ export class MapScene extends Phaser.Scene {
 
   private createIslands(): void {
     // Draw beautiful, glowing islands for each level
-    LEVELS.forEach(level => {
+    this.levels.forEach(level => {
       // Create island graphics
       const islandGraphics = this.add.graphics();
       islandGraphics.fillStyle(0x0e072b, 0.7); // Deep dark purple base
@@ -351,9 +362,9 @@ export class MapScene extends Phaser.Scene {
     this.pathsGraphics.clear();
     this.activePathGraphics.clear();
 
-    for (let i = 0; i < LEVELS.length - 1; i++) {
-      const fromL = LEVELS[i];
-      const toL = LEVELS[i + 1];
+    for (let i = 0; i < this.levels.length - 1; i++) {
+      const fromL = this.levels[i];
+      const toL = this.levels[i + 1];
       if (!fromL || !toL) continue;
 
       // Dotted curve connecting level nodes
@@ -423,7 +434,7 @@ export class MapScene extends Phaser.Scene {
     }
   }
 
-  private getCurveBetween(fromL: LevelDefinition, toL: LevelDefinition): Phaser.Curves.QuadraticBezier {
+  private getCurveBetween(fromL: LevelConfig, toL: LevelConfig): Phaser.Curves.QuadraticBezier {
     const p1 = new Phaser.Math.Vector2(fromL.mapX, fromL.mapY);
     const p2 = new Phaser.Math.Vector2(toL.mapX, toL.mapY);
     const mid = new Phaser.Math.Vector2((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
@@ -437,7 +448,7 @@ export class MapScene extends Phaser.Scene {
   }
 
   private createLevelNodes(): void {
-    LEVELS.forEach((level, index) => {
+    this.levels.forEach((level, index) => {
       const container = this.add.container(level.mapX, level.mapY);
       this.mapLayer.add(container);
       this.levelNodes.set(level.id, container);
@@ -445,7 +456,7 @@ export class MapScene extends Phaser.Scene {
       // Determine level state
       const isCompleted = this.completedLevels.includes(level.id);
       
-      const prevL = index > 0 ? LEVELS[index - 1] : undefined;
+      const prevL = index > 0 ? this.levels[index - 1] : undefined;
       const isUnlocked = index === 0 || (prevL !== undefined && this.completedLevels.includes(prevL.id));
 
       // 1. Draw glowing background/rings
@@ -554,7 +565,7 @@ export class MapScene extends Phaser.Scene {
     });
   }
 
-  private hoverLevelNode(level: LevelDefinition, container: Phaser.GameObjects.Container): void {
+  private hoverLevelNode(level: LevelConfig, container: Phaser.GameObjects.Container): void {
     if (this.newlyUnlockedLevelId) return;
 
     // Hover scale up
@@ -566,7 +577,7 @@ export class MapScene extends Phaser.Scene {
     });
 
     // Play hover chime
-    const index = LEVELS.indexOf(level);
+    const index = this.levels.indexOf(level);
     const hoverFrequencies = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88]; // Major scale!
     const freq = hoverFrequencies[index] ?? 261.63;
     this.audioManager.playTone(freq, 100, 0.07);
@@ -589,7 +600,7 @@ export class MapScene extends Phaser.Scene {
     this.hideInfoPanel();
   }
 
-  private clickLevelNode(level: LevelDefinition, container: Phaser.GameObjects.Container): void {
+  private clickLevelNode(level: LevelConfig, container: Phaser.GameObjects.Container): void {
     if (this.newlyUnlockedLevelId) return;
 
     this.isDragging = false;
@@ -632,32 +643,16 @@ export class MapScene extends Phaser.Scene {
         // Fade out
         this.cameras.main.fadeOut(500, 5, 3, 10);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-          this.loadStory(level.storyFile, (loadedStory) => {
-            // Restore input for next scene
-            this.input.enabled = true;
-            // Go to game
-            this.scene.start(SCENE_KEYS.GAME, { story: loadedStory, levelId: level.id });
-          });
+          // Restore input for next scene
+          this.input.enabled = true;
+          // Go to game
+          this.scene.start(SCENE_KEYS.GAME, { levelId: level.id });
         });
       }
     });
   }
 
-  private loadStory(file: string, onComplete: (story: DialogueStoryDefinition) => void): void {
-    const key = `story-${file}`;
-    if (this.cache.json.exists(key)) {
-      onComplete(this.cache.json.get(key));
-      return;
-    }
-
-    this.load.json(key, file);
-    this.load.once(`filecomplete-json-${key}`, () => {
-      onComplete(this.cache.json.get(key));
-    });
-    this.load.start();
-  }
-
-  private showInfoPanel(level: LevelDefinition): void {
+  private showInfoPanel(level: LevelConfig): void {
     const isCompleted = this.completedLevels.includes(level.id);
     const save = this.saveManager.load();
     const bestTime = save.levelBestTimes?.[level.id];
@@ -774,7 +769,7 @@ export class MapScene extends Phaser.Scene {
   // Golden path unlock sequence
   private runUnlockSequence(): void {
     const nextLevelId = this.newlyUnlockedLevelId!;
-    const nextLevelIndex = LEVELS.findIndex(l => l.id === nextLevelId);
+    const nextLevelIndex = this.levels.findIndex(l => l.id === nextLevelId);
     
     // Safety check
     if (nextLevelIndex <= 0) {
@@ -782,8 +777,8 @@ export class MapScene extends Phaser.Scene {
       return;
     }
 
-    const prevLevel = nextLevelIndex > 0 ? LEVELS[nextLevelIndex - 1] : undefined;
-    const nextLevel = LEVELS[nextLevelIndex];
+    const prevLevel = nextLevelIndex > 0 ? this.levels[nextLevelIndex - 1] : undefined;
+    const nextLevel = this.levels[nextLevelIndex];
     if (!prevLevel || !nextLevel) {
       this.newlyUnlockedLevelId = null;
       return;
