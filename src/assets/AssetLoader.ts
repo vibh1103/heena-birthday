@@ -22,6 +22,13 @@ export class AssetLoader {
     this.createTeddy(scene);
     this.createKey(scene);
     this.createDoor(scene);
+
+    // Custom Level 2 Cafe Ingredients
+    this.createMilk(scene);
+    this.createChocolate(scene);
+    this.createEggs(scene);
+    this.createFlour(scene);
+    this.createSugar(scene);
   }
 
   private static createPlayer(scene: Phaser.Scene): void {
@@ -266,6 +273,83 @@ export class AssetLoader {
     graphics.fillStyle(0xfacc15, 1);
     graphics.fillCircle(12, 48, 4.5);
     graphics.generateTexture(TEXTURE_KEYS.DOOR, 64, 96);
+    graphics.destroy();
+  }
+
+  private static createMilk(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.MILK)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0xf8fafc, 1);
+    graphics.fillRect(14, 16, 20, 26);
+    graphics.fillTriangle(14, 16, 24, 8, 34, 16);
+    graphics.fillStyle(0x38bdf8, 1);
+    graphics.fillRect(14, 24, 20, 8);
+    graphics.fillStyle(0x0284c7, 1);
+    graphics.fillCircle(24, 28, 3);
+    graphics.generateTexture(TEXTURE_KEYS.MILK, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createChocolate(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.CHOCOLATE)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x7c2d12, 1);
+    graphics.fillRect(12, 12, 24, 26);
+    graphics.lineStyle(1.5, 0x451a03, 1);
+    graphics.strokeRect(12, 12, 24, 26);
+    graphics.lineBetween(20, 12, 20, 38);
+    graphics.lineBetween(28, 12, 28, 38);
+    graphics.lineBetween(12, 20, 36, 20);
+    graphics.lineBetween(12, 30, 36, 30);
+    graphics.fillStyle(0xdc2626, 1);
+    graphics.fillRect(12, 24, 24, 16);
+    graphics.fillStyle(0xe2e8f0, 1);
+    graphics.fillRect(12, 22, 24, 2);
+    graphics.generateTexture(TEXTURE_KEYS.CHOCOLATE, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createEggs(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.EGGS)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x78350f, 1);
+    graphics.fillRoundedRect(10, 26, 28, 14, 4);
+    graphics.fillStyle(0xf8fafc, 1);
+    graphics.fillEllipse(17, 20, 6, 9);
+    graphics.fillEllipse(24, 18, 6, 9);
+    graphics.fillEllipse(31, 20, 6, 9);
+    graphics.generateTexture(TEXTURE_KEYS.EGGS, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createFlour(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.FLOUR)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0xe2e8f0, 1);
+    graphics.fillRoundedRect(12, 14, 24, 28, 6);
+    graphics.fillStyle(0xcbd5e1, 1);
+    graphics.fillTriangle(12, 14, 24, 8, 36, 14);
+    graphics.fillStyle(0xb45309, 1);
+    graphics.fillRect(16, 14, 16, 2);
+    graphics.fillStyle(0xd97706, 1);
+    graphics.fillTriangle(24, 24, 21, 30, 27, 30);
+    graphics.fillTriangle(24, 30, 21, 24, 27, 24);
+    graphics.generateTexture(TEXTURE_KEYS.FLOUR, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createSugar(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.SUGAR)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.lineStyle(2, 0x38bdf8, 1);
+    graphics.fillStyle(0xffffff, 0.9);
+    graphics.fillRoundedRect(10, 18, 28, 22, 4);
+    graphics.strokeRoundedRect(10, 18, 28, 22, 4);
+    graphics.lineBetween(10, 18, 38, 18);
+    graphics.fillStyle(0x38bdf8, 1);
+    graphics.fillCircle(24, 11, 3);
+    graphics.strokeEllipse(24, 15, 12, 4);
+    graphics.generateTexture(TEXTURE_KEYS.SUGAR, 48, 48);
     graphics.destroy();
   }
 }

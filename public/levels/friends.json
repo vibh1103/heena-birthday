@@ -1,53 +1,59 @@
 {
   "id": "friends",
-  "name": "Friends World",
+  "name": "90s Cozy Cafe",
   "musicKey": "friendsTheme",
-  "themeColor": 16738484,
+  "themeColor": 14251782,
   "storyFile": "stories/level_friends.json",
   "playerStart": { "x": 160, "y": 540 },
-  "ambientParticleColor": ["0xff69b4", "0xffb6c1", "0xffffff"],
+  "ambientParticleColor": ["0xfacc15", "0xf59e0b", "0xffffff"],
   "objectives": [
     {
       "id": "collect_crystals",
       "type": "collect",
-      "target": 6,
-      "description": "Gather 6 friendship crystals"
+      "target": 5,
+      "description": "Gather all 5 hidden ingredients"
     },
     {
       "id": "play_minigame",
       "type": "minigame",
       "target": 1,
-      "description": "Unlock Friendship Memory Test"
+      "description": "Bake Birthday Cookies!"
     }
   ],
   "collectibles": [
-    { "x": 300, "y": 180 },
-    { "x": 400, "y": 480 },
-    { "x": 650, "y": 160 },
-    { "x": 780, "y": 520 },
-    { "x": 920, "y": 260 },
-    { "x": 1050, "y": 450 }
+    { "x": 250, "y": 180, "texture": "milk-carton", "name": "Milk" },
+    { "x": 400, "y": 480, "texture": "chocolate-bar", "name": "Chocolate" },
+    { "x": 650, "y": 160, "texture": "egg-basket", "name": "Eggs" },
+    { "x": 850, "y": 520, "texture": "flour-bag", "name": "Flour" },
+    { "x": 1020, "y": 260, "texture": "sugar-bowl", "name": "Sugar" }
   ],
   "npcs": [
     {
       "id": "firefly",
-      "name": "Friendship Firefly",
+      "name": "Cafe Firefly",
       "x": 600,
-      "y": 380,
+      "y": 360,
       "texture": "moon-firefly",
       "interactiveRange": 92,
       "dialogueNode": "fireflyHint"
     }
   ],
   "minigame": {
-    "type": "memory_match",
+    "type": "math_quiz",
     "triggerNpc": "firefly",
-    "prompt": "Find the matching inside jokes!",
-    "pairs": ["❤️", "⭐", "🎉"]
+    "question": "To bake the ultimate Birthday Cookies, how should we cook them?",
+    "options": [
+      "Bake at 350°F with Love and Emojis",
+      "Microwave on High for 20 Minutes",
+      "Could this BE any more raw? (Leave in sun)"
+    ],
+    "answerIndex": 0,
+    "prompt": "Bake Birthday Cookies!"
   },
   "portal": {
     "x": 1100,
     "y": 200,
-    "texture": "wish-portal"
+    "texture": "wish-portal",
+    "exitType": "portal"
   }
 }

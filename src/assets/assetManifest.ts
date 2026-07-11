@@ -15,6 +15,11 @@ export const TEXTURE_KEYS = {
   TEDDY: 'baby-teddy',
   KEY: 'birthday-key',
   DOOR: 'cozy-door',
+  MILK: 'milk-carton',
+  CHOCOLATE: 'chocolate-bar',
+  EGGS: 'egg-basket',
+  FLOUR: 'flour-bag',
+  SUGAR: 'sugar-bowl',
 } as const;
 
 export const AUDIO_KEYS = {

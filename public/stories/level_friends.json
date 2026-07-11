@@ -1,6 +1,6 @@
 {
   "id": "level-friends",
-  "title": "Friends World",
+  "title": "90s Cozy Cafe",
   "start": "intro",
   "characters": {
     "heena": {
@@ -13,7 +13,7 @@
       }
     },
     "firefly": {
-      "name": "Friendship Firefly",
+      "name": "Cafe Firefly",
       "typingTone": 760,
       "portraits": {
         "neutral": "portrait-firefly-neutral",
@@ -30,17 +30,17 @@
         {
           "character": "firefly",
           "emotion": "happy",
-          "text": "Heena, you've reached the Friends World! A world woven from laughter, inside jokes, and sweet wishes."
+          "text": "How YOU doin', Heena? Welcome to the ultimate 90s Central Cafe! Could this place BE any more cozy?"
         },
         {
           "character": "heena",
           "emotion": "curious",
-          "text": "It feels so warm and welcoming here. I can almost hear everyone laughing!"
+          "text": "Oh wow, it looks like a sitcom set! I see the big orange sofa, a coffee mug, and... a guitar?"
         },
         {
           "character": "firefly",
           "emotion": "excited",
-          "text": "Collect 6 friendship crystals near the pink laughter trees. They represent all the wonderful people who adore you!"
+          "text": "Exactly! But we have a cookie crisis. Find the 5 hidden baking ingredients (Milk, Chocolate, Eggs, Flour, and Sugar) so we can bake birthday cookies!"
         }
       ]
     },
@@ -51,7 +51,7 @@
         {
           "character": "firefly",
           "emotion": "neutral",
-          "text": "Crystals are hiding where friends gather. Look near the glowing pink pathways!"
+          "text": "Search behind the cabinets! And remember... they don't know that we know they know we know!"
         }
       ]
     },
@@ -62,7 +62,7 @@
         {
           "character": "firefly",
           "emotion": "excited",
-          "text": "Fantastic! The portal to the Cozy Office has opened. Step through when you are ready!"
+          "text": "Oh my god! Could these cookies BE any more delicious? The portal to the Cozy Office is open. Pivot, Heena, pivot!"
         }
       ]
     },
@@ -73,7 +73,7 @@
         {
           "character": "firefly",
           "emotion": "happy",
-          "text": "The portal is ready to carry you to the office of wishes!"
+          "text": "Pivot! Step into the portal when you're ready to head over to the Cozy Office."
         }
       ]
     }

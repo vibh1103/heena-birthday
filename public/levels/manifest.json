@@ -11,12 +11,12 @@
   },
   {
     "id": "friends",
-    "name": "Friends World",
-    "description": "A floating sky realm made of shared laughter, warm wishes, and friendship trees.",
+    "name": "90s Cozy Cafe",
+    "description": "Step inside a cozy cafe inspired by classic sitcoms. Gather ingredients to bake birthday cookies!",
     "mapX": 580,
     "mapY": 760,
-    "themeColor": 16738484,
-    "textColor": "#ff69b4",
+    "themeColor": 14251782,
+    "textColor": "#f59e0b",
     "levelFile": "levels/friends.json"
   },
   {
