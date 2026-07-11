@@ -1,0 +1,14 @@
+[
+  {
+    "id": "birthday-adventure-main",
+    "title": "Heena's Birthday Adventure",
+    "description": "Wander the magical moonlit garden and collect 6 crystals to open the wish portal.",
+    "file": "stories/birthdayAdventure.json"
+  },
+  {
+    "id": "whispering-woods-quest",
+    "title": "The Whispering Woods",
+    "description": "Enter the deep bioluminescent forest and discover the secrets hidden inside the magical glowing mushrooms.",
+    "file": "stories/whisperingWoods.json"
+  }
+]

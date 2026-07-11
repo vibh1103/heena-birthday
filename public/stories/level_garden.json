@@ -1,0 +1,81 @@
+{
+  "id": "level-garden",
+  "title": "Memory Garden",
+  "start": "intro",
+  "characters": {
+    "heena": {
+      "name": "Heena",
+      "typingTone": 620,
+      "portraits": {
+        "happy": "portrait-heena-happy",
+        "curious": "portrait-heena-curious",
+        "neutral": "portrait-heena-happy"
+      }
+    },
+    "firefly": {
+      "name": "Memory Firefly",
+      "typingTone": 760,
+      "portraits": {
+        "neutral": "portrait-firefly-neutral",
+        "excited": "portrait-firefly-excited",
+        "happy": "portrait-firefly-excited"
+      }
+    }
+  },
+  "nodes": {
+    "intro": {
+      "id": "intro",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Heena, you are now standing in the Memory Garden. The flowers here bloom only with the best memories of the past year."
+        },
+        {
+          "character": "heena",
+          "emotion": "happy",
+          "text": "It is so quiet and beautiful... I feel so peaceful here."
+        },
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "Collect 6 golden memory crystals scattered under the bioluminescent trees. They will open the gate to the Birthday Castle!"
+        }
+      ]
+    },
+    "fireflyHint": {
+      "id": "fireflyHint",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Memory crystals glow softly near quiet water pools and under the tree canopies."
+        }
+      ]
+    },
+    "portalReady": {
+      "id": "portalReady",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "Amazing! All memories have been gathered. The portal to the grand Birthday Castle is open!"
+        }
+      ]
+    },
+    "portalReminder": {
+      "id": "portalReminder",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "The portal is ready to take you to the final Birthday Castle!"
+        }
+      ]
+    }
+  }
+}

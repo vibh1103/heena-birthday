@@ -1,0 +1,174 @@
+{
+  "id": "whispering-woods-quest",
+  "title": "The Whispering Woods",
+  "start": "intro",
+  "assets": {
+    "portraits": {
+      "portrait-heena-happy": "stories/assets/heena_portrait_happy.jpg",
+      "portrait-heena-curious": "stories/assets/heena_portrait_curious.jpg",
+      "portrait-firefly-neutral": "stories/assets/firefly_portrait.jpg",
+      "portrait-firefly-excited": "stories/assets/firefly_portrait.jpg"
+    },
+    "backgrounds": {
+      "whisperingWoodsBg": "stories/assets/bg_magical_forest.jpg"
+    }
+  },
+  "characters": {
+    "heena": {
+      "name": "Heena",
+      "typingTone": 680,
+      "portraits": {
+        "happy": "portrait-heena-happy",
+        "curious": "portrait-heena-curious",
+        "neutral": "portrait-heena-happy"
+      }
+    },
+    "firefly": {
+      "name": "Forest Sprite",
+      "typingTone": 840,
+      "portraits": {
+        "neutral": "portrait-firefly-neutral",
+        "excited": "portrait-firefly-excited",
+        "happy": "portrait-firefly-excited"
+      }
+    }
+  },
+  "nodes": {
+    "intro": {
+      "id": "intro",
+      "background": "whisperingWoodsBg",
+      "music": "forestMelody",
+      "autoSave": true,
+      "camera": {
+        "pan": { "x": 640, "y": 360, "durationMs": 800 },
+        "zoom": { "value": 1.05, "durationMs": 800 }
+      },
+      "events": [
+        { "type": "story_started", "payload": { "chapter": "whispering-woods" } }
+      ],
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Welcome to the Whispering Woods, Heena! The trees have been singing of your arrival."
+        },
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "The Whispering Woods? The mushrooms glow so brightly here, it's like a dream!"
+        },
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Indeed! A magical birthday waterfall lies just ahead, but the path is blocked by ancient magic. Which path will you choose to explore?",
+          "choices": [
+            {
+              "id": "waterfall",
+              "label": "Head to the Waterfall",
+              "next": "pathWaterfall",
+              "events": [{ "type": "selected_waterfall" }]
+            },
+            {
+              "id": "mushrooms",
+              "label": "Inspect the Glowing Mushrooms",
+              "next": "pathMushrooms",
+              "events": [{ "type": "selected_mushrooms" }]
+            }
+          ]
+        }
+      ]
+    },
+    "pathWaterfall": {
+      "id": "pathWaterfall",
+      "autoSave": true,
+      "camera": {
+        "shake": { "durationMs": 400, "intensity": 0.008 }
+      },
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Let's check the waterfall! Wait, did the ground just shake?"
+        },
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "Ah! The waterfall's guardian has woken up. We must gather the crystal keys to calm it!"
+        }
+      ],
+      "next": "woodsReady"
+    },
+    "pathMushrooms": {
+      "id": "pathMushrooms",
+      "autoSave": true,
+      "camera": {
+        "zoom": { "value": 1.15, "durationMs": 500 }
+      },
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "happy",
+          "text": "These giant glowing mushrooms look friendly. I wonder what they whisper..."
+        },
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "They whisper: 'Collect all six crystals to light up the ancient birthday portal!'"
+        }
+      ],
+      "next": "woodsReady"
+    },
+    "woodsReady": {
+      "id": "woodsReady",
+      "autoSave": true,
+      "camera": {
+        "pan": { "x": 640, "y": 360, "durationMs": 500 },
+        "zoom": { "value": 1, "durationMs": 500 }
+      },
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Go ahead, Heena. Let's find the crystals and wake the portal!"
+        }
+      ]
+    },
+    "fireflyHint": {
+      "id": "fireflyHint",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Check near the glowing waterfall on the left, and the bioluminescent tree trunks on the right."
+        }
+      ]
+    },
+    "portalReady": {
+      "id": "portalReady",
+      "background": "portalBloom",
+      "autoSave": true,
+      "camera": {
+        "shake": { "durationMs": 300, "intensity": 0.005 }
+      },
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "The portal has fully opened! Let's step inside to complete your forest adventure!"
+        }
+      ]
+    },
+    "portalReminder": {
+      "id": "portalReminder",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "The portal is waiting, Heena! Step into the light!"
+        }
+      ]
+    }
+  }
+}

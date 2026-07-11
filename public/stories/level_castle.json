@@ -1,0 +1,81 @@
+{
+  "id": "level-castle",
+  "title": "Birthday Castle",
+  "start": "intro",
+  "characters": {
+    "heena": {
+      "name": "Heena",
+      "typingTone": 620,
+      "portraits": {
+        "happy": "portrait-heena-happy",
+        "curious": "portrait-heena-curious",
+        "neutral": "portrait-heena-happy"
+      }
+    },
+    "firefly": {
+      "name": "Wish Firefly",
+      "typingTone": 760,
+      "portraits": {
+        "neutral": "portrait-firefly-neutral",
+        "excited": "portrait-firefly-excited",
+        "happy": "portrait-firefly-excited"
+      }
+    }
+  },
+  "nodes": {
+    "intro": {
+      "id": "intro",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Welcome to the grand Birthday Castle, Heena! The celebration has reached its peak!"
+        },
+        {
+          "character": "heena",
+          "emotion": "happy",
+          "text": "Look at the giant cake in the middle! It has glowing candles!"
+        },
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "Gather the 6 final wish crystals from around the ballroom, then step into the center of the wish portal to make your ultimate birthday wish!"
+        }
+      ]
+    },
+    "fireflyHint": {
+      "id": "fireflyHint",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "The crystals are shining brightly around the grand cake and the balloon structures."
+        }
+      ]
+    },
+    "portalReady": {
+      "id": "portalReady",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "The wish portal is fully charged and overflowing with magic. Step inside to blow out the candles and make your wish!"
+        }
+      ]
+    },
+    "portalReminder": {
+      "id": "portalReminder",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Step into the center to make your special birthday wish, Heena!"
+        }
+      ]
+    }
+  }
+}

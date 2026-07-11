@@ -1,0 +1,81 @@
+{
+  "id": "level-office",
+  "title": "Cozy Office",
+  "start": "intro",
+  "characters": {
+    "heena": {
+      "name": "Heena",
+      "typingTone": 620,
+      "portraits": {
+        "happy": "portrait-heena-happy",
+        "curious": "portrait-heena-curious",
+        "neutral": "portrait-heena-happy"
+      }
+    },
+    "firefly": {
+      "name": "Coding Firefly",
+      "typingTone": 760,
+      "portraits": {
+        "neutral": "portrait-firefly-neutral",
+        "excited": "portrait-firefly-excited",
+        "happy": "portrait-firefly-excited"
+      }
+    }
+  },
+  "nodes": {
+    "intro": {
+      "id": "intro",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Bzzzt! You've successfully logged into the Office. Don't worry, there are no Zoom meetings today."
+        },
+        {
+          "character": "heena",
+          "emotion": "happy",
+          "text": "Phew, that is a relief! But why does it smell like coffee and fresh paper?"
+        },
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "Because birthday wishes can be productive too! Gather 6 office-bug crystals so we can deploy to the Wizard School!"
+        }
+      ]
+    },
+    "fireflyHint": {
+      "id": "fireflyHint",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Look near the digital desks. Some crystals are floating near the virtual coffee machine."
+        }
+      ]
+    },
+    "portalReady": {
+      "id": "portalReady",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "Code compiled! The pipeline is green. Step into the portal to proceed to Wizard School!"
+        }
+      ]
+    },
+    "portalReminder": {
+      "id": "portalReminder",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "The magic deployment portal is active and waiting."
+        }
+      ]
+    }
+  }
+}

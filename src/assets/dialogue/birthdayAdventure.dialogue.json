@@ -1,0 +1,139 @@
+{
+  "id": "birthday-adventure-main",
+  "title": "Heena's Birthday Adventure",
+  "start": "intro",
+  "characters": {
+    "heena": {
+      "name": "Heena",
+      "typingTone": 620,
+      "portraits": {
+        "happy": "portrait-heena-happy",
+        "curious": "portrait-heena-curious",
+        "neutral": "portrait-heena-happy"
+      }
+    },
+    "firefly": {
+      "name": "Moon Firefly",
+      "typingTone": 760,
+      "portraits": {
+        "neutral": "portrait-firefly-neutral",
+        "excited": "portrait-firefly-excited",
+        "happy": "portrait-firefly-excited"
+      }
+    }
+  },
+  "nodes": {
+    "intro": {
+      "id": "intro",
+      "background": "moonGardenWarm",
+      "music": "moonGardenTheme",
+      "autoSave": true,
+      "camera": {
+        "pan": { "x": 640, "y": 360, "durationMs": 650 },
+        "zoom": { "value": 1, "durationMs": 650 }
+      },
+      "events": [
+        { "type": "story_started", "payload": { "chapter": "moon-garden" } }
+      ],
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Happy birthday, Heena. The moon garden has opened a secret path just for you."
+        },
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A secret path? It feels warm, sparkly, and a little mysterious."
+        },
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "Collect every glowing crystal. Each one carries a tiny birthday wish.",
+          "choices": [
+            {
+              "id": "ready",
+              "label": "I'm ready",
+              "next": "introReady",
+              "events": [{ "type": "choice_ready" }]
+            },
+            {
+              "id": "explain",
+              "label": "Tell me more",
+              "next": "introExplain"
+            }
+          ]
+        }
+      ]
+    },
+    "introExplain": {
+      "id": "introExplain",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "The crystals respond to kindness, courage, and curiosity. Bring six to the portal and the garden will sing."
+        }
+      ],
+      "next": "introReady"
+    },
+    "introReady": {
+      "id": "introReady",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Use the arrow keys or WASD to wander. Press Space near me whenever you want a clue."
+        }
+      ]
+    },
+    "fireflyHint": {
+      "id": "fireflyHint",
+      "autoSave": true,
+      "camera": {
+        "pan": { "x": 642, "y": 328, "durationMs": 420 },
+        "zoom": { "value": 1.08, "durationMs": 420 }
+      },
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Six crystals are hidden in the moon garden. Look near corners, paths, and pools of golden light."
+        }
+      ]
+    },
+    "portalReady": {
+      "id": "portalReady",
+      "background": "portalBloom",
+      "music": "portalTheme",
+      "autoSave": true,
+      "camera": {
+        "pan": { "x": 1110, "y": 156, "durationMs": 700 },
+        "zoom": { "value": 1.12, "durationMs": 700 }
+      },
+      "events": [
+        { "type": "portal_ready" }
+      ],
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "The wish portal is awake. Step into the glow and let the birthday magic bloom."
+        }
+      ]
+    },
+    "portalReminder": {
+      "id": "portalReminder",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "The portal is ready, Heena. Your birthday wish is waiting in the shimmer."
+        }
+      ]
+    }
+  }
+}

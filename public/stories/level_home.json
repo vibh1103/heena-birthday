@@ -1,0 +1,81 @@
+{
+  "id": "level-home",
+  "title": "Cozy Home",
+  "start": "intro",
+  "characters": {
+    "heena": {
+      "name": "Heena",
+      "typingTone": 620,
+      "portraits": {
+        "happy": "portrait-heena-happy",
+        "curious": "portrait-heena-curious",
+        "neutral": "portrait-heena-happy"
+      }
+    },
+    "firefly": {
+      "name": "Cozy Firefly",
+      "typingTone": 760,
+      "portraits": {
+        "neutral": "portrait-firefly-neutral",
+        "excited": "portrait-firefly-excited",
+        "happy": "portrait-firefly-excited"
+      }
+    }
+  },
+  "nodes": {
+    "intro": {
+      "id": "intro",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Happy Birthday, Heena! Welcome to the start of your adventure."
+        },
+        {
+          "character": "heena",
+          "emotion": "happy",
+          "text": "Wow, my room looks extra sparkly today! What's happening?"
+        },
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "A magical trail of memories has woken up. Gather the 6 cozy crystals in this room to open the portal to the outside worlds!"
+        }
+      ]
+    },
+    "fireflyHint": {
+      "id": "fireflyHint",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Check the corners of the room. Crystals love to float near warm, cozy spots."
+        }
+      ]
+    },
+    "portalReady": {
+      "id": "portalReady",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "Amazing! The cozy portal is humming with energy. Step inside to venture into the Friends World!"
+        }
+      ]
+    },
+    "portalReminder": {
+      "id": "portalReminder",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "The portal is ready to whisk you to your friends!"
+        }
+      ]
+    }
+  }
+}

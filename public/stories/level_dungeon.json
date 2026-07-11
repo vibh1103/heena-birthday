@@ -1,0 +1,81 @@
+{
+  "id": "level-dungeon",
+  "title": "Developer Dungeon",
+  "start": "intro",
+  "characters": {
+    "heena": {
+      "name": "Heena",
+      "typingTone": 620,
+      "portraits": {
+        "happy": "portrait-heena-happy",
+        "curious": "portrait-heena-curious",
+        "neutral": "portrait-heena-happy"
+      }
+    },
+    "firefly": {
+      "name": "Cyber Firefly",
+      "typingTone": 760,
+      "portraits": {
+        "neutral": "portrait-firefly-neutral",
+        "excited": "portrait-firefly-excited",
+        "happy": "portrait-firefly-excited"
+      }
+    }
+  },
+  "nodes": {
+    "intro": {
+      "id": "intro",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Bzzzt... Entering the Developer Dungeon. Watch your step, there are compiler errors everywhere!"
+        },
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Wow, this looks like a retro gaming terminal. What's the mission?"
+        },
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "We need to run npm run birthday! Gather 6 green binary crystals to solve the compilation errors and unlock the Memory Garden."
+        }
+      ]
+    },
+    "fireflyHint": {
+      "id": "fireflyHint",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Look around the green matrix pathways. Binary crystals love retro digital spaces."
+        }
+      ]
+    },
+    "portalReady": {
+      "id": "portalReady",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "Build succeeded! No warnings. The portal to the Memory Garden is open."
+        }
+      ]
+    },
+    "portalReminder": {
+      "id": "portalReminder",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "The portal is ready to take you to the Memory Garden."
+        }
+      ]
+    }
+  }
+}

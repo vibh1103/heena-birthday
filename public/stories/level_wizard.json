@@ -1,0 +1,81 @@
+{
+  "id": "level-wizard",
+  "title": "Wizard School",
+  "start": "intro",
+  "characters": {
+    "heena": {
+      "name": "Heena",
+      "typingTone": 620,
+      "portraits": {
+        "happy": "portrait-heena-happy",
+        "curious": "portrait-heena-curious",
+        "neutral": "portrait-heena-happy"
+      }
+    },
+    "firefly": {
+      "name": "Arcane Firefly",
+      "typingTone": 760,
+      "portraits": {
+        "neutral": "portrait-firefly-neutral",
+        "excited": "portrait-firefly-excited",
+        "happy": "portrait-firefly-excited"
+      }
+    }
+  },
+  "nodes": {
+    "intro": {
+      "id": "intro",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Welcome to the Wizard School, Heena! Here, magic isn't just coding—it's actual wizardry."
+        },
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Are these books floating? This is incredible!"
+        },
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "Indeed! Collect 6 glowing mana crystals. They represent your intelligence, creativity, and magic!"
+        }
+      ]
+    },
+    "fireflyHint": {
+      "id": "fireflyHint",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Look around the spell libraries and potion desks. The mana crystals shine with a purple glow!"
+        }
+      ]
+    },
+    "portalReady": {
+      "id": "portalReady",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "excited",
+          "text": "You have unlocked the portal to the Developer Dungeon. Time to see some high-tech wizardry!"
+        }
+      ]
+    },
+    "portalReminder": {
+      "id": "portalReminder",
+      "autoSave": true,
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Step into the magical portal when you are ready to compile dungeon code."
+        }
+      ]
+    }
+  }
+}
