@@ -10,8 +10,8 @@
     {
       "id": "collect_crystals",
       "type": "collect",
-      "target": 6,
-      "description": "Gather 6 cozy crystals"
+      "target": 4,
+      "description": "Gather all 4 cozy objects"
     },
     {
       "id": "play_minigame",
@@ -21,12 +21,10 @@
     }
   ],
   "collectibles": [
-    { "x": 250, "y": 200 },
-    { "x": 450, "y": 500 },
-    { "x": 640, "y": 220 },
-    { "x": 830, "y": 480 },
-    { "x": 1000, "y": 300 },
-    { "x": 1100, "y": 580 }
+    { "x": 250, "y": 200, "texture": "coffee-mug", "name": "Coffee" },
+    { "x": 550, "y": 500, "texture": "laptop-computer", "name": "Laptop" },
+    { "x": 800, "y": 250, "texture": "baby-teddy", "name": "Baby Teddy" },
+    { "x": 1050, "y": 520, "texture": "birthday-key", "name": "Birthday Key" }
   ],
   "npcs": [
     {
@@ -49,7 +47,9 @@
   },
   "portal": {
     "x": 1120,
-    "y": 180,
-    "texture": "wish-portal"
+    "y": 240,
+    "texture": "cozy-door",
+    "exitType": "door",
+    "exitAnimation": "door_light_beams"
   }
 }

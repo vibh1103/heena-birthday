@@ -15,6 +15,13 @@ export class AssetLoader {
     this.createParticles(scene);
     this.createTile(scene);
     this.createPortraits(scene);
+    
+    // Custom Level 1 Collectibles & Door
+    this.createCoffee(scene);
+    this.createLaptop(scene);
+    this.createTeddy(scene);
+    this.createKey(scene);
+    this.createDoor(scene);
   }
 
   private static createPlayer(scene: Phaser.Scene): void {
@@ -174,6 +181,91 @@ export class AssetLoader {
     graphics.fillCircle(72, 78, 5);
     graphics.fillCircle(96, 78, 5);
     graphics.generateTexture(key, 168, 168);
+    graphics.destroy();
+  }
+
+  private static createCoffee(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.COFFEE)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0xf59e0b, 1);
+    graphics.fillRoundedRect(12, 16, 24, 26, 6);
+    graphics.lineStyle(3, 0xf59e0b, 1);
+    graphics.strokeEllipse(11, 29, 10, 14);
+    graphics.fillStyle(0x78350f, 1);
+    graphics.fillEllipse(24, 16, 20, 6);
+    graphics.lineStyle(2, 0xffffff, 0.7);
+    graphics.lineBetween(20, 11, 18, 5);
+    graphics.lineBetween(28, 11, 30, 5);
+    graphics.generateTexture(TEXTURE_KEYS.COFFEE, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createLaptop(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.LAPTOP)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x475569, 1);
+    graphics.fillRoundedRect(8, 10, 32, 22, 4);
+    graphics.fillStyle(0x0f172a, 1);
+    graphics.fillRect(10, 12, 28, 18);
+    graphics.fillStyle(0x22c55e, 0.95);
+    graphics.fillRect(13, 15, 12, 2);
+    graphics.fillRect(13, 19, 18, 2);
+    graphics.fillRect(13, 23, 8, 2);
+    graphics.fillStyle(0x94a3b8, 1);
+    graphics.fillRoundedRect(4, 32, 40, 6, 2);
+    graphics.generateTexture(TEXTURE_KEYS.LAPTOP, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createTeddy(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.TEDDY)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0xd97706, 1);
+    graphics.fillCircle(15, 15, 6);
+    graphics.fillCircle(33, 15, 6);
+    graphics.fillStyle(0xd97706, 1);
+    graphics.fillCircle(24, 22, 12);
+    graphics.fillStyle(0xd97706, 1);
+    graphics.fillRoundedRect(14, 30, 20, 16, 8);
+    graphics.fillStyle(0x000000, 1);
+    graphics.fillCircle(20, 20, 1.5);
+    graphics.fillCircle(28, 20, 1.5);
+    graphics.fillStyle(0xfde047, 1);
+    graphics.fillCircle(24, 25, 4);
+    graphics.fillStyle(0x000000, 1);
+    graphics.fillTriangle(24, 24, 22, 22, 26, 22);
+    graphics.generateTexture(TEXTURE_KEYS.TEDDY, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createKey(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.KEY)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.lineStyle(4, 0xfacc15, 1);
+    graphics.strokeCircle(16, 24, 8);
+    graphics.fillStyle(0xfacc15, 1);
+    graphics.fillRect(24, 22, 16, 4);
+    graphics.fillRect(34, 26, 3, 4);
+    graphics.fillRect(38, 26, 3, 4);
+    graphics.generateTexture(TEXTURE_KEYS.KEY, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createDoor(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.DOOR)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x451a03, 1);
+    graphics.fillRect(0, 0, 64, 96);
+    graphics.fillStyle(0x9a3412, 1);
+    graphics.fillRect(4, 4, 56, 92);
+    graphics.fillStyle(0x7c2d12, 1);
+    graphics.fillRect(10, 10, 18, 32);
+    graphics.fillRect(36, 10, 18, 32);
+    graphics.fillRect(10, 52, 18, 32);
+    graphics.fillRect(36, 52, 18, 32);
+    graphics.fillStyle(0xfacc15, 1);
+    graphics.fillCircle(12, 48, 4.5);
+    graphics.generateTexture(TEXTURE_KEYS.DOOR, 64, 96);
     graphics.destroy();
   }
 }

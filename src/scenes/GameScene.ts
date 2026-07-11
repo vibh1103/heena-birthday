@@ -209,11 +209,49 @@ export class GameScene extends Phaser.Scene {
     this.crystals = this.physics.add.group({ immovable: true, allowGravity: false });
     const crystalObjects: Phaser.GameObjects.GameObject[] = [];
     this.levelConfig.collectibles.forEach((spawn: any) => {
-      const crystal = this.physics.add.image(spawn.x, spawn.y, TEXTURE_KEYS.CRYSTAL);
+      const texture = spawn.texture ?? TEXTURE_KEYS.CRYSTAL;
+      const crystal = this.physics.add.image(spawn.x, spawn.y, texture);
       crystal.setDepth(10).setCircle(22).setScale(0.88);
       
-      // Color-theme the crystals to match level
-      crystal.setTint(this.levelConfig.themeColor);
+      // Color-theme default crystals
+      if (!spawn.texture) {
+        crystal.setTint(this.levelConfig.themeColor);
+      }
+
+      // Setup hover interactions
+      crystal.setInteractive();
+      crystal.on(Phaser.Input.Events.POINTER_OVER, () => {
+        this.tweens.add({
+          targets: crystal,
+          scale: 1.06,
+          duration: 150,
+          ease: 'Power1'
+        });
+        this.audioManager.playTone(440, 50, 0.04);
+        
+        // Spawn small hover sparkles
+        const hoverEmitter = this.add.particles(crystal.x, crystal.y, TEXTURE_KEYS.SPARK, {
+          speed: { min: 20, max: 40 },
+          scale: { start: 0.5, end: 0 },
+          alpha: { start: 0.8, end: 0 },
+          lifespan: 400,
+          blendMode: Phaser.BlendModes.ADD,
+          tint: this.levelConfig.themeColor
+        });
+        hoverEmitter.explode(6);
+        this.time.delayedCall(400, () => {
+          if (hoverEmitter) hoverEmitter.destroy();
+        });
+      });
+
+      crystal.on(Phaser.Input.Events.POINTER_OUT, () => {
+        this.tweens.add({
+          targets: crystal,
+          scale: 0.88,
+          duration: 150,
+          ease: 'Power1'
+        });
+      });
 
       this.crystals.add(crystal);
       crystalObjects.push(crystal);
@@ -236,15 +274,18 @@ export class GameScene extends Phaser.Scene {
       this.npcSprites.set(npc.id, npcSprite);
     });
 
-    // Spawn Portal
+    // Spawn Portal / Door
     const portalCfg = this.levelConfig.portal;
+    const portalTexture = portalCfg.texture ?? TEXTURE_KEYS.PORTAL;
     this.portal = this.add
-      .image(portalCfg.x, portalCfg.y, TEXTURE_KEYS.PORTAL)
+      .image(portalCfg.x, portalCfg.y, portalTexture)
       .setDepth(8)
       .setAlpha(0.28)
       .setScale(0.86);
       
-    this.portal.setTint(this.levelConfig.themeColor);
+    if (portalTexture === TEXTURE_KEYS.PORTAL) {
+      this.portal.setTint(this.levelConfig.themeColor);
+    }
     animations.pulsePortal(this.portal);
 
     this.physics.add.overlap(this.player, this.crystals, (_player, crystal) => {
@@ -393,14 +434,105 @@ export class GameScene extends Phaser.Scene {
 
   private openPortal(): void {
     this.portalReady = true;
-    this.audioManager.playTone(880, 260, 0.08);
-    this.tweens.add({
-      targets: this.portal,
-      alpha: 1,
-      scale: 1.12,
-      duration: 420,
-      ease: 'Back.out',
-    });
+    const portalCfg = this.levelConfig.portal;
+
+    if (portalCfg.exitType === 'door') {
+      // 1. Play door opening sound sweep (creaking sound!)
+      this.audioManager.playTone(220, 200, 0.07);
+      this.time.delayedCall(200, () => this.audioManager.playTone(293, 350, 0.06));
+
+      // 2. Door opens (swing open tween: scaleX = 0)
+      this.tweens.add({
+        targets: this.portal,
+        scaleX: 0,
+        duration: 800,
+        ease: 'Cubic.easeOut'
+      });
+
+      // 3. Light beams appear behind the door
+      const rayCount = 12;
+      for (let i = 0; i < rayCount; i++) {
+        const ray = this.add.graphics().setDepth(7).setAlpha(0);
+        ray.fillStyle(0xfef08a, 0.22);
+        
+        const angleStart = (i * (360 / rayCount)) * (Math.PI / 180);
+        const angleEnd = ((i + 0.5) * (360 / rayCount)) * (Math.PI / 180);
+        const length = 380;
+        
+        ray.beginPath();
+        ray.moveTo(portalCfg.x, portalCfg.y);
+        ray.lineTo(portalCfg.x + Math.cos(angleStart) * length, portalCfg.y + Math.sin(angleStart) * length);
+        ray.lineTo(portalCfg.x + Math.cos(angleEnd) * length, portalCfg.y + Math.sin(angleEnd) * length);
+        ray.closePath();
+        ray.fillPath();
+        
+        this.tweens.add({
+          targets: ray,
+          alpha: 0.3,
+          angle: '+=360',
+          duration: 9000 + i * 1500,
+          repeat: -1
+        });
+      }
+
+      // 4. Birthday Crystal floats upward from the door center
+      const floatingCrystal = this.add.image(portalCfg.x, portalCfg.y, TEXTURE_KEYS.CRYSTAL)
+        .setDepth(10)
+        .setAlpha(0)
+        .setScale(0.5);
+      
+      this.tweens.add({
+        targets: floatingCrystal,
+        alpha: 1,
+        y: portalCfg.y - 70,
+        scale: 1.05,
+        angle: 360,
+        duration: 1200,
+        ease: 'Cubic.easeOut',
+        onComplete: () => {
+          this.tweens.add({
+            targets: floatingCrystal,
+            y: portalCfg.y - 80,
+            duration: 1000,
+            yoyo: true,
+            repeat: -1,
+            ease: 'Sine.easeInOut'
+          });
+        }
+      });
+
+      // 5. Camera zooms & pans
+      this.cameras.main.zoomTo(1.25, 1200, 'Cubic.easeInOut');
+      this.cameras.main.pan(portalCfg.x, portalCfg.y - 45, 1200, 'Cubic.easeInOut');
+
+      const celebrationEmitter = this.add.particles(portalCfg.x, portalCfg.y - 40, TEXTURE_KEYS.STAR, {
+        speed: { min: 80, max: 240 },
+        angle: { min: 0, max: 360 },
+        scale: { start: 0.9, end: 0 },
+        alpha: { start: 1.0, end: 0 },
+        lifespan: 800,
+        gravityY: 100,
+        blendMode: Phaser.BlendModes.ADD,
+        tint: [0xfacc15, 0xffffff, 0xf59e0b]
+      });
+      celebrationEmitter.explode(45);
+      
+      this.time.delayedCall(1200, () => {
+        if (celebrationEmitter) celebrationEmitter.destroy();
+      });
+
+    } else {
+      // Standard portal fade in
+      this.audioManager.playTone(880, 260, 0.08);
+      this.tweens.add({
+        targets: this.portal,
+        alpha: 1,
+        scale: 1.12,
+        duration: 420,
+        ease: 'Back.out',
+      });
+    }
+
     this.dialogue.start('portalReady');
   }
 

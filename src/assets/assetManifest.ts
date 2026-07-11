@@ -10,6 +10,11 @@ export const TEXTURE_KEYS = {
   PORTRAIT_HEENA_CURIOUS: 'portrait-heena-curious',
   PORTRAIT_FIREFLY_NEUTRAL: 'portrait-firefly-neutral',
   PORTRAIT_FIREFLY_EXCITED: 'portrait-firefly-excited',
+  COFFEE: 'coffee-mug',
+  LAPTOP: 'laptop-computer',
+  TEDDY: 'baby-teddy',
+  KEY: 'birthday-key',
+  DOOR: 'cozy-door',
 } as const;
 
 export const AUDIO_KEYS = {
