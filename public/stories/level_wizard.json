@@ -30,17 +30,17 @@
         {
           "character": "firefly",
           "emotion": "happy",
-          "text": "Welcome to the Wizard School, Heena! Here, magic isn't just coding—it's actual wizardry."
+          "text": "Welcome to the Wizard School, Heena! Here, magic isn't just coding—it's actual wizardry. Look at the floating candles and moving portraits!"
         },
         {
           "character": "heena",
           "emotion": "curious",
-          "text": "Are these books floating? This is incredible!"
+          "text": "Oh wow, are those candles floating? And I just saw a flying owl pass by! This is incredible!"
         },
         {
           "character": "firefly",
           "emotion": "excited",
-          "text": "Indeed! Collect 6 glowing mana crystals. They represent your intelligence, creativity, and magic!"
+          "text": "Indeed! But the spell door is locked. Gather the 6 glowing mana crystals around the room so we can brew our stabilizing potion!"
         }
       ]
     },
@@ -51,7 +51,7 @@
         {
           "character": "firefly",
           "emotion": "neutral",
-          "text": "Look around the spell libraries and potion desks. The mana crystals shine with a purple glow!"
+          "text": "Look around the spell libraries and potion desks. The mana crystals shine with a deep purple wizard glow!"
         }
       ]
     },
@@ -62,7 +62,7 @@
         {
           "character": "firefly",
           "emotion": "excited",
-          "text": "You have unlocked the portal to the Developer Dungeon. Time to see some high-tech wizardry!"
+          "text": "Excellent! The potion is mixed, the spell door traced open, and the portal to the Developer Dungeon is active. Proceed when you are ready!"
         }
       ]
     },
@@ -73,7 +73,7 @@
         {
           "character": "firefly",
           "emotion": "happy",
-          "text": "Step into the magical portal when you are ready to compile dungeon code."
+          "text": "Step into the magical portal when you are ready to head over to the Developer Dungeon."
         }
       ]
     }

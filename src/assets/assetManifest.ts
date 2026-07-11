@@ -23,6 +23,7 @@ export const TEXTURE_KEYS = {
   DONUT: 'office-donut',
   STAPLER: 'red-stapler',
   DOCUMENT: 'paper-document',
+  OWL: 'flying-owl',
 } as const;
 
 export const AUDIO_KEYS = {

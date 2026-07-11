@@ -34,6 +34,9 @@ export class AssetLoader {
     this.createDonut(scene);
     this.createStapler(scene);
     this.createDocument(scene);
+
+    // Custom Level 4 Wizard Owl
+    this.createOwl(scene);
   }
 
   private static createPlayer(scene: Phaser.Scene): void {
@@ -402,6 +405,29 @@ export class AssetLoader {
     graphics.fillStyle(0x2563eb, 1);
     graphics.fillRect(20, 8, 8, 5);
     graphics.generateTexture(TEXTURE_KEYS.DOCUMENT, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createOwl(scene: Phaser.Scene): void {
+    if (scene.textures.exists(TEXTURE_KEYS.OWL)) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x475569, 1);
+    graphics.fillEllipse(24, 26, 16, 20);
+    graphics.fillStyle(0x334155, 1);
+    graphics.fillEllipse(10, 26, 6, 14);
+    graphics.fillEllipse(38, 26, 6, 14);
+    graphics.fillStyle(0x475569, 1);
+    graphics.fillTriangle(14, 14, 20, 10, 20, 16);
+    graphics.fillTriangle(34, 14, 28, 10, 28, 16);
+    graphics.fillStyle(0xfde047, 1);
+    graphics.fillCircle(18, 20, 5);
+    graphics.fillCircle(30, 20, 5);
+    graphics.fillStyle(0x000000, 1);
+    graphics.fillCircle(18, 20, 2);
+    graphics.fillCircle(30, 20, 2);
+    graphics.fillStyle(0xf97316, 1);
+    graphics.fillTriangle(24, 26, 22, 22, 26, 22);
+    graphics.generateTexture(TEXTURE_KEYS.OWL, 48, 48);
     graphics.destroy();
   }
 }

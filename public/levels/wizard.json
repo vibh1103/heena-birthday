@@ -17,7 +17,7 @@
       "id": "play_minigame",
       "type": "minigame",
       "target": 1,
-      "description": "Crack the Arcane Equation"
+      "description": "Brew Birthday Magic Spell"
     }
   ],
   "collectibles": [
@@ -42,14 +42,41 @@
   "minigame": {
     "type": "math_quiz",
     "triggerNpc": "firefly",
-    "question": "Solve: 7 * 8 + (Birthday Magic Coefficient of 4)",
-    "options": ["56", "60", "64"],
-    "answerIndex": 1,
-    "prompt": "Spell Calculation Puzzle!"
+    "prompt": "Brew Birthday Magic!",
+    "questions": [
+      {
+        "question": "Step 1: Spell Tracing - To cast the levitation charm, what path do you draw?",
+        "options": [
+          "Trace a flat horizontal line",
+          "Draw a swish and flick spiral",
+          "Tap the screen randomly in circles"
+        ],
+        "answerIndex": 1
+      },
+      {
+        "question": "Step 2: Potion Mixing - The brew is boiling! What ingredient stabilizes it?",
+        "options": [
+          "A pinch of glowing firefly dust",
+          "Boiling coffee from the office machine",
+          "Toss in the red stapler"
+        ],
+        "answerIndex": 0
+      },
+      {
+        "question": "Step 3: Magical Door - To unlock the final exit, which rune is active?",
+        "options": [
+          "The squash-and-merge git rune",
+          "The Central Perk orange couch outline",
+          "The glowing Birthday Star rune"
+        ],
+        "answerIndex": 2
+      }
+    ]
   },
   "portal": {
     "x": 1150,
     "y": 220,
-    "texture": "wish-portal"
+    "texture": "wish-portal",
+    "exitType": "portal"
   }
 }

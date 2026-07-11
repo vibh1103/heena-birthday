@@ -45,6 +45,7 @@ export class GameScene extends Phaser.Scene {
   private npcSprites: Map<string, Phaser.Physics.Arcade.Image> = new Map();
   private objectivesProgress: Record<string, boolean> = {};
   private gamePausedForMinigame = false;
+  private playerSpotlight: Phaser.GameObjects.Arc | null = null;
 
   // Quest Checklist display
   private objectiveTexts: Array<{ id: string; textObject: Phaser.GameObjects.Text; desc: string }> = [];
@@ -126,6 +127,10 @@ export class GameScene extends Phaser.Scene {
     this.createInput();
     this.createObjectivesList();
 
+    if (this.levelId === 'wizard') {
+      this.setupMagicalAcademyElements();
+    }
+
     SceneManager.launchOverlay(this, SCENE_KEYS.UI);
     this.updateHud();
 
@@ -144,6 +149,10 @@ export class GameScene extends Phaser.Scene {
       this.player.setVelocity(0, 0);
     } else {
       this.player.move(this.cursors, this.keys);
+    }
+
+    if (this.playerSpotlight && this.player) {
+      this.playerSpotlight.setPosition(this.player.x, this.player.y);
     }
 
     this.updateHud();
@@ -732,5 +741,111 @@ export class GameScene extends Phaser.Scene {
       total: this.totalCrystals,
       elapsedMs: this.time.now - this.startTime,
     });
+  }
+
+  private setupMagicalAcademyElements(): void {
+    // 1. Floating Candles
+    for (let i = 0; i < 8; i++) {
+      const cx = Phaser.Math.Between(100, 1180);
+      const cy = Phaser.Math.Between(80, 260);
+
+      const candle = this.add.container(cx, cy).setDepth(6);
+
+      const wax = this.add.graphics();
+      wax.fillStyle(0xfef08a, 0.95);
+      wax.fillRoundedRect(-4, -12, 8, 24, 2);
+      candle.add(wax);
+
+      const flame = this.add.circle(0, -15, 5, 0xf97316).setBlendMode(Phaser.BlendModes.ADD);
+      candle.add(flame);
+
+      this.tweens.add({
+        targets: flame,
+        scale: 1.35,
+        alpha: 0.7,
+        duration: Phaser.Math.Between(150, 300),
+        yoyo: true,
+        repeat: -1
+      });
+
+      this.tweens.add({
+        targets: candle,
+        y: cy - 20,
+        duration: Phaser.Math.Between(1800, 2800),
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+    }
+
+    // 2. Flying Owl
+    const owl = this.add.image(-60, 120, TEXTURE_KEYS.OWL).setDepth(6).setScale(0.85);
+    const flyAcross = () => {
+      const startRight = owl.x < 0;
+      const targetX = startRight ? 1340 : -60;
+      owl.setFlipX(startRight);
+
+      this.tweens.add({
+        targets: owl,
+        x: targetX,
+        y: 120 + Phaser.Math.Between(-30, 30),
+        duration: 6000,
+        ease: 'Sine.easeInOut',
+        onComplete: () => {
+          this.time.delayedCall(Phaser.Math.Between(8000, 15000), flyAcross);
+        }
+      });
+    };
+    this.time.delayedCall(3000, flyAcross);
+
+    // 3. Moving Portraits
+    const portraitPositions = [
+      { x: 300, y: 150 },
+      { x: 640, y: 130 },
+      { x: 980, y: 150 }
+    ];
+
+    portraitPositions.forEach((pos, idx) => {
+      const frame = this.add.graphics().setDepth(3);
+      frame.lineStyle(4, 0xb45309, 0.95);
+      frame.fillStyle(0x0e0b1f, 0.9);
+      frame.fillRoundedRect(pos.x - 36, pos.y - 48, 72, 96, 6);
+      frame.strokeRoundedRect(pos.x - 36, pos.y - 48, 72, 96, 6);
+
+      const subject = this.add.circle(pos.x, pos.y, 10, idx === 0 ? 0x22c55e : (idx === 1 ? 0xa855f7 : 0xec4899))
+        .setDepth(4)
+        .setAlpha(0.6)
+        .setBlendMode(Phaser.BlendModes.ADD);
+
+      this.tweens.add({
+        targets: subject,
+        scale: 1.5,
+        x: pos.x + (idx === 0 ? 8 : -8),
+        y: pos.y + (idx === 2 ? 6 : -6),
+        duration: 2500 + idx * 500,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+    });
+
+    // 4. Follow spotlight
+    this.playerSpotlight = this.add.circle(this.player.x, this.player.y, 180, this.levelConfig.themeColor, 0.05)
+      .setDepth(1)
+      .setBlendMode(Phaser.BlendModes.ADD);
+
+    // 5. Bright Fireflies Emitter
+    this.add.particles(0, 0, TEXTURE_KEYS.SPARK, {
+      x: { min: 0, max: 1280 },
+      y: { min: 0, max: 720 },
+      lifespan: 3000,
+      speed: { min: 10, max: 20 },
+      scale: { start: 0.4, end: 0 },
+      alpha: { start: 0.6, end: 0 },
+      quantity: 1,
+      frequency: 150,
+      tint: 0xfacc15,
+      blendMode: Phaser.BlendModes.ADD,
+    }).setDepth(5);
   }
 }
