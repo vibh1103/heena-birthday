@@ -10,23 +10,21 @@
     {
       "id": "collect_crystals",
       "type": "collect",
-      "target": 6,
-      "description": "Gather 6 memory crystals"
+      "target": 4,
+      "description": "Unlock all 4 memories"
     },
     {
       "id": "play_minigame",
       "type": "minigame",
       "target": 1,
-      "description": "Solve Memory Garden Test"
+      "description": "Match the Sweet Memories"
     }
   ],
   "collectibles": [
-    { "x": 220, "y": 210 },
-    { "x": 450, "y": 530 },
-    { "x": 630, "y": 190 },
-    { "x": 810, "y": 490 },
-    { "x": 970, "y": 310 },
-    { "x": 1110, "y": 570 }
+    { "x": 250, "y": 200 },
+    { "x": 520, "y": 500 },
+    { "x": 820, "y": 240 },
+    { "x": 1060, "y": 510 }
   ],
   "npcs": [
     {
@@ -48,6 +46,7 @@
   "portal": {
     "x": 1100,
     "y": 160,
-    "texture": "wish-portal"
+    "texture": "wish-portal",
+    "exitType": "portal"
   }
 }

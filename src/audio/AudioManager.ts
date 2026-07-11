@@ -59,6 +59,23 @@ export class AudioManager {
     }
   }
 
+  public getMusicVolume(): number {
+    if (this.currentMusic && 'volume' in this.currentMusic) {
+      return (this.currentMusic as any).volume;
+    }
+    return 0.5;
+  }
+
+  public setMusicVolume(volume: number): void {
+    if (this.currentMusic && 'volume' in this.currentMusic) {
+      this.scene.tweens.add({
+        targets: this.currentMusic,
+        volume: volume,
+        duration: 800
+      });
+    }
+  }
+
   public playSound(key: string, volume = 0.5): void {
     if (!this.unlocked) {
       return;

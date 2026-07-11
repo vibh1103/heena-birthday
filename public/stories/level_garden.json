@@ -30,17 +30,17 @@
         {
           "character": "firefly",
           "emotion": "happy",
-          "text": "Heena, you are now standing in the Memory Garden. The flowers here bloom only with the best memories of the past year."
+          "text": "Heena, welcome to the Memory Garden. The fog is heavy now, but our most cherished memories are trapped inside these 4 crystals."
         },
         {
           "character": "heena",
-          "emotion": "happy",
-          "text": "It is so quiet and beautiful... I feel so peaceful here."
+          "emotion": "curious",
+          "text": "It feels so dreamy and quiet... like walking through clouds."
         },
         {
           "character": "firefly",
           "emotion": "excited",
-          "text": "Collect 6 golden memory crystals scattered under the bioluminescent trees. They will open the gate to the Birthday Castle!"
+          "text": "Gather the 4 memory crystals. As you unlock each memory, the fog will clear, the music will soften, and the sunrise will begin."
         }
       ]
     },
@@ -51,7 +51,7 @@
         {
           "character": "firefly",
           "emotion": "neutral",
-          "text": "Memory crystals glow softly near quiet water pools and under the tree canopies."
+          "text": "Search near the floating paths. Each crystal holds a beautiful moment of our lives together: Wedding, Baby, Trip, and Anniversary."
         }
       ]
     },
@@ -62,7 +62,7 @@
         {
           "character": "firefly",
           "emotion": "excited",
-          "text": "Amazing! All memories have been gathered. The portal to the grand Birthday Castle is open!"
+          "text": "How beautiful... The fog is gone, the sun has risen, and the portal to the Birthday Castle is open. Step through when you are ready!"
         }
       ]
     },
@@ -73,7 +73,7 @@
         {
           "character": "firefly",
           "emotion": "happy",
-          "text": "The portal is ready to take you to the final Birthday Castle!"
+          "text": "Step into the magical portal when you are ready to enter the final Birthday Castle."
         }
       ]
     }

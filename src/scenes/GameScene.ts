@@ -46,6 +46,9 @@ export class GameScene extends Phaser.Scene {
   private objectivesProgress: Record<string, boolean> = {};
   private gamePausedForMinigame = false;
   private playerSpotlight: Phaser.GameObjects.Arc | null = null;
+  private veil: Phaser.GameObjects.Graphics | null = null;
+  private sunriseOverlay: Phaser.GameObjects.Rectangle | null = null;
+  private mistEmitter: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
 
   // Quest Checklist display
   private objectiveTexts: Array<{ id: string; textObject: Phaser.GameObjects.Text; desc: string }> = [];
@@ -179,9 +182,14 @@ export class GameScene extends Phaser.Scene {
       ease: 'Sine.inOut',
     });
 
-    const veil = this.add.graphics();
-    veil.fillGradientStyle(0x33205f, 0x15102a, 0x070a22, 0x12091f, 0.7, 0.55, 1, 1);
-    veil.fillRect(0, 0, 1280, 720);
+    this.veil = this.add.graphics();
+    this.veil.fillGradientStyle(0x33205f, 0x15102a, 0x070a22, 0x12091f, 0.7, 0.55, 1, 1);
+    this.veil.fillRect(0, 0, 1280, 720);
+
+    // Golden sunrise overlay (fades in as memories are unlocked)
+    this.sunriseOverlay = this.add.rectangle(640, 360, 1280, 720, 0xfef08a, 0)
+      .setDepth(2)
+      .setBlendMode(Phaser.BlendModes.ADD);
 
     const birthdayMoon = this.add.circle(1078, 118, 78, UI_COLORS.cream, 0.24).setBlendMode(Phaser.BlendModes.ADD);
     const warmGlow = this.add.circle(1044, 152, 190, this.levelConfig.themeColor, 0.08).setBlendMode(Phaser.BlendModes.ADD);
@@ -208,7 +216,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     const mistColors = this.levelConfig.ambientParticleColor.map((c: string) => parseInt(c));
-    this.particles.createAmbientMist(mistColors).setDepth(2);
+    this.mistEmitter = this.particles.createAmbientMist(mistColors).setDepth(2);
   }
 
   private createActors(): void {
@@ -430,14 +438,64 @@ export class GameScene extends Phaser.Scene {
 
     crystal.disableBody(true, true);
     this.collected += 1;
-    this.audioManager.playTone(660 + this.collected * 42, 130, 0.08);
-    this.particles.burst(crystal.x, crystal.y);
     
     this.updateHud();
     this.updateObjectivesDisplay();
 
-    if (this.collected >= this.totalCrystals) {
-      this.completeObjective('collect_crystals');
+    if (this.levelId === 'garden') {
+      this.showMemoryOverlay(this.collected, () => {
+        // Trigger environment change callbacks:
+        
+        // 1. Fog clears (veil alpha drops)
+        if (this.veil) {
+          this.tweens.add({
+            targets: this.veil,
+            alpha: Math.max(0.12, this.veil.alpha - 0.14),
+            duration: 1600
+          });
+        }
+        
+        // 2. Sunrise begins (sunriseOverlay alpha increases)
+        if (this.sunriseOverlay) {
+          this.tweens.add({
+            targets: this.sunriseOverlay,
+            alpha: Math.min(0.64, this.sunriseOverlay.alpha + 0.16),
+            duration: 2000
+          });
+        }
+        
+        // 3. Music becomes softer
+        const curVol = this.audioManager.getMusicVolume();
+        this.audioManager.setMusicVolume(curVol * 0.72);
+        
+        // 4. Mist particles warm up (tints shift)
+        if (this.mistEmitter) {
+          (this.mistEmitter as any).setTint([0xfca5a5, 0xfecdd3, 0xffedd5]);
+        }
+        
+        // 5. Play sweet chime and warm burst
+        this.audioManager.playTone(880, 160, 0.08);
+        const warmBurst = this.add.particles(this.player.x, this.player.y, TEXTURE_KEYS.STAR, {
+          speed: { min: 40, max: 120 },
+          scale: { start: 0.75, end: 0 },
+          alpha: { start: 0.9, end: 0 },
+          lifespan: 800,
+          tint: 0xfca5a5,
+          blendMode: Phaser.BlendModes.ADD
+        });
+        warmBurst.explode(16);
+        this.time.delayedCall(800, () => warmBurst.destroy());
+
+        if (this.collected >= this.totalCrystals) {
+          this.completeObjective('collect_crystals');
+        }
+      });
+    } else {
+      this.audioManager.playTone(660 + this.collected * 42, 130, 0.08);
+      this.particles.burst(crystal.x, crystal.y);
+      if (this.collected >= this.totalCrystals) {
+        this.completeObjective('collect_crystals');
+      }
     }
   }
 
@@ -847,5 +905,110 @@ export class GameScene extends Phaser.Scene {
       tint: 0xfacc15,
       blendMode: Phaser.BlendModes.ADD,
     }).setDepth(5);
+  }
+
+  private showMemoryOverlay(index: number, onClosed: () => void): void {
+    this.gamePausedForMinigame = true;
+    this.player.setVelocity(0, 0);
+    if (this.input.keyboard) {
+      this.input.keyboard.resetKeys();
+    }
+
+    const memories = [
+      {
+        title: "💍 Memory Unlocked: Our Wedding Day",
+        desc: "A promise of forever, written in laughter and tears of joy.\nYou looked absolutely radiant, a memory etched in stars."
+      },
+      {
+        title: "👶 Memory Unlocked: Baby Steps",
+        desc: "Chasing tiny footsteps, watching you grow and explore.\nEvery single milestone a precious treasure in our hearts."
+      },
+      {
+        title: "✈️ Memory Unlocked: The Adventure Trip",
+        desc: "Wandering through new streets, hand in hand, finding magic\nin everyday moments and getting lost in beautiful horizons."
+      },
+      {
+        title: "❤️ Memory Unlocked: Our Anniversary",
+        desc: "Another year of love, support, and pair programming through\nlife's compile errors. Happy Anniversary, my partner in everything."
+      }
+    ];
+
+    const mem = memories[index - 1] ?? { title: "Memory", desc: "A sweet memory of love." };
+
+    const overlay = this.add.container(640, 360).setDepth(2000);
+
+    const bg = new GlassPanel(this, 0, 0, 680, 240, {
+      radius: 28,
+      fillAlpha: 0.95,
+      strokeAlpha: 0.5,
+      glowAlpha: 0.35
+    });
+    overlay.add(bg);
+
+    const title = this.add.text(0, -60, mem.title, {
+      fontFamily: FONT_FAMILY.display,
+      fontSize: '24px',
+      color: UI_HEX.gold,
+      fontStyle: '800'
+    }).setOrigin(0.5);
+    overlay.add(title);
+
+    const body = this.add.text(0, 10, mem.desc, {
+      fontFamily: FONT_FAMILY.body,
+      fontSize: '16px',
+      color: UI_HEX.cream,
+      align: 'center',
+      lineSpacing: 8
+    }).setOrigin(0.5);
+    overlay.add(body);
+
+    const btn = this.add.text(0, 75, "Cherish Memory", {
+      fontFamily: FONT_FAMILY.body,
+      fontSize: '16px',
+      color: UI_HEX.gold,
+      fontStyle: '700',
+      backgroundColor: '#1e1b4b',
+      padding: { x: 18, y: 10 }
+    }).setOrigin(0.5).setInteractive();
+    
+    // Draw button border
+    const border = this.add.graphics();
+    border.lineStyle(1.5, UI_COLORS.purple, 0.7);
+    border.strokeRoundedRect(-70, 50, 140, 48, 8);
+    overlay.add(border);
+    overlay.add(btn);
+
+    btn.on(Phaser.Input.Events.POINTER_OVER, () => {
+      btn.setColor(UI_HEX.cream);
+      this.audioManager.playTone(440, 50, 0.05);
+    });
+    btn.on(Phaser.Input.Events.POINTER_OUT, () => btn.setColor(UI_HEX.gold));
+    btn.on(Phaser.Input.Events.POINTER_DOWN, () => {
+      this.audioManager.playTone(523.25, 120, 0.08);
+      
+      // Zoom out overlay
+      this.tweens.add({
+        targets: overlay,
+        scale: 0.85,
+        alpha: 0,
+        duration: 250,
+        onComplete: () => {
+          overlay.destroy();
+          border.destroy();
+          this.gamePausedForMinigame = false;
+          onClosed();
+        }
+      });
+    });
+
+    // Zoom in overlay
+    overlay.setScale(0.85).setAlpha(0);
+    this.tweens.add({
+      targets: overlay,
+      scale: 1,
+      alpha: 1,
+      duration: 300,
+      ease: 'Back.out'
+    });
   }
 }
