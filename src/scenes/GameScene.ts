@@ -40,7 +40,6 @@ export class GameScene extends Phaser.Scene {
 
   // Level Engine data-driven fields
   private levelId = 'home';
-  private levelFile = 'levels/home.json';
   private levelConfig!: any;
   private npcSprites: Map<string, Phaser.Physics.Arcade.Image> = new Map();
   private objectivesProgress: Record<string, boolean> = {};
@@ -60,51 +59,39 @@ export class GameScene extends Phaser.Scene {
 
   public init(data?: { levelId?: string }): void {
     this.levelId = data?.levelId ?? 'home';
-    this.levelFile = `levels/${this.levelId}.json`;
-  }
-
-  public preload(): void {
-    // Dynamically load the level's JSON configuration
-    this.load.json(`level-config-${this.levelId}`, this.levelFile);
   }
 
   public create(): void {
     this.levelConfig = this.cache.json.get(`level-config-${this.levelId}`);
+    if (!this.levelConfig) {
+      console.warn(`Level config for level-config-${this.levelId} not found in cache!`);
+      this.scene.start(SCENE_KEYS.MAP);
+      return;
+    }
 
-    // Show a premium visual loading screen while story-specific assets load
-    const loadingText = this.add.text(640, 360, 'Loading Level Magic...', {
-      fontFamily: FONT_FAMILY.display,
-      fontSize: '28px',
-      color: UI_HEX.gold,
-      fontStyle: '800',
-    }).setOrigin(0.5).setDepth(2000);
-
-    const loadingGlow = this.add.circle(640, 360, 160, UI_COLORS.pink, 0.08)
-      .setBlendMode(Phaser.BlendModes.ADD).setDepth(1999);
-
-    this.tweens.add({
-      targets: [loadingText, loadingGlow],
-      alpha: 0.4,
-      scale: 1.05,
-      duration: 800,
-      yoyo: true,
-      repeat: -1,
-      ease: 'Sine.inOut',
-    });
-
-    // Preload dialog story file specified in the level configuration
     const storyKey = `story-${this.levelConfig.storyFile}`;
-    this.load.json(storyKey, this.levelConfig.storyFile);
-    this.load.once(`filecomplete-json-${storyKey}`, () => {
-      this.story = this.cache.json.get(storyKey);
-      
-      loadingText.destroy();
-      loadingGlow.destroy();
+    this.story = this.cache.json.get(storyKey);
+    if (!this.story) {
+      console.warn(`Story story-${storyKey} not found in cache. Creating fallback.`);
+      this.story = {
+        id: `fallback-${this.levelId}`,
+        title: this.levelConfig.name,
+        start: 'intro',
+        characters: {
+          heena: { name: 'Heena', typingTone: 620, portraits: {} },
+          firefly: { name: 'Guide', typingTone: 760, portraits: {} }
+        },
+        nodes: {
+          intro: {
+            id: 'intro',
+            autoSave: true,
+            lines: [{ character: 'heena', emotion: 'neutral', text: 'Welcome to this level!' }]
+          }
+        }
+      };
+    }
 
-      // Boot level engine once story files are preloaded
-      this.bootLevelEngine();
-    });
-    this.load.start();
+    this.bootLevelEngine();
   }
 
   private bootLevelEngine(): void {
