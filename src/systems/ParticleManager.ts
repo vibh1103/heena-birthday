@@ -34,4 +34,20 @@ export class ParticleManager {
       emitting: false,
     }).explode(18);
   }
+
+  public spawnPlayerTrail(x: number, y: number, color: number): void {
+    const trail = this.scene.add.particles(x, y, TEXTURE_KEYS.SPARK, {
+      speed: { min: 8, max: 20 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 0.45, end: 0 },
+      alpha: { start: 0.5, end: 0 },
+      lifespan: 500,
+      quantity: 1,
+      tint: color,
+      blendMode: Phaser.BlendModes.ADD,
+    });
+    this.scene.time.delayedCall(500, () => {
+      if (trail) trail.destroy();
+    });
+  }
 }

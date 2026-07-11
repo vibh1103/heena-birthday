@@ -49,6 +49,7 @@ export class GameScene extends Phaser.Scene {
   private veil: Phaser.GameObjects.Graphics | null = null;
   private sunriseOverlay: Phaser.GameObjects.Rectangle | null = null;
   private mistEmitter: Phaser.GameObjects.Particles.ParticleEmitter | null = null;
+  private shadowsGraphics: Phaser.GameObjects.Graphics | null = null;
 
   // Quest Checklist display
   private objectiveTexts: Array<{ id: string; textObject: Phaser.GameObjects.Text; desc: string }> = [];
@@ -158,6 +159,33 @@ export class GameScene extends Phaser.Scene {
       this.playerSpotlight.setPosition(this.player.x, this.player.y);
     }
 
+    // Draw dynamic top-down shadows
+    const shadows = this.shadowsGraphics;
+    if (shadows) {
+      shadows.clear();
+      shadows.fillStyle(0x000000, 0.22);
+      
+      // Player shadow
+      if (this.player && this.player.active) {
+        shadows.fillEllipse(this.player.x, this.player.y + 24, 28, 10);
+      }
+      
+      // NPC shadows
+      this.npcSprites.forEach((npc) => {
+        if (npc && npc.active) {
+          shadows.fillEllipse(npc.x, npc.y + 22, 22, 8);
+        }
+      });
+    }
+
+    // Spawn player movement trail (sparkles tint matched to level theme color!)
+    if (this.player && this.player.body) {
+      const isMoving = Math.abs(this.player.body.velocity.x) > 10 || Math.abs(this.player.body.velocity.y) > 10;
+      if (isMoving && Phaser.Math.Between(0, 100) < 16) {
+        this.particles.spawnPlayerTrail(this.player.x, this.player.y + 12, this.levelConfig.themeColor);
+      }
+    }
+
     this.updateHud();
   }
 
@@ -217,6 +245,24 @@ export class GameScene extends Phaser.Scene {
 
     const mistColors = this.levelConfig.ambientParticleColor.map((c: string) => parseInt(c));
     this.mistEmitter = this.particles.createAmbientMist(mistColors).setDepth(2);
+
+    // Initialize shadow renderer
+    this.shadowsGraphics = this.add.graphics().setDepth(2);
+
+    // Add Depth-of-Field Foreground layer (large blurred leaves/floating particles)
+    this.add.particles(0, 0, TEXTURE_KEYS.SPARK, {
+      x: { min: -100, max: 1380 },
+      y: { min: -100, max: 820 },
+      lifespan: 6000,
+      speedX: { min: -35, max: -15 },
+      speedY: { min: 5, max: 20 },
+      scale: { start: 1.8, end: 0.6 },
+      alpha: { start: 0.08, end: 0 },
+      quantity: 1,
+      frequency: 700,
+      tint: this.levelConfig.themeColor,
+      blendMode: Phaser.BlendModes.ADD
+    }).setDepth(150);
   }
 
   private createActors(): void {
@@ -393,7 +439,8 @@ export class GameScene extends Phaser.Scene {
     if (this.objectivesProgress[id] === true) return;
 
     this.objectivesProgress[id] = true;
-    this.audioManager.playTone(880, 180, 0.08); // complete sound
+    this.audioManager.playTone(880, 180, 0.08);
+    this.cameras.main.shake(200, 0.005);
     this.updateObjectivesDisplay();
 
     this.checkAllObjectivesCompleted();
@@ -475,6 +522,7 @@ export class GameScene extends Phaser.Scene {
         
         // 5. Play sweet chime and warm burst
         this.audioManager.playTone(880, 160, 0.08);
+        this.cameras.main.shake(80, 0.003);
         const warmBurst = this.add.particles(this.player.x, this.player.y, TEXTURE_KEYS.STAR, {
           speed: { min: 40, max: 120 },
           scale: { start: 0.75, end: 0 },
@@ -493,6 +541,7 @@ export class GameScene extends Phaser.Scene {
     } else {
       this.audioManager.playTone(660 + this.collected * 42, 130, 0.08);
       this.particles.burst(crystal.x, crystal.y);
+      this.cameras.main.shake(80, 0.003);
       if (this.collected >= this.totalCrystals) {
         this.completeObjective('collect_crystals');
       }
@@ -625,6 +674,16 @@ export class GameScene extends Phaser.Scene {
       if (hasMinigame && !isMinigameDone) {
         this.startMiniGame();
       } else {
+        const npcSprite = this.npcSprites.get(nearNpc.id);
+        if (npcSprite && this.player) {
+          this.cameras.main.zoomTo(1.08, 500, 'Sine.easeInOut');
+          this.cameras.main.pan(
+            (this.player.x + npcSprite.x) / 2,
+            (this.player.y + npcSprite.y) / 2 - 35,
+            500,
+            'Sine.easeInOut'
+          );
+        }
         this.dialogue.start(this.portalReady ? 'portalReminder' : nearNpc.dialogueNode);
       }
       return;
@@ -636,6 +695,10 @@ export class GameScene extends Phaser.Scene {
   }
 
   private showIntroDialogue(): void {
+    this.cameras.main.zoomTo(1.06, 500, 'Sine.easeInOut');
+    if (this.player) {
+      this.cameras.main.pan(this.player.x, this.player.y - 30, 500, 'Sine.easeInOut');
+    }
     this.dialogue.start('intro');
   }
 
