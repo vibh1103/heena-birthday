@@ -740,6 +740,13 @@ export class GameScene extends Phaser.Scene {
       this.keys.SPACE.removeAllListeners();
     }
 
+    if (this.levelId === 'castle') {
+      this.time.delayedCall(1200, () => {
+        SceneManager.fadeTo(this, SCENE_KEYS.ENDING);
+      });
+      return;
+    }
+
     const completionPanel = new GlassPanel(this, 640, 358, 610, 220, {
       radius: 34,
       fillAlpha: 0.72,

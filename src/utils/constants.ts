@@ -9,6 +9,7 @@ export const SCENE_KEYS = {
   MAP: 'MapScene',
   GAME: 'GameScene',
   UI: 'UIScene',
+  ENDING: 'EndingScene',
 } as const;
 
 export type SceneKey = (typeof SCENE_KEYS)[keyof typeof SCENE_KEYS];

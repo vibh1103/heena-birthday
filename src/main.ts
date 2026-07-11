@@ -7,6 +7,7 @@ import { MenuScene } from './scenes/MenuScene';
 import { MapScene } from './scenes/MapScene';
 import { PreloadScene } from './scenes/PreloadScene';
 import { UIScene } from './scenes/UIScene';
+import { EndingScene } from './scenes/EndingScene';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -14,7 +15,7 @@ const config: Phaser.Types.Core.GameConfig = {
   backgroundColor: '#05030a',
   pixelArt: false,
   roundPixels: false,
-  scene: [BootScene, PreloadScene, MenuScene, MapScene, GameScene, UIScene],
+  scene: [BootScene, PreloadScene, MenuScene, MapScene, GameScene, UIScene, EndingScene],
   physics: {
     default: 'arcade',
     arcade: {
