@@ -76,6 +76,246 @@
           "text": "Pivot! Step into the portal when you're ready to head over to the Cozy Office."
         }
       ]
+    },
+    "examine_milk": {
+      "id": "examine_milk",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A fresh carton of milk. Which milk does Heena prefer in her lattes?",
+          "choices": [
+            {
+              "id": "examine_milk_choice_0",
+              "label": "Oat milk (for extra health & taste)",
+              "next": "examine_milk_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_milk_choice_1",
+              "label": "Standard dairy whole milk",
+              "next": "examine_milk_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_milk_success": {
+      "id": "examine_milk_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The milk carton sparkles and joins your baking ingredients."
+        }
+      ]
+    },
+    "examine_milk_failure": {
+      "id": "examine_milk_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Not quite! She always goes for Oat milk. Try again."
+        }
+      ]
+    },
+    "examine_chocolate": {
+      "id": "examine_chocolate",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A delicious chocolate bar. How much chocolate does Heena eat when stressed?",
+          "choices": [
+            {
+              "id": "examine_chocolate_choice_0",
+              "label": "A single, moderate square",
+              "next": "examine_chocolate_failure",
+              "events": []
+            },
+            {
+              "id": "examine_chocolate_choice_1",
+              "label": "The entire bar in one sitting!",
+              "next": "examine_chocolate_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "examine_chocolate_success": {
+      "id": "examine_chocolate_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The chocolate bar dissolves into your collection."
+        }
+      ]
+    },
+    "examine_chocolate_failure": {
+      "id": "examine_chocolate_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Haha, you underestimate her sweet tooth! She eats the whole thing. Try again."
+        }
+      ]
+    },
+    "examine_flour": {
+      "id": "examine_flour",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A bag of organic baking flour. What are we baking today?",
+          "choices": [
+            {
+              "id": "examine_flour_choice_0",
+              "label": "Plain healthy brown bread",
+              "next": "examine_flour_failure",
+              "events": []
+            },
+            {
+              "id": "examine_flour_choice_1",
+              "label": "Yummy chocolate chip cookies!",
+              "next": "examine_flour_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "examine_flour_success": {
+      "id": "examine_flour_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The flour is gathered."
+        }
+      ]
+    },
+    "examine_flour_failure": {
+      "id": "examine_flour_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Bread is good, but cookies are way better for a birthday! Try again."
+        }
+      ]
+    },
+    "examine_sugar": {
+      "id": "examine_sugar",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A sweet sugar bowl. How strong is Heena's dessert cravings?",
+          "choices": [
+            {
+              "id": "examine_sugar_choice_0",
+              "label": "Extremely strong (never skips dessert!)",
+              "next": "examine_sugar_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_sugar_choice_1",
+              "label": "Mild (prefers salty chips instead)",
+              "next": "examine_sugar_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_sugar_success": {
+      "id": "examine_sugar_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The sugar is collected."
+        }
+      ]
+    },
+    "examine_sugar_failure": {
+      "id": "examine_sugar_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "No way, she lives for desserts! Try again."
+        }
+      ]
+    },
+    "examine_butter": {
+      "id": "examine_butter",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A dish of fresh creamy butter. What kind of butter makes the cookies taste best?",
+          "choices": [
+            {
+              "id": "examine_butter_choice_0",
+              "label": "Melted margarine (too greasy!)",
+              "next": "examine_butter_failure",
+              "events": []
+            },
+            {
+              "id": "examine_butter_choice_1",
+              "label": "Real cream butter (for rich flavor!)",
+              "next": "examine_butter_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "examine_butter_success": {
+      "id": "examine_butter_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The butter is gathered and ready for the cookies."
+        }
+      ]
+    },
+    "examine_butter_failure": {
+      "id": "examine_butter_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Not quite! Margarine doesn't give that rich, delicious taste. Try again."
+        }
+      ]
     }
   }
 }

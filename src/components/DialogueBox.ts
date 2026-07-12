@@ -14,6 +14,10 @@ export class DialogueBox implements DialogueUiAdapter {
   private readonly skipButton: Phaser.GameObjects.Text;
   private readonly choiceContainer: Phaser.GameObjects.Container;
   private choiceButtons: Phaser.GameObjects.Container[] = [];
+  private selectedChoiceIndex = 0;
+  private choicesData: DialogueChoiceDefinition[] = [];
+  private onChooseCallback: ((choice: DialogueChoiceDefinition) => void) | null = null;
+  private keyboardListener: ((event: KeyboardEvent) => void) | null = null;
 
   public constructor(scene: Phaser.Scene) {
     const panel = new GlassPanel(scene, 640, 610, 1010, 142, {
@@ -160,10 +164,14 @@ export class DialogueBox implements DialogueUiAdapter {
 
   public showChoices(choices: DialogueChoiceDefinition[], onChoose: (choice: DialogueChoiceDefinition) => void): void {
     this.hideChoices();
+    this.choicesData = choices;
+    this.onChooseCallback = onChoose;
+    this.selectedChoiceIndex = 0;
+
     const scene = this.choiceContainer.scene;
     choices.forEach((choice, index) => {
       const y = 436 + index * 62;
-      const button = this.createChoiceButton(scene, 640, y, choice.label, () => onChoose(choice));
+      const button = this.createChoiceButton(scene, 640, y, choice.label, () => this.confirmChoice(index));
       button.setAlpha(0).setScale(0.92);
       this.choiceContainer.add(button);
       this.choiceButtons.push(button);
@@ -176,10 +184,16 @@ export class DialogueBox implements DialogueUiAdapter {
         ease: 'Back.out',
       });
     });
+
+    this.updateChoiceSelectionVisuals();
     this.choiceContainer.setVisible(true);
+
+    // Set up key listeners
+    this.setupKeyboardNavigation();
   }
 
   public hideChoices(): void {
+    this.cleanupKeyboardNavigation();
     this.choiceButtons.forEach((button) => button.destroy());
     this.choiceButtons = [];
     this.choiceContainer.removeAll(true);
@@ -226,15 +240,67 @@ export class DialogueBox implements DialogueUiAdapter {
       Phaser.Geom.Rectangle.Contains,
     );
     container.on(Phaser.Input.Events.POINTER_OVER, () => {
-      this.drawChoice(graphics, width, height, true);
-      scene.tweens.add({ targets: container, scale: 1.05, duration: 150, ease: 'Back.out' });
-    });
-    container.on(Phaser.Input.Events.POINTER_OUT, () => {
-      this.drawChoice(graphics, width, height, false);
-      scene.tweens.add({ targets: container, scale: 1, duration: 150, ease: 'Sine.out' });
+      const idx = this.choiceButtons.indexOf(container);
+      if (idx !== -1) {
+        this.selectedChoiceIndex = idx;
+        this.updateChoiceSelectionVisuals();
+      }
     });
     container.on(Phaser.Input.Events.POINTER_DOWN, onClick);
     return container;
+  }
+
+  private updateChoiceSelectionVisuals(): void {
+    const width = 430;
+    const height = 48;
+    this.choiceButtons.forEach((button, index) => {
+      const isSelected = index === this.selectedChoiceIndex;
+      const graphics = button.list[0] as Phaser.GameObjects.Graphics;
+      const text = button.list[1] as Phaser.GameObjects.Text;
+      
+      this.drawChoice(graphics, width, height, isSelected);
+      button.setScale(isSelected ? 1.05 : 1.0);
+      text.setColor(isSelected ? UI_HEX.gold : UI_HEX.cream);
+    });
+  }
+
+  private setupKeyboardNavigation(): void {
+    this.cleanupKeyboardNavigation();
+
+    this.keyboardListener = (event: KeyboardEvent) => {
+      if (!this.choiceContainer.visible || this.choicesData.length === 0) return;
+
+      const key = event.key.toLowerCase();
+      if (key === 'arrowup' || key === 'w') {
+        event.preventDefault();
+        this.selectedChoiceIndex = (this.selectedChoiceIndex - 1 + this.choicesData.length) % this.choicesData.length;
+        this.updateChoiceSelectionVisuals();
+      } else if (key === 'arrowdown' || key === 's') {
+        event.preventDefault();
+        this.selectedChoiceIndex = (this.selectedChoiceIndex + 1) % this.choicesData.length;
+        this.updateChoiceSelectionVisuals();
+      } else if (event.key === ' ' || key === 'enter') {
+        event.preventDefault();
+        this.confirmChoice(this.selectedChoiceIndex);
+      }
+    };
+
+    window.addEventListener('keydown', this.keyboardListener);
+  }
+
+  private confirmChoice(index: number): void {
+    const choice = this.choicesData[index];
+    if (choice && this.onChooseCallback) {
+      this.cleanupKeyboardNavigation();
+      this.onChooseCallback(choice);
+    }
+  }
+
+  private cleanupKeyboardNavigation(): void {
+    if (this.keyboardListener) {
+      window.removeEventListener('keydown', this.keyboardListener);
+      this.keyboardListener = null;
+    }
   }
 
   private drawChoice(graphics: Phaser.GameObjects.Graphics, width: number, height: number, isHovering: boolean): void {

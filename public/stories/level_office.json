@@ -76,6 +76,294 @@
           "text": "That's what she said! Go ahead and step into the portal when you are ready."
         }
       ]
+    },
+    "examine_coffee_office": {
+      "id": "examine_coffee_office",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "An office coffee mug. Which coding music keeps Heena focused?",
+          "choices": [
+            {
+              "id": "examine_coffee_office_choice_0",
+              "label": "Deep lo-fi coding beats",
+              "next": "examine_coffee_office_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_coffee_office_choice_1",
+              "label": "Loud heavy metal rock",
+              "next": "examine_coffee_office_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_coffee_office_success": {
+      "id": "examine_coffee_office_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The coffee mug is collected."
+        }
+      ]
+    },
+    "examine_coffee_office_failure": {
+      "id": "examine_coffee_office_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Not quite! Lo-fi keeps her calm and focused. Try again."
+        }
+      ]
+    },
+    "examine_donut1": {
+      "id": "examine_donut1",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A fresh glazed donut. Who took the last donut from the office breakroom?",
+          "choices": [
+            {
+              "id": "examine_donut1_choice_0",
+              "label": "A greedy coworker",
+              "next": "examine_donut1_failure",
+              "events": []
+            },
+            {
+              "id": "examine_donut1_choice_1",
+              "label": "Heena, for an afternoon sugar boost!",
+              "next": "examine_donut1_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "examine_donut1_success": {
+      "id": "examine_donut1_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The donut is collected."
+        }
+      ]
+    },
+    "examine_donut1_failure": {
+      "id": "examine_donut1_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Nope, it was definitely Heena! Try again."
+        }
+      ]
+    },
+    "examine_donut2": {
+      "id": "examine_donut2",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Another donut! What is Heena's favorite donut flavor?",
+          "choices": [
+            {
+              "id": "examine_donut2_choice_0",
+              "label": "Chocolate Frosted",
+              "next": "examine_donut2_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_donut2_choice_1",
+              "label": "Plain original glazed",
+              "next": "examine_donut2_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_donut2_success": {
+      "id": "examine_donut2_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The second donut is collected."
+        }
+      ]
+    },
+    "examine_donut2_failure": {
+      "id": "examine_donut2_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Glazed is good, but Chocolate is her absolute favorite! Try again."
+        }
+      ]
+    },
+    "examine_stapler1": {
+      "id": "examine_stapler1",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A red stapler. Which sitcom featured a famous red stapler?",
+          "choices": [
+            {
+              "id": "examine_stapler1_choice_0",
+              "label": "Office Space",
+              "next": "examine_stapler1_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_stapler1_choice_1",
+              "label": "The Office US",
+              "next": "examine_stapler1_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_stapler1_success": {
+      "id": "examine_stapler1_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The stapler is collected."
+        }
+      ]
+    },
+    "examine_stapler1_failure": {
+      "id": "examine_stapler1_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Not quite! Milton's red stapler is from Office Space. Try again."
+        }
+      ]
+    },
+    "examine_stapler2": {
+      "id": "examine_stapler2",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Another red stapler! How does Heena feel about paper documentation?",
+          "choices": [
+            {
+              "id": "examine_stapler2_choice_0",
+              "label": "Loves printing and stapling files",
+              "next": "examine_stapler2_failure",
+              "events": []
+            },
+            {
+              "id": "examine_stapler2_choice_1",
+              "label": "Hates paper, prefers keeping everything digital!",
+              "next": "examine_stapler2_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "examine_stapler2_success": {
+      "id": "examine_stapler2_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The second stapler is collected."
+        }
+      ]
+    },
+    "examine_stapler2_failure": {
+      "id": "examine_stapler2_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "No way, she is a digital developer! Try again."
+        }
+      ]
+    },
+    "examine_doc": {
+      "id": "examine_doc",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A corporate document. What is compiled in this file?",
+          "choices": [
+            {
+              "id": "examine_doc_choice_0",
+              "label": "Secret birthday wishes for Heena!",
+              "next": "examine_doc_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_doc_choice_1",
+              "label": "A boring annual financial spreadsheet",
+              "next": "examine_doc_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_doc_success": {
+      "id": "examine_doc_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The document is collected."
+        }
+      ]
+    },
+    "examine_doc_failure": {
+      "id": "examine_doc_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Not today! Today is for wishes. Try again."
+        }
+      ]
     }
   }
 }

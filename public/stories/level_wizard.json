@@ -76,6 +76,294 @@
           "text": "Step into the magical portal when you are ready to head over to the Developer Dungeon."
         }
       ]
+    },
+    "examine_mana1": {
+      "id": "examine_mana1",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A glowing purple mana crystal. Spell for levitation?",
+          "choices": [
+            {
+              "id": "examine_mana1_choice_0",
+              "label": "Wingardium Leviosa",
+              "next": "examine_mana1_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_mana1_choice_1",
+              "label": "Alohomora",
+              "next": "examine_mana1_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_mana1_success": {
+      "id": "examine_mana1_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The crystal glows and is collected."
+        }
+      ]
+    },
+    "examine_mana1_failure": {
+      "id": "examine_mana1_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Wrong spell! Try again."
+        }
+      ]
+    },
+    "examine_mana2": {
+      "id": "examine_mana2",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Mana Crystal 2. What is the signature wizard beverage?",
+          "choices": [
+            {
+              "id": "examine_mana2_choice_0",
+              "label": "Onion soup",
+              "next": "examine_mana2_failure",
+              "events": []
+            },
+            {
+              "id": "examine_mana2_choice_1",
+              "label": "Butterbeer",
+              "next": "examine_mana2_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "examine_mana2_success": {
+      "id": "examine_mana2_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The crystal is collected."
+        }
+      ]
+    },
+    "examine_mana2_failure": {
+      "id": "examine_mana2_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Butterbeer is much more magical! Try again."
+        }
+      ]
+    },
+    "examine_mana3": {
+      "id": "examine_mana3",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Mana Crystal 3. Which magical creature delivers letters?",
+          "choices": [
+            {
+              "id": "examine_mana3_choice_0",
+              "label": "A flying owl",
+              "next": "examine_mana3_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_mana3_choice_1",
+              "label": "A fire-breathing dragon",
+              "next": "examine_mana3_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_mana3_success": {
+      "id": "examine_mana3_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The crystal is collected."
+        }
+      ]
+    },
+    "examine_mana3_failure": {
+      "id": "examine_mana3_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Dragons burn letters! It is an owl. Try again."
+        }
+      ]
+    },
+    "examine_mana4": {
+      "id": "examine_mana4",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Mana Crystal 4. What color is the wizard school scarf?",
+          "choices": [
+            {
+              "id": "examine_mana4_choice_0",
+              "label": "Maroon & Gold",
+              "next": "examine_mana4_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_mana4_choice_1",
+              "label": "Green & Silver",
+              "next": "examine_mana4_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_mana4_success": {
+      "id": "examine_mana4_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The crystal is collected."
+        }
+      ]
+    },
+    "examine_mana4_failure": {
+      "id": "examine_mana4_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Maroon and Gold is the cozy classic! Try again."
+        }
+      ]
+    },
+    "examine_mana5": {
+      "id": "examine_mana5",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Mana Crystal 5. What makes potions bubble?",
+          "choices": [
+            {
+              "id": "examine_mana5_choice_0",
+              "label": "Bicarbonate of soda",
+              "next": "examine_mana5_failure",
+              "events": []
+            },
+            {
+              "id": "examine_mana5_choice_1",
+              "label": "Glowing spell powder",
+              "next": "examine_mana5_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "examine_mana5_success": {
+      "id": "examine_mana5_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The crystal is collected."
+        }
+      ]
+    },
+    "examine_mana5_failure": {
+      "id": "examine_mana5_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Spell powder is the magical way! Try again."
+        }
+      ]
+    },
+    "examine_mana6": {
+      "id": "examine_mana6",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Mana Crystal 6. To open the final wizard door, what do you need?",
+          "choices": [
+            {
+              "id": "examine_mana6_choice_0",
+              "label": "Pure birthday magic",
+              "next": "examine_mana6_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_mana6_choice_1",
+              "label": "A heavy iron key",
+              "next": "examine_mana6_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_mana6_success": {
+      "id": "examine_mana6_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The final mana crystal is collected."
+        }
+      ]
+    },
+    "examine_mana6_failure": {
+      "id": "examine_mana6_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Iron keys don't work on magical school doors! Try again."
+        }
+      ]
     }
   }
 }

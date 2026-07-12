@@ -21,12 +21,12 @@
     }
   ],
   "collectibles": [
-    { "x": 280, "y": 220, "texture": "coffee-mug", "name": "Coffee Mug" },
-    { "x": 480, "y": 460, "texture": "office-donut", "name": "Donut" },
-    { "x": 620, "y": 180, "texture": "red-stapler", "name": "Red Stapler" },
-    { "x": 800, "y": 500, "texture": "paper-document", "name": "Document" },
-    { "x": 960, "y": 320, "texture": "office-donut", "name": "Donut" },
-    { "x": 1120, "y": 520, "texture": "red-stapler", "name": "Red Stapler" }
+    { "x": 280, "y": 220, "texture": "coffee-mug", "name": "Coffee Mug", "dialogueNode": "examine_coffee_office" },
+    { "x": 480, "y": 460, "texture": "office-donut", "name": "Donut", "dialogueNode": "examine_donut1" },
+    { "x": 620, "y": 180, "texture": "red-stapler", "name": "Red Stapler", "dialogueNode": "examine_stapler1" },
+    { "x": 800, "y": 500, "texture": "paper-document", "name": "Document", "dialogueNode": "examine_doc" },
+    { "x": 960, "y": 320, "texture": "office-donut", "name": "Donut", "dialogueNode": "examine_donut2" },
+    { "x": 1120, "y": 520, "texture": "red-stapler", "name": "Red Stapler", "dialogueNode": "examine_stapler2" }
   ],
   "npcs": [
     {

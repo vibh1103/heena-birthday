@@ -333,12 +333,13 @@ export class AssetLoader {
   private static createEggs(scene: Phaser.Scene): void {
     if (scene.textures.exists(TEXTURE_KEYS.EGGS)) return;
     const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
-    graphics.fillStyle(0x78350f, 1);
-    graphics.fillRoundedRect(10, 26, 28, 14, 4);
-    graphics.fillStyle(0xf8fafc, 1);
-    graphics.fillEllipse(17, 20, 6, 9);
-    graphics.fillEllipse(24, 18, 6, 9);
-    graphics.fillEllipse(31, 20, 6, 9);
+    // Draw Butter: A yellow block of butter on a light gray plate
+    graphics.fillStyle(0xe2e8f0, 1); // plate
+    graphics.fillEllipse(24, 30, 18, 6);
+    graphics.fillStyle(0xfef08a, 1); // bright yellow butter block
+    graphics.fillRoundedRect(14, 18, 20, 10, 2);
+    graphics.fillStyle(0xfde047, 1); // shadow/accent
+    graphics.fillRoundedRect(22, 18, 12, 10, { tr: 2, br: 2 });
     graphics.generateTexture(TEXTURE_KEYS.EGGS, 48, 48);
     graphics.destroy();
   }

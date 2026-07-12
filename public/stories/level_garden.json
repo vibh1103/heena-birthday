@@ -76,6 +76,198 @@
           "text": "Step into the magical portal when you are ready to enter the final Birthday Castle."
         }
       ]
+    },
+    "examine_mem1": {
+      "id": "examine_mem1",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A glowing memory crystal. When did you first start this adventure?",
+          "choices": [
+            {
+              "id": "examine_mem1_choice_0",
+              "label": "Today, on Heena's special birthday!",
+              "next": "examine_mem1_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_mem1_choice_1",
+              "label": "Ten years ago",
+              "next": "examine_mem1_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_mem1_success": {
+      "id": "examine_mem1_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The memory crystal is collected."
+        }
+      ]
+    },
+    "examine_mem1_failure": {
+      "id": "examine_mem1_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "No, it started today! Try again."
+        }
+      ]
+    },
+    "examine_mem2": {
+      "id": "examine_mem2",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Memory Crystal 2. What color are the bioluminescent flowers?",
+          "choices": [
+            {
+              "id": "examine_mem2_choice_0",
+              "label": "Gold & Pink",
+              "next": "examine_mem2_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_mem2_choice_1",
+              "label": "Boring white",
+              "next": "examine_mem2_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_mem2_success": {
+      "id": "examine_mem2_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The memory crystal is collected."
+        }
+      ]
+    },
+    "examine_mem2_failure": {
+      "id": "examine_mem2_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "They glow gold and pink! Try again."
+        }
+      ]
+    },
+    "examine_mem3": {
+      "id": "examine_mem3",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Memory Crystal 3. What makes this garden magical?",
+          "choices": [
+            {
+              "id": "examine_mem3_choice_0",
+              "label": "Rich organic soil",
+              "next": "examine_mem3_failure",
+              "events": []
+            },
+            {
+              "id": "examine_mem3_choice_1",
+              "label": "Warm cherishable memories of Heena",
+              "next": "examine_mem3_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "examine_mem3_success": {
+      "id": "examine_mem3_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The memory crystal is collected."
+        }
+      ]
+    },
+    "examine_mem3_failure": {
+      "id": "examine_mem3_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Memories make the magic! Try again."
+        }
+      ]
+    },
+    "examine_mem4": {
+      "id": "examine_mem4",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Memory Crystal 4. Where does the exit portal lead?",
+          "choices": [
+            {
+              "id": "examine_mem4_choice_0",
+              "label": "To Heena's Birthday Castle!",
+              "next": "examine_mem4_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_mem4_choice_1",
+              "label": "Back to the start screen",
+              "next": "examine_mem4_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_mem4_success": {
+      "id": "examine_mem4_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The final memory crystal is collected."
+        }
+      ]
+    },
+    "examine_mem4_failure": {
+      "id": "examine_mem4_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "It leads to the final Castle! Try again."
+        }
+      ]
     }
   }
 }

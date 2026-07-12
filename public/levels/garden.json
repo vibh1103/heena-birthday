@@ -21,10 +21,10 @@
     }
   ],
   "collectibles": [
-    { "x": 250, "y": 200 },
-    { "x": 520, "y": 500 },
-    { "x": 820, "y": 240 },
-    { "x": 1060, "y": 510 }
+    { "x": 250, "y": 200, "dialogueNode": "examine_mem1" },
+    { "x": 520, "y": 500, "dialogueNode": "examine_mem2" },
+    { "x": 820, "y": 240, "dialogueNode": "examine_mem3" },
+    { "x": 1060, "y": 510, "dialogueNode": "examine_mem4" }
   ],
   "npcs": [
     {

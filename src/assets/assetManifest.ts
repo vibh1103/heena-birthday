@@ -17,7 +17,7 @@ export const TEXTURE_KEYS = {
   DOOR: 'cozy-door',
   MILK: 'milk-carton',
   CHOCOLATE: 'chocolate-bar',
-  EGGS: 'egg-basket',
+  EGGS: 'butter-dish',
   FLOUR: 'flour-bag',
   SUGAR: 'sugar-bowl',
   DONUT: 'office-donut',

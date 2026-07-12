@@ -76,6 +76,294 @@
           "text": "Step into the center to make your special birthday wish, Heena!"
         }
       ]
+    },
+    "examine_wish1": {
+      "id": "examine_wish1",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A sparkling wish crystal. What is the first birthday wish?",
+          "choices": [
+            {
+              "id": "examine_wish1_choice_0",
+              "label": "Joy and laughter for Heena",
+              "next": "examine_wish1_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_wish1_choice_1",
+              "label": "Getting stuck in coding loops",
+              "next": "examine_wish1_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_wish1_success": {
+      "id": "examine_wish1_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The wish crystal is collected."
+        }
+      ]
+    },
+    "examine_wish1_failure": {
+      "id": "examine_wish1_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "No coding loops today! Try again."
+        }
+      ]
+    },
+    "examine_wish2": {
+      "id": "examine_wish2",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Wish Crystal 2. What is the second birthday wish?",
+          "choices": [
+            {
+              "id": "examine_wish2_choice_0",
+              "label": "Fulfillment of all her dreams",
+              "next": "examine_wish2_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_wish2_choice_1",
+              "label": "To wash the dishes",
+              "next": "examine_wish2_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_wish2_success": {
+      "id": "examine_wish2_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The wish crystal is collected."
+        }
+      ]
+    },
+    "examine_wish2_failure": {
+      "id": "examine_wish2_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "That's not a birthday wish! Try again."
+        }
+      ]
+    },
+    "examine_wish3": {
+      "id": "examine_wish3",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Wish Crystal 3. What is the third birthday wish?",
+          "choices": [
+            {
+              "id": "examine_wish3_choice_0",
+              "label": "A beautiful year ahead full of love",
+              "next": "examine_wish3_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_wish3_choice_1",
+              "label": "Rainy cold weather",
+              "next": "examine_wish3_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_wish3_success": {
+      "id": "examine_wish3_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The wish crystal is collected."
+        }
+      ]
+    },
+    "examine_wish3_failure": {
+      "id": "examine_wish3_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Laughter and love are the wishes! Try again."
+        }
+      ]
+    },
+    "examine_wish4": {
+      "id": "examine_wish4",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Wish Crystal 4. What is the fourth birthday wish?",
+          "choices": [
+            {
+              "id": "examine_wish4_choice_0",
+              "label": "Delicious cakes that never run out",
+              "next": "examine_wish4_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_wish4_choice_1",
+              "label": "A stack of bug reports",
+              "next": "examine_wish4_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_wish4_success": {
+      "id": "examine_wish4_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The wish crystal is collected."
+        }
+      ]
+    },
+    "examine_wish4_failure": {
+      "id": "examine_wish4_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "No bugs! We want cake. Try again."
+        }
+      ]
+    },
+    "examine_wish5": {
+      "id": "examine_wish5",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Wish Crystal 5. What is the fifth birthday wish?",
+          "choices": [
+            {
+              "id": "examine_wish5_choice_0",
+              "label": "Great health and beautiful memories",
+              "next": "examine_wish5_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_wish5_choice_1",
+              "label": "Working on weekends",
+              "next": "examine_wish5_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_wish5_success": {
+      "id": "examine_wish5_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The wish crystal is collected."
+        }
+      ]
+    },
+    "examine_wish5_failure": {
+      "id": "examine_wish5_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "No weekend work! Try again."
+        }
+      ]
+    },
+    "examine_wish6": {
+      "id": "examine_wish6",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Wish Crystal 6. Who is sending all these wishes?",
+          "choices": [
+            {
+              "id": "examine_wish6_choice_0",
+              "label": "Someone who loves her dearly! ❤️",
+              "next": "examine_wish6_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_wish6_choice_1",
+              "label": "A automated birthday bot script",
+              "next": "examine_wish6_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_wish6_success": {
+      "id": "examine_wish6_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The final wish crystal is collected."
+        }
+      ]
+    },
+    "examine_wish6_failure": {
+      "id": "examine_wish6_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "It's sent with real love! Try again."
+        }
+      ]
     }
   }
 }

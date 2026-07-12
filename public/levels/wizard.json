@@ -21,12 +21,12 @@
     }
   ],
   "collectibles": [
-    { "x": 260, "y": 160 },
-    { "x": 440, "y": 540 },
-    { "x": 680, "y": 200 },
-    { "x": 850, "y": 460 },
-    { "x": 980, "y": 280 },
-    { "x": 1080, "y": 500 }
+    { "x": 260, "y": 160, "dialogueNode": "examine_mana1" },
+    { "x": 440, "y": 540, "dialogueNode": "examine_mana2" },
+    { "x": 680, "y": 200, "dialogueNode": "examine_mana3" },
+    { "x": 850, "y": 460, "dialogueNode": "examine_mana4" },
+    { "x": 980, "y": 280, "dialogueNode": "examine_mana5" },
+    { "x": 1080, "y": 500, "dialogueNode": "examine_mana6" }
   ],
   "npcs": [
     {

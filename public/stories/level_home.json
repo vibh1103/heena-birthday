@@ -76,6 +76,198 @@
           "text": "The portal is ready to whisk you to your friends!"
         }
       ]
+    },
+    "examine_coffee": {
+      "id": "examine_coffee",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "This coffee mug is piping hot! How does Heena take her coffee?",
+          "choices": [
+            {
+              "id": "examine_coffee_choice_0",
+              "label": "Bitter black espresso with no sugar",
+              "next": "examine_coffee_failure",
+              "events": []
+            },
+            {
+              "id": "examine_coffee_choice_1",
+              "label": "Iced vanilla latte with extra syrup",
+              "next": "examine_coffee_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "examine_coffee_success": {
+      "id": "examine_coffee_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The coffee mug glows with warmth and dissolves into your wish bag."
+        }
+      ]
+    },
+    "examine_coffee_failure": {
+      "id": "examine_coffee_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Hmm, not quite! Heena prefers her coffee sweet and creamy. Try examining it again."
+        }
+      ]
+    },
+    "examine_laptop": {
+      "id": "examine_laptop",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "The laptop screen is glowing. Which browser tab is always open?",
+          "choices": [
+            {
+              "id": "examine_laptop_choice_0",
+              "label": "A shopping cart full of cute clothes",
+              "next": "examine_laptop_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_laptop_choice_1",
+              "label": "StackOverflow fixing a compiler bug",
+              "next": "examine_laptop_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_laptop_success": {
+      "id": "examine_laptop_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The laptop hums with energy and slides into your collection."
+        }
+      ]
+    },
+    "examine_laptop_failure": {
+      "id": "examine_laptop_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Not quite! While she codes, she always has a shopping tab active! Try again."
+        }
+      ]
+    },
+    "examine_teddy": {
+      "id": "examine_teddy",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A cute teddy bear is sitting here. Who is the cutest teddy in the world?",
+          "choices": [
+            {
+              "id": "examine_teddy_choice_0",
+              "label": "This brown plush toy teddy bear",
+              "next": "examine_teddy_failure",
+              "events": []
+            },
+            {
+              "id": "examine_teddy_choice_1",
+              "label": "Heena herself, obviously!",
+              "next": "examine_teddy_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "examine_teddy_success": {
+      "id": "examine_teddy_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The teddy blushes, sparkles, and is collected."
+        }
+      ]
+    },
+    "examine_teddy_failure": {
+      "id": "examine_teddy_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Wait, look closer! The plush teddy is cute, but Heena is the cutest! Try again."
+        }
+      ]
+    },
+    "examine_key": {
+      "id": "examine_key",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A golden birthday key. What does this magical key unlock?",
+          "choices": [
+            {
+              "id": "examine_key_choice_0",
+              "label": "The door to magical birthday adventures",
+              "next": "examine_key_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_key_choice_1",
+              "label": "A secret diary locked in the drawer",
+              "next": "examine_key_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_key_success": {
+      "id": "examine_key_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The key glows with gold light and is collected."
+        }
+      ]
+    },
+    "examine_key_failure": {
+      "id": "examine_key_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Not quite! Think bigger—this is a magical adventure! Try again."
+        }
+      ]
     }
   }
 }

@@ -21,11 +21,11 @@
     }
   ],
   "collectibles": [
-    { "x": 250, "y": 180, "texture": "milk-carton", "name": "Milk" },
-    { "x": 400, "y": 480, "texture": "chocolate-bar", "name": "Chocolate" },
-    { "x": 650, "y": 160, "texture": "egg-basket", "name": "Eggs" },
-    { "x": 850, "y": 520, "texture": "flour-bag", "name": "Flour" },
-    { "x": 1020, "y": 260, "texture": "sugar-bowl", "name": "Sugar" }
+    { "x": 250, "y": 180, "texture": "milk-carton", "name": "Milk", "dialogueNode": "examine_milk" },
+    { "x": 400, "y": 480, "texture": "chocolate-bar", "name": "Chocolate", "dialogueNode": "examine_chocolate" },
+    { "x": 650, "y": 160, "texture": "butter-dish", "name": "Butter", "dialogueNode": "examine_butter" },
+    { "x": 850, "y": 520, "texture": "flour-bag", "name": "Flour", "dialogueNode": "examine_flour" },
+    { "x": 1020, "y": 260, "texture": "sugar-bowl", "name": "Sugar", "dialogueNode": "examine_sugar" }
   ],
   "npcs": [
     {

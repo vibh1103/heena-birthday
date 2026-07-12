@@ -21,12 +21,12 @@
     }
   ],
   "collectibles": [
-    { "x": 240, "y": 240 },
-    { "x": 420, "y": 480 },
-    { "x": 600, "y": 150 },
-    { "x": 840, "y": 510 },
-    { "x": 990, "y": 290 },
-    { "x": 1140, "y": 460 }
+    { "x": 240, "y": 240, "dialogueNode": "examine_bit1" },
+    { "x": 420, "y": 480, "dialogueNode": "examine_bit2" },
+    { "x": 600, "y": 150, "dialogueNode": "examine_bit3" },
+    { "x": 840, "y": 510, "dialogueNode": "examine_bit4" },
+    { "x": 990, "y": 290, "dialogueNode": "examine_bit5" },
+    { "x": 1140, "y": 460, "dialogueNode": "examine_bit6" }
   ],
   "npcs": [
     {

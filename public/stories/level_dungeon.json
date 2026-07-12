@@ -76,6 +76,294 @@
           "text": "The portal is ready to take you to the Memory Garden."
         }
       ]
+    },
+    "examine_bit1": {
+      "id": "examine_bit1",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "A glowing binary crystal. What is binary 1 in computer logic?",
+          "choices": [
+            {
+              "id": "examine_bit1_choice_0",
+              "label": "TRUE / ON",
+              "next": "examine_bit1_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_bit1_choice_1",
+              "label": "FALSE / OFF",
+              "next": "examine_bit1_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_bit1_success": {
+      "id": "examine_bit1_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The bit is collected."
+        }
+      ]
+    },
+    "examine_bit1_failure": {
+      "id": "examine_bit1_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Nope, 1 stands for True/ON! Try again."
+        }
+      ]
+    },
+    "examine_bit2": {
+      "id": "examine_bit2",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Binary Crystal 2. Which git command uploads code?",
+          "choices": [
+            {
+              "id": "examine_bit2_choice_0",
+              "label": "git pull",
+              "next": "examine_bit2_failure",
+              "events": []
+            },
+            {
+              "id": "examine_bit2_choice_1",
+              "label": "git push",
+              "next": "examine_bit2_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "examine_bit2_success": {
+      "id": "examine_bit2_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The bit is collected."
+        }
+      ]
+    },
+    "examine_bit2_failure": {
+      "id": "examine_bit2_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Push uploads, pull downloads! Try again."
+        }
+      ]
+    },
+    "examine_bit3": {
+      "id": "examine_bit3",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Binary Crystal 3. What does CSS stand for?",
+          "choices": [
+            {
+              "id": "examine_bit3_choice_0",
+              "label": "Cascading Style Sheets",
+              "next": "examine_bit3_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_bit3_choice_1",
+              "label": "Creative Styling System",
+              "next": "examine_bit3_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_bit3_success": {
+      "id": "examine_bit3_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The bit is collected."
+        }
+      ]
+    },
+    "examine_bit3_failure": {
+      "id": "examine_bit3_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "It is Cascading Style Sheets. Try again."
+        }
+      ]
+    },
+    "examine_bit4": {
+      "id": "examine_bit4",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Binary Crystal 4. Which loop runs forever if not stopped?",
+          "choices": [
+            {
+              "id": "examine_bit4_choice_0",
+              "label": "Infinite loop",
+              "next": "examine_bit4_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_bit4_choice_1",
+              "label": "For loop",
+              "next": "examine_bit4_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_bit4_success": {
+      "id": "examine_bit4_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The bit is collected."
+        }
+      ]
+    },
+    "examine_bit4_failure": {
+      "id": "examine_bit4_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Infinite loops run forever! Try again."
+        }
+      ]
+    },
+    "examine_bit5": {
+      "id": "examine_bit5",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Binary Crystal 5. What color is neon cyberpunk theme?",
+          "choices": [
+            {
+              "id": "examine_bit5_choice_0",
+              "label": "Neon Green & Pink",
+              "next": "examine_bit5_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_bit5_choice_1",
+              "label": "Boring Gray",
+              "next": "examine_bit5_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_bit5_success": {
+      "id": "examine_bit5_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The bit is collected."
+        }
+      ]
+    },
+    "examine_bit5_failure": {
+      "id": "examine_bit5_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Gray is not cyberpunk! Try again."
+        }
+      ]
+    },
+    "examine_bit6": {
+      "id": "examine_bit6",
+      "lines": [
+        {
+          "character": "heena",
+          "emotion": "curious",
+          "text": "Binary Crystal 6. What is Heena's favorite programming language?",
+          "choices": [
+            {
+              "id": "examine_bit6_choice_0",
+              "label": "TypeScript / JavaScript",
+              "next": "examine_bit6_success",
+              "events": [
+                {
+                  "type": "collect_crystal"
+                }
+              ]
+            },
+            {
+              "id": "examine_bit6_choice_1",
+              "label": "Assembly",
+              "next": "examine_bit6_failure",
+              "events": []
+            }
+          ]
+        }
+      ]
+    },
+    "examine_bit6_success": {
+      "id": "examine_bit6_success",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "happy",
+          "text": "Correct! The final bit is collected."
+        }
+      ]
+    },
+    "examine_bit6_failure": {
+      "id": "examine_bit6_failure",
+      "lines": [
+        {
+          "character": "firefly",
+          "emotion": "neutral",
+          "text": "Nobody loves Assembly for web apps! Try again."
+        }
+      ]
     }
   }
 }

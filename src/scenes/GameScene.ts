@@ -37,6 +37,7 @@ export class GameScene extends Phaser.Scene {
   private portalReady = false;
   private story!: DialogueStoryDefinition;
   private dialogueBgImage: Phaser.GameObjects.Image | null = null;
+  private interactionPrompt!: Phaser.GameObjects.Text;
 
   // Virtual touch controls properties
   private virtualVelocity = new Phaser.Math.Vector2(0, 0);
@@ -133,6 +134,16 @@ export class GameScene extends Phaser.Scene {
 
     this.createObjectivesList();
 
+    this.interactionPrompt = this.add.text(0, 0, 'Press [SPACE] to examine', {
+      fontFamily: FONT_FAMILY.body,
+      fontSize: '13px',
+      color: UI_HEX.gold,
+      backgroundColor: '#0c0a1c',
+      padding: { x: 7, y: 4 },
+      stroke: '#000000',
+      strokeThickness: 3
+    }).setOrigin(0.5).setDepth(200).setVisible(false);
+
     if (this.levelId === 'wizard') {
       this.setupMagicalAcademyElements();
     }
@@ -198,6 +209,60 @@ export class GameScene extends Phaser.Scene {
       if (isMoving && Phaser.Math.Between(0, 100) < 16) {
         this.particles.spawnPlayerTrail(this.player.x, this.player.y + 12, this.levelConfig.themeColor);
       }
+    }
+
+    // Proximity logic to show/position the SPACE prompt
+    let nearestCrystal: any = null;
+    let minCrystalDist = 55;
+
+    this.crystals.getChildren().forEach(c => {
+      const img = c as Phaser.Physics.Arcade.Image;
+      if (img.active) {
+        const dist = Phaser.Math.Distance.BetweenPoints(this.player, img);
+        if (dist < minCrystalDist) {
+          minCrystalDist = dist;
+          nearestCrystal = img;
+        }
+      }
+    });
+
+    let nearestNpc: any = null;
+    let minNpcDist = 92;
+
+    this.levelConfig.npcs.forEach((npc: any) => {
+      const sprite = this.npcSprites.get(npc.id);
+      if (sprite && sprite.active) {
+        const dist = Phaser.Math.Distance.BetweenPoints(this.player, sprite);
+        if (dist < minNpcDist) {
+          minNpcDist = dist;
+          nearestNpc = npc;
+        }
+      }
+    });
+
+    if (this.dialogue.isActive || this.gamePausedForMinigame) {
+      this.interactionPrompt.setVisible(false);
+    } else if (nearestCrystal) {
+      this.interactionPrompt.setPosition(nearestCrystal.x, nearestCrystal.y - 34);
+      this.interactionPrompt.setText('Press [SPACE] to examine');
+      this.interactionPrompt.setVisible(true);
+    } else if (nearestNpc) {
+      const sprite = this.npcSprites.get(nearestNpc.id)!;
+      this.interactionPrompt.setPosition(sprite.x, sprite.y - 34);
+      
+      const hasMinigame = this.levelConfig.minigame && this.levelConfig.minigame.triggerNpc === nearestNpc.id;
+      const isMinigameDone = this.objectivesProgress['play_minigame'] === true;
+      const hasCollectObjective = this.levelConfig.objectives.some((o: any) => o.id === 'collect_crystals');
+      const isCollectDone = this.objectivesProgress['collect_crystals'] === true;
+      
+      if (hasMinigame && !isMinigameDone && (!hasCollectObjective || isCollectDone)) {
+        this.interactionPrompt.setText('Press [SPACE] to play minigame');
+      } else {
+        this.interactionPrompt.setText('Press [SPACE] to talk');
+      }
+      this.interactionPrompt.setVisible(true);
+    } else {
+      this.interactionPrompt.setVisible(false);
     }
 
     this.updateHud();
@@ -364,10 +429,6 @@ export class GameScene extends Phaser.Scene {
       this.portal.setTint(this.levelConfig.themeColor);
     }
     animations.pulsePortal(this.portal);
-
-    this.physics.add.overlap(this.player, this.crystals, (_player, crystal) => {
-      this.collectCrystal(crystal as Phaser.Physics.Arcade.Image);
-    });
   }
 
   private createInput(): void {
@@ -683,7 +744,33 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
-    // Check if near any NPC
+    // 1. Check if near any active crystal/collectible prop
+    let nearestCrystal: any = null;
+    let minCrystalDist = 55;
+
+    this.crystals.getChildren().forEach(c => {
+      const img = c as Phaser.Physics.Arcade.Image;
+      if (img.active) {
+        const dist = Phaser.Math.Distance.BetweenPoints(this.player, img);
+        if (dist < minCrystalDist) {
+          minCrystalDist = dist;
+          nearestCrystal = img;
+        }
+      }
+    });
+
+    if (nearestCrystal) {
+      const collectible = this.levelConfig.collectibles.find((col: any) => {
+        return Math.abs(col.x - nearestCrystal!.x) < 5 && Math.abs(col.y - nearestCrystal!.y) < 5;
+      });
+
+      if (collectible && collectible.dialogueNode) {
+        this.dialogue.start(collectible.dialogueNode);
+        return;
+      }
+    }
+
+    // 2. Check if near any NPC
     let nearNpc: any = null;
     this.levelConfig.npcs.forEach((npc: any) => {
       const sprite = this.npcSprites.get(npc.id);
@@ -701,16 +788,6 @@ export class GameScene extends Phaser.Scene {
       if (hasMinigame && !isMinigameDone && (!hasCollectObjective || isCollectDone)) {
         this.startMiniGame();
       } else {
-        const npcSprite = this.npcSprites.get(nearNpc.id);
-        if (npcSprite && this.player) {
-          this.cameras.main.zoomTo(1.08, 500, 'Sine.easeInOut');
-          this.cameras.main.pan(
-            (this.player.x + npcSprite.x) / 2,
-            (this.player.y + npcSprite.y) / 2 - 35,
-            500,
-            'Sine.easeInOut'
-          );
-        }
         this.dialogue.start(this.portalReady ? 'portalReminder' : nearNpc.dialogueNode);
       }
       return;
@@ -722,10 +799,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   private showIntroDialogue(): void {
-    this.cameras.main.zoomTo(1.06, 500, 'Sine.easeInOut');
-    if (this.player) {
-      this.cameras.main.pan(this.player.x, this.player.y - 30, 500, 'Sine.easeInOut');
-    }
     this.dialogue.start('intro');
   }
 
@@ -784,15 +857,37 @@ export class GameScene extends Phaser.Scene {
   private handleDialogueEvent(event: DialogueEventDefinition): void {
     if (event.type === 'portal_ready') {
       this.particles.burst(this.portal.x, this.portal.y);
+    } else if (event.type === 'collect_crystal') {
+      // Find the nearest active crystal to collect
+      let nearestCrystal: any = null;
+      let minDist = 99999;
+      
+      this.crystals.getChildren().forEach(c => {
+        const img = c as Phaser.Physics.Arcade.Image;
+        if (img.active) {
+          const dist = Phaser.Math.Distance.BetweenPoints(this.player, img);
+          if (dist < minDist) {
+            minDist = dist;
+            nearestCrystal = img;
+          }
+        }
+      });
+      
+      if (nearestCrystal && minDist < 65) {
+        this.collectCrystal(nearestCrystal);
+      }
     }
   }
 
   private resetCameraAfterDialogue(): void {
-    this.cameras.main.pan(640, 360, 360, 'Sine.easeInOut');
-    this.cameras.main.zoomTo(1, 360, 'Sine.easeInOut');
+    // Zoom and pan removed for dialogue to avoid layout misalignment
   }
 
   private finishAdventure(): void {
+    // Reset camera zoom and center camera immediately to ensure completion UI displays correctly
+    this.cameras.main.zoomTo(1, 350, 'Cubic.easeOut');
+    this.cameras.main.pan(640, 360, 350, 'Cubic.easeOut');
+
     const elapsedMs = this.time.now - this.startTime;
     const save = this.saveManager.load();
 
@@ -846,7 +941,8 @@ export class GameScene extends Phaser.Scene {
     })
       .setDepth(1999)
       .setScale(0.9)
-      .setAlpha(0);
+      .setAlpha(0)
+      .setScrollFactor(0);
     const wishText = this.add
       .text(640, 326, 'Birthday Wish Complete', {
         fontFamily: FONT_FAMILY.display,
@@ -860,7 +956,8 @@ export class GameScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(2000)
       .setAlpha(0)
-      .setScale(0.86);
+      .setScale(0.86)
+      .setScrollFactor(0);
     const subtitle = this.add
       .text(640, 388, `You have completed the ${this.levelConfig.name}!`, {
         fontFamily: FONT_FAMILY.body,
@@ -870,7 +967,8 @@ export class GameScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(2000)
-      .setAlpha(0);
+      .setAlpha(0)
+      .setScrollFactor(0);
     this.tweens.add({
       targets: completionPanel,
       alpha: 1,

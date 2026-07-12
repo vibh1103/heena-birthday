@@ -21,10 +21,10 @@
     }
   ],
   "collectibles": [
-    { "x": 250, "y": 200, "texture": "coffee-mug", "name": "Coffee" },
-    { "x": 550, "y": 500, "texture": "laptop-computer", "name": "Laptop" },
-    { "x": 800, "y": 250, "texture": "baby-teddy", "name": "Baby Teddy" },
-    { "x": 1050, "y": 520, "texture": "birthday-key", "name": "Birthday Key" }
+    { "x": 250, "y": 200, "texture": "coffee-mug", "name": "Coffee", "dialogueNode": "examine_coffee" },
+    { "x": 550, "y": 500, "texture": "laptop-computer", "name": "Laptop", "dialogueNode": "examine_laptop" },
+    { "x": 800, "y": 250, "texture": "baby-teddy", "name": "Baby Teddy", "dialogueNode": "examine_teddy" },
+    { "x": 1050, "y": 520, "texture": "birthday-key", "name": "Birthday Key", "dialogueNode": "examine_key" }
   ],
   "npcs": [
     {
