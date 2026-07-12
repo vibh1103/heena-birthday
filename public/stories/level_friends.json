@@ -13,12 +13,12 @@
       }
     },
     "firefly": {
-      "name": "Cafe Firefly",
+      "name": "Cafe Barista",
       "typingTone": 760,
       "portraits": {
-        "neutral": "portrait-firefly-neutral",
-        "excited": "portrait-firefly-excited",
-        "happy": "portrait-firefly-excited"
+        "neutral": "portrait-barista",
+        "excited": "portrait-barista",
+        "happy": "portrait-barista"
       }
     }
   },

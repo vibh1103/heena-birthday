@@ -13,12 +13,12 @@
       }
     },
     "firefly": {
-      "name": "Arcane Firefly",
+      "name": "Arcane Owl",
       "typingTone": 760,
       "portraits": {
-        "neutral": "portrait-firefly-neutral",
-        "excited": "portrait-firefly-excited",
-        "happy": "portrait-firefly-excited"
+        "neutral": "portrait-owl",
+        "excited": "portrait-owl",
+        "happy": "portrait-owl"
       }
     }
   },

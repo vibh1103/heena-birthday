@@ -13,12 +13,12 @@
       }
     },
     "firefly": {
-      "name": "Memory Firefly",
+      "name": "Garden Fairy",
       "typingTone": 760,
       "portraits": {
-        "neutral": "portrait-firefly-neutral",
-        "excited": "portrait-firefly-excited",
-        "happy": "portrait-firefly-excited"
+        "neutral": "portrait-fairy",
+        "excited": "portrait-fairy",
+        "happy": "portrait-fairy"
       }
     }
   },

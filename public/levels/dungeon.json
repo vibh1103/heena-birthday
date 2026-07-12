@@ -30,22 +30,20 @@
   ],
   "npcs": [
     {
-      "id": "firefly",
-      "name": "Cyber Firefly",
+      "id": "cyber_bot",
+      "name": "Cyber Bot",
       "x": 660,
       "y": 320,
-      "texture": "moon-firefly",
+      "texture": "cyber-bot-npc",
       "interactiveRange": 92,
       "dialogueNode": "fireflyHint"
     }
   ],
   "minigame": {
-    "type": "catching_game",
-    "triggerNpc": "firefly",
-    "prompt": "Catch Green Code, Avoid Viruses!",
-    "items": ["1", "0"],
-    "targetCount": 5,
-    "mode": "bugs"
+    "type": "typing_test",
+    "triggerNpc": "cyber_bot",
+    "prompt": "Compile Birthday Code",
+    "text": "console.log(\"Heena is the best!\")"
   },
   "portal": {
     "x": 1090,

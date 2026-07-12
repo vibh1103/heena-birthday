@@ -38,11 +38,10 @@
     }
   ],
   "minigame": {
-    "type": "timing_game",
+    "type": "flappy_firefly",
     "triggerNpc": "firefly",
-    "prompt": "Light the 3 Birthday Candles!",
-    "targetCount": 3,
-    "mode": "candles"
+    "prompt": "Flap & Collect 3 Sparks!",
+    "targetCount": 3
   },
   "portal": {
     "x": 1120,

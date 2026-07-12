@@ -54,6 +54,12 @@ export interface SimonSaysConfig {
   prompt: string;
 }
 
+export interface FlappyGameConfig {
+  type: 'flappy_firefly';
+  prompt: string;
+  targetCount: number;
+}
+
 export type MiniGameConfig = 
   | MathGameConfig 
   | TypingGameConfig 
@@ -61,7 +67,8 @@ export type MiniGameConfig =
   | TimingGameConfig 
   | CatchingGameConfig
   | WirePuzzleConfig
-  | SimonSaysConfig;
+  | SimonSaysConfig
+  | FlappyGameConfig;
 
 export class MiniGamePanel extends Phaser.GameObjects.Container {
   private readonly bgPanel: GlassPanel;
@@ -123,6 +130,22 @@ export class MiniGamePanel extends Phaser.GameObjects.Container {
   private simonRound = 0;
   private simonBusy = false;
   private simonButtons: Phaser.GameObjects.Container[] = [];
+
+  // Flappy game states
+  private flappyPlayer: Phaser.GameObjects.Container | null = null;
+  private flappyVelocityY = 0;
+  private flappySparksCollected = 0;
+  private flappyObstacles: Array<{
+    topPipe: Phaser.GameObjects.Graphics;
+    bottomPipe: Phaser.GameObjects.Graphics;
+    spark: Phaser.GameObjects.Text;
+    x: number;
+    gapTop: number;
+    gapBottom: number;
+    passed: boolean;
+  }> = [];
+  private flappyUpdateListener: ((time: number, delta: number) => void) | null = null;
+  private flappySpawnTimer: Phaser.Time.TimerEvent | null = null;
 
   public constructor(
     scene: Phaser.Scene,
@@ -201,6 +224,8 @@ export class MiniGamePanel extends Phaser.GameObjects.Container {
       this.setupWireConnect(this.gameConfig);
     } else if (this.gameConfig.type === 'simon_says') {
       this.setupSimonSays(this.gameConfig);
+    } else if (this.gameConfig.type === 'flappy_firefly') {
+      this.setupFlappyFirefly(this.gameConfig);
     }
   }
 
@@ -1483,5 +1508,283 @@ export class MiniGamePanel extends Phaser.GameObjects.Container {
       scene.events.off(Phaser.Scenes.Events.UPDATE, this.catchUpdateListener);
       this.catchUpdateListener = null;
     }
+
+    // Flappy timers and loops
+    if (this.flappySpawnTimer) {
+      this.flappySpawnTimer.destroy();
+      this.flappySpawnTimer = null;
+    }
+
+    if (this.flappyUpdateListener) {
+      scene.events.off(Phaser.Scenes.Events.UPDATE, this.flappyUpdateListener);
+      this.flappyUpdateListener = null;
+    }
+
+    this.flappyObstacles.forEach(obs => {
+      obs.topPipe.destroy();
+      obs.bottomPipe.destroy();
+      obs.spark.destroy();
+    });
+    this.flappyObstacles = [];
+  }
+
+  // ==========================================
+  // FLAPPY FIREFLY ARCADE GAME (Stage 1 Home)
+  // ==========================================
+  private setupFlappyFirefly(config: FlappyGameConfig): void {
+    const scene = this.scene;
+    this.flappySparksCollected = 0;
+    this.flappyVelocityY = 0;
+    this.flappyObstacles = [];
+
+    // 1. Progress Text
+    const progressTxt = scene.add.text(0, -95, `Sparks Collected: 0 / ${config.targetCount}`, {
+      fontFamily: FONT_FAMILY.display,
+      fontSize: '20px',
+      color: UI_HEX.gold,
+      fontStyle: '800'
+    }).setOrigin(0.5);
+    this.add(progressTxt);
+    this.gameElements.push(progressTxt);
+
+    // 2. Help Info Text
+    const helpTxt = scene.add.text(0, -65, 'Click / Tap inside boundaries to Flap!', {
+      fontFamily: FONT_FAMILY.body,
+      fontSize: '14px',
+      color: '#94a3b8'
+    }).setOrigin(0.5);
+    this.add(helpTxt);
+    this.gameElements.push(helpTxt);
+
+    // 3. Visual Border for Flappy Game Arena
+    // Size: 700 width, 240 height. Centered at Y: 80.
+    const playArea = scene.add.graphics();
+    playArea.fillStyle(0x0a071b, 0.4);
+    playArea.lineStyle(2, UI_COLORS.purple, 0.5);
+    playArea.fillRoundedRect(-350, -40, 700, 240, 12);
+    playArea.strokeRoundedRect(-350, -40, 700, 240, 12);
+    this.add(playArea);
+    this.gameElements.push(playArea);
+
+    // 4. Interactive Click Zone (Clicking anywhere in the arena flaps the firefly)
+    const clickZone = scene.add.zone(0, 80, 700, 240).setInteractive({ useHandCursor: true });
+    this.add(clickZone);
+    this.gameElements.push(clickZone);
+
+    // 5. Firefly Player Container
+    this.flappyPlayer = scene.add.container(-220, 80);
+    this.add(this.flappyPlayer);
+    this.gameElements.push(this.flappyPlayer);
+
+    const bodyGlow = scene.add.circle(0, 0, 11, 0xfacc15, 0.55).setBlendMode(Phaser.BlendModes.ADD);
+    const bodyCore = scene.add.circle(0, 0, 7, 0xffffff, 1);
+    const wingL = scene.add.ellipse(-6, -4, 9, 5, 0xffffff, 0.6);
+    const wingR = scene.add.ellipse(6, -4, 9, 5, 0xffffff, 0.6);
+    this.flappyPlayer.add([bodyGlow, bodyCore, wingL, wingR]);
+
+    // Animate wing flutter
+    scene.tweens.add({
+      targets: [wingL, wingR],
+      scaleY: 0.1,
+      duration: 65,
+      yoyo: true,
+      repeat: -1
+    });
+
+    // Flap movement handler
+    const flap = () => {
+      if (!this.active || this.flappySparksCollected >= config.targetCount) return;
+      this.flappyVelocityY = -185;
+      this.audioManager.playTone(466.16, 50, 0.05); // A#4 flap sound
+      
+      // Pop scale effect on click
+      if (this.flappyPlayer) {
+        this.flappyPlayer.setScale(1.15, 0.85);
+        scene.tweens.add({
+          targets: this.flappyPlayer,
+          scaleX: 1.0,
+          scaleY: 1.0,
+          duration: 120
+        });
+      }
+    };
+    clickZone.on(Phaser.Input.Events.POINTER_DOWN, flap);
+
+    // Spawner for Obstacles (Pipes)
+    this.flappySpawnTimer = scene.time.addEvent({
+      delay: 1750,
+      loop: true,
+      callback: () => {
+        if (!this.active || this.flappySparksCollected >= config.targetCount) return;
+
+        // Gap center (Y coordinates: top boundary is -40, bottom is 200, total height 240)
+        // Keep gap center between Y: 10 and Y: 150
+        const gapCenterY = Phaser.Math.Between(10, 150);
+        const gapHeight = 84;
+        const gapTop = gapCenterY - gapHeight / 2;
+        const gapBottom = gapCenterY + gapHeight / 2;
+
+        const obsX = 350; // starts at the right boundary
+
+        // Top Pipe
+        const topPipe = scene.add.graphics();
+        topPipe.fillStyle(0x13112b, 0.95);
+        topPipe.lineStyle(2, UI_COLORS.pink, 0.8);
+        // Height of pipe is distance from top boundary (-40) to gapTop
+        const topPipeH = gapTop - (-40);
+        topPipe.fillRoundedRect(-22, -topPipeH, 44, topPipeH, { tl: 0, tr: 0, bl: 6, br: 6 });
+        topPipe.strokeRoundedRect(-22, -topPipeH, 44, topPipeH, { tl: 0, tr: 0, bl: 6, br: 6 });
+        topPipe.x = obsX;
+        topPipe.y = gapTop;
+        this.add(topPipe);
+        this.gameElements.push(topPipe);
+
+        // Bottom Pipe
+        const bottomPipe = scene.add.graphics();
+        bottomPipe.fillStyle(0x13112b, 0.95);
+        bottomPipe.lineStyle(2, UI_COLORS.pink, 0.8);
+        // Height of bottom pipe is distance from gapBottom to bottom boundary (200)
+        const bottomPipeH = 200 - gapBottom;
+        bottomPipe.fillRoundedRect(-22, 0, 44, bottomPipeH, { tl: 6, tr: 6, bl: 0, br: 0 });
+        bottomPipe.strokeRoundedRect(-22, 0, 44, bottomPipeH, { tl: 6, tr: 6, bl: 0, br: 0 });
+        bottomPipe.x = obsX;
+        bottomPipe.y = gapBottom;
+        this.add(bottomPipe);
+        this.gameElements.push(bottomPipe);
+
+        // Spark in gap
+        const spark = scene.add.text(obsX, gapCenterY, '⭐', { fontSize: '24px' }).setOrigin(0.5);
+        spark.setColor(UI_HEX.gold);
+        this.add(spark);
+        this.gameElements.push(spark);
+
+        this.flappyObstacles.push({
+          topPipe,
+          bottomPipe,
+          spark,
+          x: obsX,
+          gapTop,
+          gapBottom,
+          passed: false
+        });
+      }
+    });
+
+    // Real-time Update Loop
+    const gravity = 430;
+    this.flappyUpdateListener = (_time: number, delta: number) => {
+      if (!this.active || !this.flappyPlayer || this.flappySparksCollected >= config.targetCount) return;
+
+      const dt = delta / 1000;
+
+      // 1. Apply physics to player
+      this.flappyVelocityY += gravity * dt;
+      this.flappyPlayer.y += this.flappyVelocityY * dt;
+
+      // Check bounds collision (top: -40, bottom: 200)
+      if (this.flappyPlayer.y < -40 || this.flappyPlayer.y > 200) {
+        this.resetFlappyGame(progressTxt);
+        return;
+      }
+
+      // Rotate based on velocity
+      this.flappyPlayer.setAngle(Phaser.Math.Clamp(this.flappyVelocityY * 0.12, -22, 45));
+
+      const px = this.flappyPlayer.x;
+      const py = this.flappyPlayer.y;
+      const playerRadius = 7;
+
+      // 2. Update and check obstacles
+      const scrollSpeed = 135; // px/sec
+
+      for (let i = this.flappyObstacles.length - 1; i >= 0; i--) {
+        const obs = this.flappyObstacles[i];
+        if (!obs) continue;
+
+        // Move obstacle left
+        obs.x -= scrollSpeed * dt;
+        obs.topPipe.x = obs.x;
+        obs.bottomPipe.x = obs.x;
+        if (obs.spark.active) {
+          obs.spark.x = obs.x;
+        }
+
+        // Pipe collision check
+        const withinX = px + playerRadius >= obs.x - 22 && px - playerRadius <= obs.x + 22;
+        if (withinX) {
+          const hitTop = py - playerRadius <= obs.gapTop;
+          const hitBottom = py + playerRadius >= obs.gapBottom;
+          if (hitTop || hitBottom) {
+            this.resetFlappyGame(progressTxt);
+            return;
+          }
+        }
+
+        // Spark collection check
+        if (!obs.passed && obs.spark.active) {
+          const dist = Phaser.Math.Distance.Between(px, py, obs.spark.x, obs.spark.y);
+          if (dist < 25) {
+            obs.spark.destroy();
+            this.flappySparksCollected++;
+            progressTxt.setText(`Sparks Collected: ${this.flappySparksCollected} / ${config.targetCount}`);
+            this.audioManager.playTone(523.25 + this.flappySparksCollected * 65, 80, 0.08);
+
+            // Explosive sparkle particles
+            const sparkBurst = scene.add.particles(obs.spark.x + this.x, obs.spark.y + this.y, TEXTURE_KEYS.STAR, {
+              speed: { min: 25, max: 70 },
+              scale: { start: 0.55, end: 0 },
+              alpha: { start: 0.95, end: 0 },
+              lifespan: 400,
+              blendMode: Phaser.BlendModes.ADD,
+              tint: UI_COLORS.gold
+            });
+            sparkBurst.explode(8);
+            scene.time.delayedCall(400, () => sparkBurst.destroy());
+
+            if (this.flappySparksCollected >= config.targetCount) {
+              this.completeFlappyGame();
+              return;
+            }
+          }
+        }
+
+        // Offscreen check
+        if (obs.x < -380) {
+          obs.topPipe.destroy();
+          obs.bottomPipe.destroy();
+          obs.spark.destroy();
+          this.flappyObstacles.splice(i, 1);
+        }
+      }
+    };
+
+    scene.events.on(Phaser.Scenes.Events.UPDATE, this.flappyUpdateListener);
+  }
+
+  private resetFlappyGame(progressTxt: Phaser.GameObjects.Text): void {
+    this.audioManager.playTone(196, 200, 0.085); // G3 buzz tone
+    this.scene.cameras.main.shake(120, 0.005);
+
+    if (this.flappyPlayer) {
+      this.flappyPlayer.setPosition(-220, 80);
+      this.flappyVelocityY = 0;
+      this.flappyPlayer.setAngle(0);
+    }
+
+    this.flappySparksCollected = 0;
+    const target = (this.gameConfig as FlappyGameConfig).targetCount ?? 3;
+    progressTxt.setText(`Sparks Collected: 0 / ${target}`);
+
+    this.flappyObstacles.forEach(obs => {
+      obs.topPipe.destroy();
+      obs.bottomPipe.destroy();
+      obs.spark.destroy();
+    });
+    this.flappyObstacles = [];
+  }
+
+  private completeFlappyGame(): void {
+    this.cleanupActiveGames();
+    this.complete();
   }
 }

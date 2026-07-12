@@ -30,18 +30,18 @@
   ],
   "npcs": [
     {
-      "id": "firefly",
-      "name": "Wish Firefly",
+      "id": "teddy",
+      "name": "Birthday Teddy",
       "x": 640,
       "y": 330,
-      "texture": "moon-firefly",
+      "texture": "baby-teddy",
       "interactiveRange": 92,
       "dialogueNode": "fireflyHint"
     }
   ],
   "minigame": {
     "type": "catching_game",
-    "triggerNpc": "firefly",
+    "triggerNpc": "teddy",
     "prompt": "Make Heena's Birthday Wish!",
     "items": ["⭐", "💫", "✨", "🎂"],
     "targetCount": 6,

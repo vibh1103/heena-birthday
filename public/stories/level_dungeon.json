@@ -13,12 +13,12 @@
       }
     },
     "firefly": {
-      "name": "Cyber Firefly",
+      "name": "Cyber Bot",
       "typingTone": 760,
       "portraits": {
-        "neutral": "portrait-firefly-neutral",
-        "excited": "portrait-firefly-excited",
-        "happy": "portrait-firefly-excited"
+        "neutral": "portrait-cyber-bot",
+        "excited": "portrait-cyber-bot",
+        "happy": "portrait-cyber-bot"
       }
     }
   },

@@ -13,12 +13,12 @@
       }
     },
     "firefly": {
-      "name": "Wish Firefly",
+      "name": "Birthday Teddy",
       "typingTone": 760,
       "portraits": {
-        "neutral": "portrait-firefly-neutral",
-        "excited": "portrait-firefly-excited",
-        "happy": "portrait-firefly-excited"
+        "neutral": "portrait-teddy",
+        "excited": "portrait-teddy",
+        "happy": "portrait-teddy"
       }
     }
   },

@@ -30,18 +30,18 @@
   ],
   "npcs": [
     {
-      "id": "firefly",
-      "name": "Coding Firefly",
+      "id": "manager",
+      "name": "Office Coworker",
       "x": 700,
       "y": 300,
-      "texture": "moon-firefly",
+      "texture": "manager-npc",
       "interactiveRange": 92,
       "dialogueNode": "fireflyHint"
     }
   ],
   "minigame": {
     "type": "wire_connect",
-    "triggerNpc": "firefly",
+    "triggerNpc": "manager",
     "prompt": "Calibrate Server Connections"
   },
   "portal": {

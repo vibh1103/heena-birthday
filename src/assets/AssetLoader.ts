@@ -37,6 +37,12 @@ export class AssetLoader {
 
     // Custom Level 4 Wizard Owl
     this.createOwl(scene);
+
+    // Custom level NPC sprites
+    this.createBaristaNpc(scene);
+    this.createManagerNpc(scene);
+    this.createCyberBotNpc(scene);
+    this.createFairyNpc(scene);
   }
 
   private static createPlayer(scene: Phaser.Scene): void {
@@ -150,6 +156,13 @@ export class AssetLoader {
     this.createHeenaPortrait(scene, TEXTURE_KEYS.PORTRAIT_HEENA_CURIOUS, COLORS.teal);
     this.createFireflyPortrait(scene, TEXTURE_KEYS.PORTRAIT_FIREFLY_NEUTRAL, COLORS.gold);
     this.createFireflyPortrait(scene, TEXTURE_KEYS.PORTRAIT_FIREFLY_EXCITED, COLORS.fuchsia);
+
+    this.createBaristaPortrait(scene);
+    this.createManagerPortrait(scene);
+    this.createCyberBotPortrait(scene);
+    this.createFairyPortrait(scene);
+    this.createOwlPortrait(scene);
+    this.createTeddyPortrait(scene);
   }
 
   private static createHeenaPortrait(scene: Phaser.Scene, key: string, accent: number): void {
@@ -428,6 +441,286 @@ export class AssetLoader {
     graphics.fillStyle(0xf97316, 1);
     graphics.fillTriangle(24, 26, 22, 22, 26, 22);
     graphics.generateTexture(TEXTURE_KEYS.OWL, 48, 48);
+    graphics.destroy();
+  }
+
+  private static createBaristaNpc(scene: Phaser.Scene): void {
+    if (scene.textures.exists('barista-npc')) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    // Draw coffee cup base
+    graphics.fillStyle(0xf59e0b, 1);
+    graphics.fillRoundedRect(10, 12, 28, 30, { tl: 4, tr: 4, bl: 10, br: 10 });
+    // Cup handle
+    graphics.lineStyle(4, 0xf59e0b, 1);
+    graphics.strokeEllipse(38, 26, 6, 8);
+    // Apron (brown)
+    graphics.fillStyle(0x78350f, 1);
+    graphics.fillRect(14, 24, 20, 18);
+    // Eyes
+    graphics.fillStyle(0x000000, 1);
+    graphics.fillCircle(20, 20, 2);
+    graphics.fillCircle(28, 20, 2);
+    // Happy mouth
+    graphics.lineStyle(1.5, 0x000000, 1);
+    graphics.beginPath();
+    graphics.arc(24, 22, 3, 0, Math.PI);
+    graphics.strokePath();
+    graphics.generateTexture('barista-npc', 48, 48);
+    graphics.destroy();
+  }
+
+  private static createManagerNpc(scene: Phaser.Scene): void {
+    if (scene.textures.exists('manager-npc')) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    // Stand/Base
+    graphics.fillStyle(0x64748b, 1);
+    graphics.fillRect(20, 36, 8, 8);
+    graphics.fillRect(14, 42, 20, 3);
+    // Monitor Frame
+    graphics.fillStyle(0x334155, 1);
+    graphics.fillRoundedRect(6, 6, 36, 28, 6);
+    // Screen (light blue)
+    graphics.fillStyle(0x38bdf8, 1);
+    graphics.fillRect(9, 9, 30, 22);
+    // Smile face on screen
+    graphics.fillStyle(0x0f172a, 1);
+    graphics.fillCircle(17, 17, 2);
+    graphics.fillCircle(31, 17, 2);
+    graphics.lineStyle(2, 0x0f172a, 1);
+    graphics.beginPath();
+    graphics.arc(24, 19, 4, 0, Math.PI);
+    graphics.strokePath();
+    graphics.generateTexture('manager-npc', 48, 48);
+    graphics.destroy();
+  }
+
+  private static createCyberBotNpc(scene: Phaser.Scene): void {
+    if (scene.textures.exists('cyber-bot-npc')) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    // Antennas
+    graphics.lineStyle(2, 0x00ff7f, 1);
+    graphics.lineBetween(18, 12, 12, 4);
+    graphics.lineBetween(30, 12, 36, 4);
+    graphics.fillStyle(0x00ff7f, 1);
+    graphics.fillCircle(12, 4, 3);
+    graphics.fillCircle(36, 4, 3);
+    // Head
+    graphics.fillStyle(0x0f172a, 1);
+    graphics.lineStyle(3, 0x00ff7f, 1);
+    graphics.fillRoundedRect(10, 12, 28, 22, 6);
+    graphics.strokeRoundedRect(10, 12, 28, 22, 6);
+    // LED eyes (neon green dashes)
+    graphics.fillStyle(0x00ff7f, 1);
+    graphics.fillRect(15, 20, 6, 3);
+    graphics.fillRect(27, 20, 6, 3);
+    // Mouth (sine wave line)
+    graphics.lineStyle(1.5, 0x00ff7f, 1);
+    graphics.lineBetween(18, 28, 30, 28);
+    // Neck/Body base
+    graphics.fillStyle(0x1e293b, 1);
+    graphics.fillRect(21, 34, 6, 6);
+    graphics.fillRect(16, 40, 16, 6);
+    graphics.generateTexture('cyber-bot-npc', 48, 48);
+    graphics.destroy();
+  }
+
+  private static createFairyNpc(scene: Phaser.Scene): void {
+    if (scene.textures.exists('fairy-npc')) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    // Glow wings
+    graphics.fillStyle(0x00ffff, 0.45);
+    graphics.fillEllipse(12, 20, 9, 16);
+    graphics.fillStyle(0xff00ff, 0.45);
+    graphics.fillEllipse(36, 20, 9, 16);
+    // Fairy body
+    graphics.fillStyle(0xfff3d7, 1);
+    graphics.fillCircle(24, 24, 6);
+    graphics.fillStyle(0xfde047, 1);
+    graphics.fillTriangle(24, 12, 21, 22, 27, 22);
+    graphics.fillTriangle(24, 36, 21, 26, 27, 26);
+    // Halo
+    graphics.lineStyle(1.5, 0xfde047, 0.8);
+    graphics.strokeEllipse(24, 10, 7, 2.5);
+    graphics.generateTexture('fairy-npc', 48, 48);
+    graphics.destroy();
+  }
+
+  private static createBaristaPortrait(scene: Phaser.Scene): void {
+    if (scene.textures.exists('portrait-barista')) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x15102a, 0.94);
+    graphics.fillRoundedRect(0, 0, 168, 168, 34);
+    graphics.lineStyle(5, 0xf59e0b, 0.82);
+    graphics.strokeRoundedRect(8, 8, 152, 152, 28);
+    // Cup shape
+    graphics.fillStyle(0xf59e0b, 1);
+    graphics.fillRoundedRect(44, 40, 80, 80, { tl: 10, tr: 10, bl: 24, br: 24 });
+    graphics.lineStyle(10, 0xf59e0b, 1);
+    graphics.strokeEllipse(124, 80, 16, 20);
+    // Apron
+    graphics.fillStyle(0x78350f, 1);
+    graphics.fillRect(54, 90, 60, 30);
+    // Face
+    graphics.fillStyle(0x000000, 1);
+    graphics.fillCircle(72, 70, 6);
+    graphics.fillCircle(96, 70, 6);
+    graphics.lineStyle(4, 0x000000, 1);
+    graphics.beginPath();
+    graphics.arc(84, 76, 10, 0, Math.PI);
+    graphics.strokePath();
+    graphics.generateTexture('portrait-barista', 168, 168);
+    graphics.destroy();
+  }
+
+  private static createManagerPortrait(scene: Phaser.Scene): void {
+    if (scene.textures.exists('portrait-manager')) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x15102a, 0.94);
+    graphics.fillRoundedRect(0, 0, 168, 168, 34);
+    graphics.lineStyle(5, 0x334155, 0.82);
+    graphics.strokeRoundedRect(8, 8, 152, 152, 28);
+    // Monitor frame
+    graphics.fillStyle(0x334155, 1);
+    graphics.fillRoundedRect(30, 30, 108, 86, 12);
+    // Screen
+    graphics.fillStyle(0x38bdf8, 1);
+    graphics.fillRect(38, 38, 92, 70);
+    // Smile face
+    graphics.fillStyle(0x0f172a, 1);
+    graphics.fillCircle(64, 64, 6);
+    graphics.fillCircle(104, 64, 6);
+    graphics.lineStyle(5, 0x0f172a, 1);
+    graphics.beginPath();
+    graphics.arc(84, 72, 14, 0, Math.PI);
+    graphics.strokePath();
+    // Stand
+    graphics.fillStyle(0x64748b, 1);
+    graphics.fillRect(74, 116, 20, 24);
+    graphics.fillRect(54, 136, 60, 8);
+    graphics.generateTexture('portrait-manager', 168, 168);
+    graphics.destroy();
+  }
+
+  private static createCyberBotPortrait(scene: Phaser.Scene): void {
+    if (scene.textures.exists('portrait-cyber-bot')) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x15102a, 0.94);
+    graphics.fillRoundedRect(0, 0, 168, 168, 34);
+    graphics.lineStyle(5, 0x00ff7f, 0.82);
+    graphics.strokeRoundedRect(8, 8, 152, 152, 28);
+    // Antennas
+    graphics.lineStyle(4, 0x00ff7f, 1);
+    graphics.lineBetween(64, 40, 48, 20);
+    graphics.lineBetween(104, 40, 120, 20);
+    graphics.fillStyle(0x00ff7f, 1);
+    graphics.fillCircle(48, 20, 8);
+    graphics.fillCircle(120, 20, 8);
+    // Head
+    graphics.fillStyle(0x0f172a, 1);
+    graphics.lineStyle(6, 0x00ff7f, 1);
+    graphics.fillRoundedRect(34, 40, 100, 80, 16);
+    graphics.strokeRoundedRect(34, 40, 100, 80, 16);
+    // Eyes
+    graphics.fillStyle(0x00ff7f, 1);
+    graphics.fillRect(52, 66, 20, 8);
+    graphics.fillRect(96, 66, 20, 8);
+    // Mouth
+    graphics.lineStyle(3, 0x00ff7f, 1);
+    graphics.lineBetween(60, 96, 108, 96);
+    graphics.generateTexture('portrait-cyber-bot', 168, 168);
+    graphics.destroy();
+  }
+
+  private static createFairyPortrait(scene: Phaser.Scene): void {
+    if (scene.textures.exists('portrait-fairy')) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x15102a, 0.94);
+    graphics.fillRoundedRect(0, 0, 168, 168, 34);
+    graphics.lineStyle(5, 0xff00ff, 0.82);
+    graphics.strokeRoundedRect(8, 8, 152, 152, 28);
+    // Wings
+    graphics.fillStyle(0x00ffff, 0.4);
+    graphics.fillEllipse(54, 76, 30, 50);
+    graphics.fillStyle(0xff00ff, 0.4);
+    graphics.fillEllipse(114, 76, 30, 50);
+    // Face
+    graphics.fillStyle(0xfff3d7, 1);
+    graphics.fillCircle(84, 84, 24);
+    graphics.fillStyle(0xfde047, 1);
+    graphics.fillTriangle(84, 40, 74, 76, 94, 76);
+    graphics.fillTriangle(84, 128, 74, 92, 94, 92);
+    // Eyes
+    graphics.fillStyle(0x000000, 1);
+    graphics.fillCircle(76, 80, 3);
+    graphics.fillCircle(92, 80, 3);
+    // Halo
+    graphics.lineStyle(3, 0xfde047, 0.85);
+    graphics.strokeEllipse(84, 34, 28, 8);
+    graphics.generateTexture('portrait-fairy', 168, 168);
+    graphics.destroy();
+  }
+
+  private static createOwlPortrait(scene: Phaser.Scene): void {
+    if (scene.textures.exists('portrait-owl')) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x15102a, 0.94);
+    graphics.fillRoundedRect(0, 0, 168, 168, 34);
+    graphics.lineStyle(5, 0x9370db, 0.82);
+    graphics.strokeRoundedRect(8, 8, 152, 152, 28);
+    // Body
+    graphics.fillStyle(0x475569, 1);
+    graphics.fillEllipse(84, 94, 48, 60);
+    // Wings
+    graphics.fillStyle(0x334155, 1);
+    graphics.fillEllipse(44, 94, 18, 42);
+    graphics.fillEllipse(124, 94, 18, 42);
+    // Ears
+    graphics.fillStyle(0x475569, 1);
+    graphics.fillTriangle(54, 58, 72, 46, 72, 64);
+    graphics.fillTriangle(114, 58, 96, 46, 96, 64);
+    // Eyes
+    graphics.fillStyle(0xfde047, 1);
+    graphics.fillCircle(66, 76, 16);
+    graphics.fillCircle(102, 76, 16);
+    graphics.fillStyle(0x000000, 1);
+    graphics.fillCircle(66, 76, 6);
+    graphics.fillCircle(102, 76, 6);
+    // Beak
+    graphics.fillStyle(0xf97316, 1);
+    graphics.fillTriangle(84, 94, 78, 82, 90, 82);
+    graphics.generateTexture('portrait-owl', 168, 168);
+    graphics.destroy();
+  }
+
+  private static createTeddyPortrait(scene: Phaser.Scene): void {
+    if (scene.textures.exists('portrait-teddy')) return;
+    const graphics = scene.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x15102a, 0.94);
+    graphics.fillRoundedRect(0, 0, 168, 168, 34);
+    graphics.lineStyle(5, 0xff1493, 0.82);
+    graphics.strokeRoundedRect(8, 8, 152, 152, 28);
+    // Ears
+    graphics.fillStyle(0xd97706, 1);
+    graphics.fillCircle(56, 56, 18);
+    graphics.fillCircle(112, 56, 18);
+    graphics.fillStyle(0xfef08a, 1);
+    graphics.fillCircle(56, 56, 10);
+    graphics.fillCircle(112, 56, 10);
+    // Head
+    graphics.fillStyle(0xd97706, 1);
+    graphics.fillCircle(84, 84, 38);
+    // Eyes
+    graphics.fillStyle(0x000000, 1);
+    graphics.fillCircle(72, 78, 4.5);
+    graphics.fillCircle(96, 78, 4.5);
+    // Snout
+    graphics.fillStyle(0xfde047, 1);
+    graphics.fillCircle(84, 94, 12);
+    graphics.fillStyle(0x000000, 1);
+    graphics.fillTriangle(84, 92, 78, 86, 90, 86);
+    graphics.lineStyle(2, 0x000000, 1);
+    graphics.lineBetween(84, 94, 84, 102);
+    graphics.generateTexture('portrait-teddy', 168, 168);
     graphics.destroy();
   }
 }

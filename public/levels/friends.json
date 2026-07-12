@@ -29,18 +29,18 @@
   ],
   "npcs": [
     {
-      "id": "firefly",
-      "name": "Cafe Firefly",
+      "id": "barista",
+      "name": "Cafe Barista",
       "x": 600,
       "y": 360,
-      "texture": "moon-firefly",
+      "texture": "barista-npc",
       "interactiveRange": 92,
       "dialogueNode": "fireflyHint"
     }
   ],
   "minigame": {
     "type": "memory_match",
-    "triggerNpc": "firefly",
+    "triggerNpc": "barista",
     "prompt": "Match Cafe Emojis!",
     "pairs": ["☕", "🍩", "🍪"]
   },

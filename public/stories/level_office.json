@@ -13,12 +13,12 @@
       }
     },
     "firefly": {
-      "name": "Corporate Firefly",
+      "name": "Office Coworker",
       "typingTone": 760,
       "portraits": {
-        "neutral": "portrait-firefly-neutral",
-        "excited": "portrait-firefly-excited",
-        "happy": "portrait-firefly-excited"
+        "neutral": "portrait-manager",
+        "excited": "portrait-manager",
+        "happy": "portrait-manager"
       }
     }
   },

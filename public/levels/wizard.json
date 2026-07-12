@@ -30,18 +30,18 @@
   ],
   "npcs": [
     {
-      "id": "firefly",
-      "name": "Arcane Firefly",
+      "id": "owl",
+      "name": "Arcane Owl",
       "x": 620,
       "y": 340,
-      "texture": "moon-firefly",
+      "texture": "flying-owl",
       "interactiveRange": 92,
       "dialogueNode": "fireflyHint"
     }
   ],
   "minigame": {
     "type": "math_quiz",
-    "triggerNpc": "firefly",
+    "triggerNpc": "owl",
     "prompt": "Brew Birthday Magic!",
     "questions": [
       {

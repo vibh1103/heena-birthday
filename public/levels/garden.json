@@ -28,18 +28,18 @@
   ],
   "npcs": [
     {
-      "id": "firefly",
-      "name": "Memory Firefly",
+      "id": "fairy",
+      "name": "Garden Fairy",
       "x": 640,
       "y": 350,
-      "texture": "moon-firefly",
+      "texture": "fairy-npc",
       "interactiveRange": 92,
       "dialogueNode": "fireflyHint"
     }
   ],
   "minigame": {
     "type": "simon_says",
-    "triggerNpc": "firefly",
+    "triggerNpc": "fairy",
     "prompt": "Cherish Memory Sequence"
   },
   "portal": {
