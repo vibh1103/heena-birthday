@@ -40,12 +40,12 @@
     }
   ],
   "minigame": {
-    "type": "math_quiz",
+    "type": "catching_game",
     "triggerNpc": "firefly",
-    "question": "If X + 1990 = 2026, what is the Magic Value of X?",
-    "options": ["34", "36", "38"],
-    "answerIndex": 1,
-    "prompt": "The Ultimate Castle Riddle!"
+    "prompt": "Make Heena's Birthday Wish!",
+    "items": ["⭐", "💫", "✨", "🎂"],
+    "targetCount": 6,
+    "mode": "wishes"
   },
   "portal": {
     "x": 1130,

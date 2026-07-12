@@ -39,16 +39,10 @@
     }
   ],
   "minigame": {
-    "type": "math_quiz",
+    "type": "memory_match",
     "triggerNpc": "firefly",
-    "question": "To bake the ultimate Birthday Cookies, how should we cook them?",
-    "options": [
-      "Bake at 350°F with Love and Emojis",
-      "Microwave on High for 20 Minutes",
-      "Could this BE any more raw? (Leave in sun)"
-    ],
-    "answerIndex": 0,
-    "prompt": "Bake Birthday Cookies!"
+    "prompt": "Match Cafe Emojis!",
+    "pairs": ["☕", "🍩", "🍪"]
   },
   "portal": {
     "x": 1100,

@@ -40,10 +40,12 @@
     }
   ],
   "minigame": {
-    "type": "typing_test",
+    "type": "catching_game",
     "triggerNpc": "firefly",
-    "prompt": "Type this code loop to fix the build:",
-    "text": "while(birthday){ celebrate(); }"
+    "prompt": "Catch Green Code, Avoid Viruses!",
+    "items": ["1", "0"],
+    "targetCount": 5,
+    "mode": "bugs"
   },
   "portal": {
     "x": 1090,

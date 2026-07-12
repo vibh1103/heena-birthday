@@ -119,6 +119,7 @@ export class DialogueBox implements DialogueUiAdapter {
     this.text.setText(line.text);
     if (line.portraitKey) {
       this.portrait.setTexture(line.portraitKey).setVisible(true);
+      this.portrait.setDisplaySize(100, 100);
     } else {
       this.portrait.setVisible(false);
     }

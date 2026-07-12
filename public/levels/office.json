@@ -40,38 +40,9 @@
     }
   ],
   "minigame": {
-    "type": "math_quiz",
+    "type": "wire_connect",
     "triggerNpc": "firefly",
-    "prompt": "Deploy Production!",
-    "questions": [
-      {
-        "question": "Step 1: How should we arrange our commits before deploying?",
-        "options": [
-          "Squash and Merge into main branch",
-          "Force push to main with --force",
-          "Commit as 'fix typo' 15 times"
-        ],
-        "answerIndex": 0
-      },
-      {
-        "question": "Step 2: A merge conflict appears in main.ts! How do we resolve it?",
-        "options": [
-          "Delete main.ts and hope for the best",
-          "Keep incoming changes after verification",
-          "Identity theft is not a joke, Jim!"
-        ],
-        "answerIndex": 1
-      },
-      {
-        "question": "Step 3: Server is idle. How do we restart the system service?",
-        "options": [
-          "That's what she said! (Power cycle)",
-          "sudo systemctl restart birthday-service",
-          "Unplug the server rack physically"
-        ],
-        "answerIndex": 1
-      }
-    ]
+    "prompt": "Calibrate Server Connections"
   },
   "portal": {
     "x": 1080,

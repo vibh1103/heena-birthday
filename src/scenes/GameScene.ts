@@ -536,7 +536,13 @@ export class GameScene extends Phaser.Scene {
         
         // 4. Mist particles warm up (tints shift)
         if (this.mistEmitter) {
-          (this.mistEmitter as any).setTint([0xfca5a5, 0xfecdd3, 0xffedd5]);
+          const emitter = this.mistEmitter as any;
+          const newTints = [0xfca5a5, 0xfecdd3, 0xffedd5];
+          if (emitter.tint && typeof emitter.tint.onChange === 'function') {
+            emitter.tint.onChange(newTints);
+          } else if (emitter.particleColor && typeof emitter.particleColor.onChange === 'function') {
+            emitter.particleColor.onChange(newTints);
+          }
         }
         
         // 5. Play sweet chime and warm burst
@@ -689,8 +695,10 @@ export class GameScene extends Phaser.Scene {
     if (nearNpc) {
       const hasMinigame = this.levelConfig.minigame && this.levelConfig.minigame.triggerNpc === nearNpc.id;
       const isMinigameDone = this.objectivesProgress['play_minigame'] === true;
+      const hasCollectObjective = this.levelConfig.objectives.some((o: any) => o.id === 'collect_crystals');
+      const isCollectDone = this.objectivesProgress['collect_crystals'] === true;
 
-      if (hasMinigame && !isMinigameDone) {
+      if (hasMinigame && !isMinigameDone && (!hasCollectObjective || isCollectDone)) {
         this.startMiniGame();
       } else {
         const npcSprite = this.npcSprites.get(nearNpc.id);
@@ -1084,7 +1092,6 @@ export class GameScene extends Phaser.Scene {
         duration: 250,
         onComplete: () => {
           overlay.destroy();
-          border.destroy();
           this.gamePausedForMinigame = false;
           onClosed();
         }

@@ -38,10 +38,9 @@
     }
   ],
   "minigame": {
-    "type": "memory_match",
+    "type": "simon_says",
     "triggerNpc": "firefly",
-    "prompt": "Match the sweet memories!",
-    "pairs": ["🌸", "🌟", "🎂"]
+    "prompt": "Cherish Memory Sequence"
   },
   "portal": {
     "x": 1100,

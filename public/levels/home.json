@@ -38,12 +38,11 @@
     }
   ],
   "minigame": {
-    "type": "math_quiz",
+    "type": "timing_game",
     "triggerNpc": "firefly",
-    "question": "What is Heena's Birthday Date? (July X)",
-    "options": ["July 10", "July 12", "July 15"],
-    "answerIndex": 1,
-    "prompt": "Guess Heena's Birthday Date!"
+    "prompt": "Light the 3 Birthday Candles!",
+    "targetCount": 3,
+    "mode": "candles"
   },
   "portal": {
     "x": 1120,
