@@ -38,6 +38,12 @@ export class GameScene extends Phaser.Scene {
   private story!: DialogueStoryDefinition;
   private dialogueBgImage: Phaser.GameObjects.Image | null = null;
 
+  // Virtual touch controls properties
+  private virtualVelocity = new Phaser.Math.Vector2(0, 0);
+  private joystickBase: Phaser.GameObjects.Container | null = null;
+  private joystickStick: Phaser.GameObjects.Container | null = null;
+  private actionButton: Phaser.GameObjects.Container | null = null;
+
   // Level Engine data-driven fields
   private levelId = 'home';
   private levelConfig!: any;
@@ -116,6 +122,15 @@ export class GameScene extends Phaser.Scene {
     this.createWorld();
     this.createActors();
     this.createInput();
+
+    // Create touch controls if it is a touch/mobile/tablet device
+    const isTouchDevice = this.sys.game.device.input.touch || 
+                          navigator.maxTouchPoints > 0 || 
+                          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isTouchDevice) {
+      this.createTouchControls();
+    }
+
     this.createObjectivesList();
 
     if (this.levelId === 'wizard') {
@@ -136,10 +151,22 @@ export class GameScene extends Phaser.Scene {
   }
 
   public update(_time: number, _delta: number): void {
+    // Show or hide touch controls based on game state
+    const showControls = !this.dialogue.isActive && !this.gamePausedForMinigame;
+    if (this.joystickBase) {
+      this.joystickBase.setVisible(showControls);
+    }
+    if (this.joystickStick) {
+      this.joystickStick.setVisible(showControls);
+    }
+    if (this.actionButton) {
+      this.actionButton.setVisible(showControls);
+    }
+
     if (this.dialogue.isActive || this.gamePausedForMinigame) {
       this.player.setVelocity(0, 0);
     } else {
-      this.player.move(this.cursors, this.keys);
+      this.player.move(this.cursors, this.keys, this.virtualVelocity);
     }
 
     if (this.playerSpotlight && this.player) {
@@ -369,6 +396,11 @@ export class GameScene extends Phaser.Scene {
       onEvent: (event) => this.handleDialogueEvent(event),
       onComplete: () => this.resetCameraAfterDialogue(),
     });
+
+    this.events.on('dialogue:advance', () => {
+      this.handleAction();
+    });
+
     new ResponsiveCanvas(this).bind(() => {
       this.cameras.main.setViewport(0, 0, 1280, 720);
     });
@@ -789,6 +821,7 @@ export class GameScene extends Phaser.Scene {
     if (this.keys) {
       this.keys.SPACE.removeAllListeners();
     }
+    this.events.off('dialogue:advance');
 
     if (this.levelId === 'castle') {
       this.time.delayedCall(1200, () => {
@@ -1067,5 +1100,146 @@ export class GameScene extends Phaser.Scene {
       duration: 300,
       ease: 'Back.out'
     });
+  }
+
+  private createTouchControls(): void {
+    const joyX = 160;
+    const joyY = 560;
+    const maxRadius = 55;
+
+    // --- Premium Glassmorphic Joystick Base ---
+    this.joystickBase = this.add.container(joyX, joyY).setDepth(1500).setScrollFactor(0);
+    
+    // Outer Glow Ring
+    const baseGlow = this.add.circle(0, 0, maxRadius + 4, UI_COLORS.purple, 0.15);
+    // Darker Core fill
+    const baseBg = this.add.circle(0, 0, maxRadius, 0x0c0628, 0.72)
+      .setStrokeStyle(3, UI_COLORS.purple, 0.75)
+      .setInteractive(new Phaser.Geom.Circle(0, 0, maxRadius), Phaser.Geom.Circle.Contains);
+    // Inner Accent Ring
+    const baseInnerRing = this.add.circle(0, 0, maxRadius - 10)
+      .setStrokeStyle(1.5, UI_COLORS.cream, 0.18);
+    // Center Dead-zone Guideline Dot
+    const baseCenterDot = this.add.circle(0, 0, 5, UI_COLORS.purple, 0.4);
+
+    this.joystickBase.add([baseGlow, baseBg, baseInnerRing, baseCenterDot]);
+
+    // --- Premium Glassmorphic Stick ---
+    this.joystickStick = this.add.container(joyX, joyY).setDepth(1501).setScrollFactor(0);
+    
+    // Outer Stick Frame
+    const stickOuter = this.add.circle(0, 0, 24, 0x1e1b4b, 0.95)
+      .setStrokeStyle(2.5, UI_COLORS.gold, 0.85);
+    // Inner glowing core
+    const stickInner = this.add.circle(0, 0, 12, UI_COLORS.cream, 0.9);
+    
+    this.joystickStick.add([stickOuter, stickInner]);
+
+    // Touch Event Tracking
+    let dragPointer: Phaser.Input.Pointer | null = null;
+
+    baseBg.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
+      dragPointer = pointer;
+      this.tweens.add({
+        targets: this.joystickStick,
+        scale: 1.1,
+        duration: 100,
+        ease: 'Sine.easeOut'
+      });
+    });
+
+    this.input.on(Phaser.Input.Events.POINTER_MOVE, (pointer: Phaser.Input.Pointer) => {
+      if (dragPointer && pointer.id === dragPointer.id) {
+        const dx = pointer.x - joyX;
+        const dy = pointer.y - joyY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist > 0) {
+          const angle = Math.atan2(dy, dx);
+          const clampedDist = Math.min(dist, maxRadius);
+          const stickX = joyX + Math.cos(angle) * clampedDist;
+          const stickY = joyY + Math.sin(angle) * clampedDist;
+          this.joystickStick?.setPosition(stickX, stickY);
+          
+          this.virtualVelocity.set(Math.cos(angle), Math.sin(angle));
+          this.virtualVelocity.scale(clampedDist / maxRadius);
+        }
+      }
+    });
+
+    const resetJoystick = () => {
+      dragPointer = null;
+      
+      // Smoothly spring-back the stick to center
+      this.tweens.add({
+        targets: this.joystickStick,
+        x: joyX,
+        y: joyY,
+        scale: 1.0,
+        duration: 220,
+        ease: 'Back.out'
+      });
+      
+      this.virtualVelocity.set(0, 0);
+    };
+
+    baseBg.on(Phaser.Input.Events.POINTER_OUT, resetJoystick);
+    baseBg.on(Phaser.Input.Events.POINTER_UP, resetJoystick);
+    this.input.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
+      if (dragPointer && pointer.id === dragPointer.id) {
+        resetJoystick();
+      }
+    });
+
+    // --- Premium Action Button ---
+    const btnX = 1120;
+    const btnY = 560;
+    const btnRadius = 40;
+
+    this.actionButton = this.add.container(btnX, btnY).setDepth(1500).setScrollFactor(0);
+    
+    // Glowing base
+    const btnGlow = this.add.circle(0, 0, btnRadius + 5, UI_COLORS.pink, 0.16);
+    const btnBg = this.add.circle(0, 0, btnRadius, 0x1e091f, 0.8)
+      .setStrokeStyle(3.5, UI_COLORS.pink, 0.85)
+      .setInteractive(new Phaser.Geom.Circle(0, 0, btnRadius), Phaser.Geom.Circle.Contains);
+      
+    const btnInner = this.add.circle(0, 0, btnRadius - 6).setStrokeStyle(1.5, UI_COLORS.cream, 0.22);
+    
+    const btnTxt = this.add.text(0, -1, 'ACT', {
+      fontFamily: FONT_FAMILY.display,
+      fontSize: '22px',
+      color: UI_HEX.cream,
+      fontStyle: '800'
+    }).setOrigin(0.5);
+
+    this.actionButton.add([btnGlow, btnBg, btnInner, btnTxt]);
+
+    btnBg.on(Phaser.Input.Events.POINTER_DOWN, () => {
+      btnBg.setFillStyle(UI_COLORS.pink, 0.45);
+      btnBg.setStrokeStyle(3.5, UI_COLORS.gold, 0.95);
+      this.tweens.add({
+        targets: this.actionButton,
+        scale: 0.88,
+        duration: 80,
+        ease: 'Cubic.easeOut'
+      });
+      this.audioManager.playTone(330, 60, 0.05);
+      this.handleAction();
+    });
+
+    const resetButton = () => {
+      btnBg.setFillStyle(0x1e091f, 0.8);
+      btnBg.setStrokeStyle(3.5, UI_COLORS.pink, 0.85);
+      this.tweens.add({
+        targets: this.actionButton,
+        scale: 1.0,
+        duration: 120,
+        ease: 'Back.out'
+      });
+    };
+
+    btnBg.on(Phaser.Input.Events.POINTER_UP, resetButton);
+    btnBg.on(Phaser.Input.Events.POINTER_OUT, resetButton);
   }
 }

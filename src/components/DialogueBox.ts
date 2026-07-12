@@ -22,6 +22,17 @@ export class DialogueBox implements DialogueUiAdapter {
       strokeAlpha: 0.42,
       glowAlpha: 0.18,
     });
+    panel.setSize(1010, 142);
+    panel.setInteractive({
+      hitArea: new Phaser.Geom.Rectangle(-505, -71, 1010, 142),
+      hitAreaCallback: Phaser.Geom.Rectangle.Contains,
+      useHandCursor: true
+    });
+    panel.on(Phaser.Input.Events.POINTER_DOWN, (_pointer: Phaser.Input.Pointer, _localX: number, _localY: number, event: Phaser.Types.Input.EventData) => {
+      if (event) event.stopPropagation();
+      scene.events.emit('dialogue:advance');
+    });
+
     this.portraitFrame = new GlassPanel(scene, 187, 602, 128, 128, {
       radius: 28,
       fillAlpha: 0.72,
@@ -127,13 +138,19 @@ export class DialogueBox implements DialogueUiAdapter {
     }
 
     this.container.setVisible(true);
-    this.container.scene.tweens.add({
-      targets: this.container,
-      alpha: 1,
-      y: -10,
-      duration: 180,
-      ease: 'Sine.out',
-    });
+    this.container.scene.tweens.killTweensOf(this.container);
+    if (this.container.alpha < 1) {
+      this.container.scene.tweens.add({
+        targets: this.container,
+        alpha: 1,
+        y: -10,
+        duration: 180,
+        ease: 'Sine.out',
+      });
+    } else {
+      this.container.y = -10;
+      this.container.alpha = 1;
+    }
   }
 
   public setBodyText(text: string): void {
@@ -170,6 +187,7 @@ export class DialogueBox implements DialogueUiAdapter {
 
   public hide(): void {
     this.hideChoices();
+    this.container.scene.tweens.killTweensOf(this.container);
     this.container.scene.tweens.add({
       targets: this.container,
       alpha: 0,

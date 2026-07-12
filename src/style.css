@@ -50,6 +50,14 @@ body {
   backdrop-filter: blur(16px);
 }
 
+/* Prevent accidental selections & highlights on touch devices */
+body {
+  overflow: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .game-container {
   position: relative;
   min-height: 0;
@@ -59,4 +67,55 @@ body {
 .game-container canvas {
   display: block;
   outline: none;
+}
+
+/* Orientation Warning Overlay */
+.orientation-warning {
+  display: none;
+}
+
+@media (orientation: portrait) and (max-width: 1024px) {
+  .orientation-warning {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    background: #05030a;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .orientation-warning svg {
+    width: 64px;
+    height: 64px;
+    fill: #facc15;
+    animation: rotateDevice 2s infinite ease-in-out;
+  }
+
+  .orientation-warning h2 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .orientation-warning p {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    color: rgb(245 243 255 / 0.7);
+    max-width: 18rem;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+@keyframes rotateDevice {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(-90deg); }
+  100% { transform: rotate(0deg); }
 }

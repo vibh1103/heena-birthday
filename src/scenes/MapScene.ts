@@ -139,9 +139,10 @@ export class MapScene extends Phaser.Scene {
   }
 
   private setupCameraPanning(): void {
-    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-      // Don't pan if clicking UI elements or during animation
+    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer, currentlyOver: Phaser.GameObjects.GameObject[]) => {
+      // Don't pan if clicking UI elements, during animation, or if clicking an interactive game object (like a level node)
       if (this.newlyUnlockedLevelId) return;
+      if (currentlyOver && currentlyOver.length > 0) return;
 
       this.isDragging = true;
       this.dragStartX = this.cameras.main.scrollX + pointer.x;
@@ -285,12 +286,12 @@ export class MapScene extends Phaser.Scene {
     this.waterGraphics.clear();
     
     // Wave lines in the background
-    // Draw 8 stylized flow lines across the map
+    // Optimize performance: Draw 5 flow lines instead of 8, and use step 100 instead of 50
     this.waterGraphics.lineStyle(1.5, 0x1d4ed8, 0.12);
-    for (let i = 0; i < 8; i++) {
-      const yBase = 100 + i * 140;
+    for (let i = 0; i < 5; i++) {
+      const yBase = 120 + i * 220;
       this.waterGraphics.beginPath();
-      for (let x = 0; x <= 2000; x += 50) {
+      for (let x = 0; x <= 2000; x += 100) {
         const offset = Math.sin((x / 140) + (this.time.now / 1200) + i) * 18;
         if (x === 0) {
           this.waterGraphics.moveTo(x, yBase + offset);
