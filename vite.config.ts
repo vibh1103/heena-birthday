@@ -1,8 +1,8 @@
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
-export default defineConfig({
-  base: '/heena-birthday/',
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/heena-birthday/' : '/',
   plugins: [tailwindcss()],
   build: {
     chunkSizeWarningLimit: 1400,
@@ -20,4 +20,4 @@ export default defineConfig({
   preview: {
     port: 4173,
   },
-});
+}));
