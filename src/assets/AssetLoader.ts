@@ -4,7 +4,7 @@ import { COLORS } from '../utils/colors';
 
 export class AssetLoader {
   public static preload(scene: Phaser.Scene): void {
-    scene.load.setPath('/');
+    scene.load.setPath(import.meta.env.BASE_URL);
   }
 
   public static createGeneratedTextures(scene: Phaser.Scene): void {
