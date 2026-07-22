@@ -542,6 +542,39 @@ export class EndingScene extends Phaser.Scene {
           ease: 'Sine.easeInOut'
         });
 
+        // Reveal the birthday coupon message
+        const couponContainer = this.add.container(640, 470).setDepth(85).setScale(0.85).setAlpha(0);
+        const couponPanel = new GlassPanel(this, 0, 0, 560, 110, {
+          radius: 24,
+          fillAlpha: 0.9,
+          strokeAlpha: 0.5,
+          glowAlpha: 0.3
+        });
+        const couponText = this.add.text(
+          0,
+          0,
+          "🎟️ You've won a Birthday Coupon!\nTo redeem it, contact your husband ❤️",
+          {
+            fontFamily: FONT_FAMILY.body,
+            fontSize: '18px',
+            color: UI_HEX.cream,
+            align: 'center',
+            lineSpacing: 8,
+            fontStyle: '700'
+          }
+        ).setOrigin(0.5);
+        couponContainer.add([couponPanel, couponText]);
+
+        this.time.delayedCall(400, () => {
+          this.tweens.add({
+            targets: couponContainer,
+            scale: 1,
+            alpha: 1,
+            duration: 700,
+            ease: 'Back.out'
+          });
+        });
+
         // Add a back-to-menu link or finish note
         const returnText = this.add.text(640, 680, "Click anywhere to return to Map", {
           fontFamily: FONT_FAMILY.body,

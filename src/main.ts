@@ -42,4 +42,10 @@ const config: Phaser.Types.Core.GameConfig = {
   version: '1.0.0',
 };
 
-new Phaser.Game(config);
+const game = new Phaser.Game(config);
+
+if (import.meta.env.DEV) {
+  // Dev-only: lets you jump straight into any scene from the browser console,
+  // e.g. game.scene.start('GameScene', { levelId: 'garden' })
+  (window as unknown as { game: Phaser.Game }).game = game;
+}

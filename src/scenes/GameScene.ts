@@ -68,6 +68,14 @@ export class GameScene extends Phaser.Scene {
     this.levelId = data?.levelId ?? 'home';
   }
 
+  public preload(): void {
+    if (this.levelId === 'garden') {
+      this.load.image('memory-wedding', 'stories/assets/memories/wedding.jpg');
+      this.load.image('memory-baby', 'stories/assets/memories/baby.jpg');
+      this.load.image('memory-trip-anniversary', 'stories/assets/memories/trip_anniversary.jpg');
+    }
+  }
+
   public create(): void {
     this.levelConfig = this.cache.json.get(`level-config-${this.levelId}`);
     if (!this.levelConfig) {
@@ -1110,14 +1118,16 @@ export class GameScene extends Phaser.Scene {
       this.input.keyboard.resetKeys();
     }
 
-    const memories = [
+    const memories: Array<{ title: string; desc: string; photoKey?: string }> = [
       {
         title: "💍 Memory Unlocked: Our Wedding Day",
-        desc: "A promise of forever, written in laughter and tears of joy.\nYou looked absolutely radiant, a memory etched in stars."
+        desc: "A promise of forever, written in laughter and tears of joy.\nYou looked absolutely radiant, a memory etched in stars.",
+        photoKey: 'memory-wedding'
       },
       {
         title: "👶 Memory Unlocked: Baby Steps",
-        desc: "Chasing tiny footsteps, watching you grow and explore.\nEvery single milestone a precious treasure in our hearts."
+        desc: "Chasing tiny footsteps, watching you grow and explore.\nEvery single milestone a precious treasure in our hearts.",
+        photoKey: 'memory-baby'
       },
       {
         title: "✈️ Memory Unlocked: The Adventure Trip",
@@ -1125,15 +1135,18 @@ export class GameScene extends Phaser.Scene {
       },
       {
         title: "❤️ Memory Unlocked: Our Anniversary",
-        desc: "Another year of love, support, and pair programming through\nlife's compile errors. Happy Anniversary, my partner in everything."
+        desc: "Another year of love, support, and pair programming through\nlife's compile errors. Happy Anniversary, my partner in everything.",
+        photoKey: 'memory-trip-anniversary'
       }
     ];
 
-    const mem = memories[index - 1] ?? { title: "Memory", desc: "A sweet memory of love." };
+    const mem = memories[index - 1] ?? { title: "Memory", desc: "A sweet memory of love.", photoKey: undefined };
+    const hasPhoto = !!mem.photoKey && this.textures.exists(mem.photoKey);
 
     const overlay = this.add.container(640, 360).setDepth(2000);
 
-    const bg = new GlassPanel(this, 0, 0, 680, 240, {
+    const panelHeight = hasPhoto ? 420 : 240;
+    const bg = new GlassPanel(this, 0, 0, 680, panelHeight, {
       radius: 28,
       fillAlpha: 0.95,
       strokeAlpha: 0.5,
@@ -1141,7 +1154,23 @@ export class GameScene extends Phaser.Scene {
     });
     overlay.add(bg);
 
-    const title = this.add.text(0, -60, mem.title, {
+    let contentOffset = 0;
+    if (hasPhoto) {
+      const photoY = -panelHeight / 2 + 110;
+      const frame = this.add.graphics();
+      frame.fillStyle(0x000000, 0.3);
+      frame.fillRoundedRect(-116, photoY - 86, 232, 172, 12);
+      frame.lineStyle(2, UI_COLORS.gold, 0.6);
+      frame.strokeRoundedRect(-116, photoY - 86, 232, 172, 12);
+      overlay.add(frame);
+
+      const photo = this.add.image(0, photoY, mem.photoKey as string).setDisplaySize(220, 160);
+      overlay.add(photo);
+
+      contentOffset = 90;
+    }
+
+    const title = this.add.text(0, -60 + contentOffset, mem.title, {
       fontFamily: FONT_FAMILY.display,
       fontSize: '24px',
       color: UI_HEX.gold,
@@ -1149,7 +1178,7 @@ export class GameScene extends Phaser.Scene {
     }).setOrigin(0.5);
     overlay.add(title);
 
-    const body = this.add.text(0, 10, mem.desc, {
+    const body = this.add.text(0, 10 + contentOffset, mem.desc, {
       fontFamily: FONT_FAMILY.body,
       fontSize: '16px',
       color: UI_HEX.cream,
@@ -1158,7 +1187,7 @@ export class GameScene extends Phaser.Scene {
     }).setOrigin(0.5);
     overlay.add(body);
 
-    const btn = this.add.text(0, 75, "Cherish Memory", {
+    const btn = this.add.text(0, 75 + contentOffset, "Cherish Memory", {
       fontFamily: FONT_FAMILY.body,
       fontSize: '16px',
       color: UI_HEX.gold,
@@ -1166,11 +1195,11 @@ export class GameScene extends Phaser.Scene {
       backgroundColor: '#1e1b4b',
       padding: { x: 18, y: 10 }
     }).setOrigin(0.5).setInteractive();
-    
+
     // Draw button border
     const border = this.add.graphics();
     border.lineStyle(1.5, UI_COLORS.purple, 0.7);
-    border.strokeRoundedRect(-70, 50, 140, 48, 8);
+    border.strokeRoundedRect(-70, 50 + contentOffset, 140, 48, 8);
     overlay.add(border);
     overlay.add(btn);
 

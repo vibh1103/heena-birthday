@@ -83,11 +83,11 @@
         {
           "character": "heena",
           "emotion": "curious",
-          "text": "A glowing memory crystal. When did you first start this adventure?",
+          "text": "A glowing memory crystal, warm as candlelight. What day does this one hold?",
           "choices": [
             {
               "id": "examine_mem1_choice_0",
-              "label": "Today, on Heena's special birthday!",
+              "label": "Our wedding day 💍",
               "next": "examine_mem1_success",
               "events": [
                 {
@@ -97,7 +97,7 @@
             },
             {
               "id": "examine_mem1_choice_1",
-              "label": "Ten years ago",
+              "label": "Just an ordinary Tuesday",
               "next": "examine_mem1_failure",
               "events": []
             }
@@ -121,7 +121,7 @@
         {
           "character": "firefly",
           "emotion": "neutral",
-          "text": "No, it started today! Try again."
+          "text": "No, this one glows for your wedding day! Try again."
         }
       ]
     },
@@ -131,11 +131,11 @@
         {
           "character": "heena",
           "emotion": "curious",
-          "text": "Memory Crystal 2. What color are the bioluminescent flowers?",
+          "text": "This crystal glows soft and gentle, like a lullaby. What memory is inside?",
           "choices": [
             {
               "id": "examine_mem2_choice_0",
-              "label": "Gold & Pink",
+              "label": "Watching our baby's first steps 👶",
               "next": "examine_mem2_success",
               "events": [
                 {
@@ -145,7 +145,7 @@
             },
             {
               "id": "examine_mem2_choice_1",
-              "label": "Boring white",
+              "label": "A grocery list",
               "next": "examine_mem2_failure",
               "events": []
             }
@@ -169,7 +169,7 @@
         {
           "character": "firefly",
           "emotion": "neutral",
-          "text": "They glow gold and pink! Try again."
+          "text": "No, this one holds those tiny first steps! Try again."
         }
       ]
     },
@@ -227,11 +227,11 @@
         {
           "character": "heena",
           "emotion": "curious",
-          "text": "Memory Crystal 4. Where does the exit portal lead?",
+          "text": "The last crystal shimmers gold — a year of love condensed into light. What does it celebrate?",
           "choices": [
             {
               "id": "examine_mem4_choice_0",
-              "label": "To Heena's Birthday Castle!",
+              "label": "Our anniversary together ❤️",
               "next": "examine_mem4_success",
               "events": [
                 {
@@ -241,7 +241,7 @@
             },
             {
               "id": "examine_mem4_choice_1",
-              "label": "Back to the start screen",
+              "label": "National Pizza Day",
               "next": "examine_mem4_failure",
               "events": []
             }
@@ -265,7 +265,7 @@
         {
           "character": "firefly",
           "emotion": "neutral",
-          "text": "It leads to the final Castle! Try again."
+          "text": "No, this one celebrates your anniversary! Try again."
         }
       ]
     }
